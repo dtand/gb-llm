@@ -50,16 +50,20 @@ gb-llm/
 │   ├── GAMEBOY_SPECS.md    # Hardware reference
 │   ├── GENERATION_STRATEGY.md  # Code generation approach
 │   ├── TOOLCHAIN.md        # Build tools & workflow
-│   └── GAME_PATTERNS.md    # Reusable game templates
+│   ├── GAME_PATTERNS.md    # Reusable game templates
+│   ├── CODE_STANDARDS.md   # Training data quality standards
+│   └── CORPUS.md           # Sample organization & taxonomy
 ├── src/                    # Generator source code
 │   ├── generator/          # LLM integration & prompts
 │   ├── templates/          # Code templates
 │   └── validator/          # Compilation & validation
-├── games/                  # Generated game projects
-│   └── {game-name}/        # Individual game folders
-│       ├── src/            # Game source code
-│       ├── assets/         # Sprites, tiles, sounds
-│       └── build/          # Compiled ROM output
+├── games/                  # Training corpus
+│   ├── manifest.json       # Master index with taxonomy
+│   └── samples/            # Individual samples by ID
+│       └── {sample-id}/    # e.g., pong, snake, bounce
+│           ├── src/        # Source code
+│           ├── assets/     # Sprites, tiles, sounds
+│           └── build/      # Compiled ROM output
 └── tools/                  # Build scripts & utilities
 ```
 

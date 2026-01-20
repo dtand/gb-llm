@@ -1,71 +1,224 @@
 {
-    "version": "1.0.0",
-    "description": "Training dataset for GameBoy code generation",
+    "version": "2.0.0",
+    "description": "Training corpus for GameBoy code generation - organized by feature/pattern",
     "standards_version": "1.0",
-    "games": [
+    
+    "taxonomy": {
+        "categories": {
+            "graphics": {
+                "description": "Visual rendering techniques",
+                "subcategories": ["sprites", "backgrounds", "tiles", "animation", "scrolling", "palettes"]
+            },
+            "input": {
+                "description": "Controller and button handling",
+                "subcategories": ["dpad", "buttons", "combos", "held_vs_pressed"]
+            },
+            "physics": {
+                "description": "Movement and collision systems",
+                "subcategories": ["velocity", "gravity", "collision_aabb", "collision_tile", "bounce"]
+            },
+            "audio": {
+                "description": "Sound and music",
+                "subcategories": ["sfx", "music", "channels", "envelopes"]
+            },
+            "data": {
+                "description": "State and persistence",
+                "subcategories": ["game_state", "save_sram", "highscores", "rng"]
+            },
+            "systems": {
+                "description": "Game architecture patterns",
+                "subcategories": ["game_loop", "state_machine", "entity_system", "ai"]
+            },
+            "memory": {
+                "description": "Memory management techniques",
+                "subcategories": ["banking", "vram", "oam", "buffers"]
+            }
+        }
+    },
+
+    "samples": [
         {
-            "name": "pong",
-            "path": "games/pong",
-            "status": "complete",
-            "complexity": 2
+            "id": "pong",
+            "name": "Pong",
+            "path": "samples/pong",
+            "description": "Classic two-paddle ball game with AI opponent",
+            "complexity": 2,
+            "status": "tested",
+            "features": {
+                "primary": ["sprites", "collision_aabb", "velocity", "ai"],
+                "secondary": ["game_loop", "dpad", "game_state"]
+            },
+            "teaches": [
+                "Basic sprite movement",
+                "Simple AI (paddle follows ball)",
+                "AABB collision detection",
+                "Ball physics (reflection)",
+                "Score tracking"
+            ]
         },
         {
-            "name": "snake",
-            "path": "games/snake",
-            "status": "complete",
-            "complexity": 2
+            "id": "snake",
+            "name": "Snake",
+            "path": "samples/snake",
+            "description": "Classic snake game with growing tail",
+            "complexity": 2,
+            "status": "tested",
+            "features": {
+                "primary": ["sprites", "collision_tile", "rng", "buffers"],
+                "secondary": ["game_loop", "dpad", "game_state"]
+            },
+            "teaches": [
+                "Circular buffer for snake body",
+                "Grid-based movement",
+                "Random food placement",
+                "Self-collision detection",
+                "Growing entity management"
+            ]
         },
         {
-            "name": "breakout",
-            "path": "games/breakout",
-            "status": "complete",
-            "complexity": 3
+            "id": "breakout",
+            "name": "Breakout",
+            "path": "samples/breakout",
+            "description": "Brick-breaking game with paddle and ball",
+            "complexity": 3,
+            "status": "tested",
+            "features": {
+                "primary": ["sprites", "backgrounds", "tiles", "collision_tile", "collision_aabb"],
+                "secondary": ["velocity", "game_loop", "dpad"]
+            },
+            "teaches": [
+                "Background tile manipulation",
+                "Tile-based collision (bricks)",
+                "Dynamic tile removal",
+                "Ball-paddle collision",
+                "Multi-system coordination"
+            ]
         },
         {
-            "name": "runner",
-            "path": "games/runner",
-            "status": "complete",
-            "complexity": 2
+            "id": "runner",
+            "name": "Endless Runner",
+            "path": "samples/runner",
+            "description": "Side-scrolling endless runner with obstacles",
+            "complexity": 2,
+            "status": "tested",
+            "features": {
+                "primary": ["scrolling", "sprites", "gravity", "collision_aabb"],
+                "secondary": ["backgrounds", "tiles", "buttons", "game_loop"]
+            },
+            "teaches": [
+                "Hardware scrolling (SCX_REG)",
+                "Background tile wrapping",
+                "Jump physics (gravity accumulation)",
+                "Obstacle spawning",
+                "Terminal velocity"
+            ]
         },
         {
-            "name": "bounce",
-            "path": "games/bounce",
-            "status": "complete",
-            "complexity": 1
+            "id": "bounce",
+            "name": "Bouncing Ball",
+            "path": "samples/bounce",
+            "description": "Physics demo with animated bouncing ball",
+            "complexity": 1,
+            "status": "tested",
+            "features": {
+                "primary": ["animation", "gravity", "bounce", "velocity"],
+                "secondary": ["sprites", "buttons", "game_loop"]
+            },
+            "teaches": [
+                "Sprite frame animation",
+                "Gravity physics",
+                "Energy loss on bounce",
+                "Velocity accumulation",
+                "Terminal velocity capping"
+            ]
         },
         {
-            "name": "melody",
-            "path": "games/melody",
-            "status": "complete",
-            "complexity": 2
+            "id": "melody",
+            "name": "Music Player",
+            "path": "samples/melody",
+            "description": "Sound demo with note sequencer",
+            "complexity": 2,
+            "status": "tested",
+            "features": {
+                "primary": ["music", "channels", "envelopes"],
+                "secondary": ["dpad", "buttons", "game_loop"]
+            },
+            "teaches": [
+                "Sound register setup (NR10-NR52)",
+                "Pulse wave channel",
+                "Note frequency calculation",
+                "Volume envelopes",
+                "Music sequencing"
+            ]
         },
         {
-            "name": "clicker",
-            "path": "games/clicker",
-            "status": "complete",
-            "complexity": 2
+            "id": "clicker",
+            "name": "Click Counter",
+            "path": "samples/clicker",
+            "description": "Save data demo with persistent high score",
+            "complexity": 2,
+            "status": "tested",
+            "features": {
+                "primary": ["save_sram", "highscores", "backgrounds"],
+                "secondary": ["tiles", "buttons", "game_state"]
+            },
+            "teaches": [
+                "SRAM enable/disable",
+                "Magic number validation",
+                "MBC5+RAM+BATTERY header",
+                "Persistent data storage",
+                "Number display with tiles"
+            ]
         }
     ],
-    "feature_coverage": {
-        "sprites": ["pong", "snake", "breakout", "runner", "bounce", "melody"],
-        "collision_detection": ["pong", "snake", "breakout", "runner", "bounce"],
-        "simple_ai": ["pong"],
-        "sound_effects": ["pong"],
-        "random_number_generation": ["snake"],
-        "circular_buffer": ["snake"],
+
+    "feature_index": {
+        "sprites": ["pong", "snake", "breakout", "runner", "bounce"],
         "backgrounds": ["breakout", "runner", "clicker"],
-        "tile_maps": ["breakout", "runner"],
-        "scrolling": ["runner"],
+        "tiles": ["breakout", "runner", "clicker"],
         "animation": ["bounce"],
+        "scrolling": ["runner"],
+        "dpad": ["pong", "snake", "melody"],
+        "buttons": ["runner", "bounce", "melody", "clicker"],
+        "velocity": ["pong", "bounce", "runner"],
+        "gravity": ["runner", "bounce"],
+        "collision_aabb": ["pong", "breakout", "runner"],
+        "collision_tile": ["snake", "breakout"],
+        "bounce": ["bounce"],
+        "sfx": [],
         "music": ["melody"],
-        "save_data": ["clicker"],
-        "banking": []
+        "channels": ["melody"],
+        "envelopes": ["melody"],
+        "game_state": ["pong", "snake", "clicker"],
+        "save_sram": ["clicker"],
+        "highscores": ["clicker"],
+        "rng": ["snake"],
+        "game_loop": ["pong", "snake", "breakout", "runner", "bounce", "melody", "clicker"],
+        "ai": ["pong"],
+        "buffers": ["snake"],
+        "banking": [],
+        "vram": [],
+        "oam": []
     },
+
     "complexity_levels": {
-        "1": "Minimal (single mechanic)",
-        "2": "Simple (2-3 mechanics, basic game)",
-        "3": "Medium (multiple systems, polish)",
-        "4": "Complex (advanced techniques)",
-        "5": "Advanced (pushing hardware limits)"
-    }
+        "1": "Minimal - Single mechanic demo",
+        "2": "Simple - 2-3 mechanics, basic game",
+        "3": "Medium - Multiple systems, polished",
+        "4": "Complex - Advanced techniques",
+        "5": "Advanced - Pushing hardware limits"
+    },
+
+    "missing_coverage": [
+        "banking",
+        "metasprites", 
+        "parallax_scrolling",
+        "vertical_scrolling",
+        "window_layer",
+        "dma_transfer",
+        "interrupt_handlers",
+        "timer",
+        "serial_link",
+        "color_palettes_gbc"
+    ]
 }
