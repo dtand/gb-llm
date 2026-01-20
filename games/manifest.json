@@ -6,18 +6,32 @@
         {
             "name": "pong",
             "path": "games/pong",
-            "status": "needs_update",
+            "status": "complete",
             "complexity": 2
+        },
+        {
+            "name": "snake",
+            "path": "games/snake",
+            "status": "complete",
+            "complexity": 2
+        },
+        {
+            "name": "breakout",
+            "path": "games/breakout",
+            "status": "complete",
+            "complexity": 3
         }
     ],
     "feature_coverage": {
-        "sprites": ["pong"],
-        "collision_detection": ["pong"],
+        "sprites": ["pong", "snake", "breakout"],
+        "collision_detection": ["pong", "snake", "breakout"],
         "simple_ai": ["pong"],
         "sound_effects": ["pong"],
-        "backgrounds": [],
+        "random_number_generation": ["snake"],
+        "circular_buffer": ["snake"],
+        "backgrounds": ["breakout"],
+        "tile_maps": ["breakout"],
         "scrolling": [],
-        "tile_maps": [],
         "animation": [],
         "music": [],
         "save_data": [],

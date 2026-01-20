@@ -1,0 +1,51 @@
+{
+    "name": "snake",
+    "version": "1.0.0",
+    "prompt": "Create a Snake game where the player controls a snake that moves around the screen eating food. Each food item makes the snake grow longer. The game ends if the snake hits itself or the wall. Use D-pad for direction control.",
+    "description": "Classic Snake arcade game with growing body mechanics",
+    "complexity": 2,
+    "features": [
+        "sprites",
+        "collision_detection",
+        "random_number_generation",
+        "array_data_structure",
+        "game_state_machine"
+    ],
+    "controls": {
+        "dpad": "Change snake direction",
+        "start": "Pause/unpause, restart after game over"
+    },
+    "sprites_used": 11,
+    "max_sprites_per_scanline": 10,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "Circular buffer for snake body",
+        "Grid-based movement",
+        "Frame-rate throttling",
+        "LCG random number generation",
+        "Direction input buffering"
+    ],
+    "training_notes": {
+        "demonstrates": [
+            "Array/buffer management for dynamic length",
+            "Grid-aligned sprite movement",
+            "Self-collision with multiple segments",
+            "Random position generation",
+            "Input buffering to prevent invalid moves"
+        ],
+        "does_not_demonstrate": [
+            "Background tiles",
+            "Scrolling",
+            "AI opponents",
+            "Sound effects",
+            "Save data"
+        ]
+    }
+}

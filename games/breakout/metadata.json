@@ -1,0 +1,52 @@
+{
+    "name": "breakout",
+    "version": "1.0.0",
+    "prompt": "Create a Breakout game with a paddle, bouncing ball, and rows of destructible bricks. The player controls the paddle with D-pad left/right. Clear all bricks to win. The ball bounces off walls, paddle, and bricks. Lives decrease when ball falls below paddle.",
+    "description": "Classic brick-breaking arcade game with background tiles",
+    "complexity": 3,
+    "features": [
+        "sprites",
+        "background_tiles",
+        "collision_detection",
+        "game_state_machine",
+        "lives_system"
+    ],
+    "controls": {
+        "dpad_left_right": "Move paddle",
+        "start": "Launch ball / Restart"
+    },
+    "sprites_used": 3,
+    "background_tiles_used": 4,
+    "max_sprites_per_scanline": 2,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "Background tile map for bricks",
+        "Signed velocity for 2D ball movement",
+        "AABB collision detection",
+        "Grid-based brick lookup",
+        "Paddle position affects bounce angle"
+    ],
+    "training_notes": {
+        "demonstrates": [
+            "Background tile usage (vs sprites)",
+            "Tile map manipulation at runtime",
+            "2D ball physics with reflection",
+            "Paddle-ball angle deflection",
+            "Lives and game over system"
+        ],
+        "does_not_demonstrate": [
+            "Scrolling",
+            "AI opponents",
+            "Sound effects",
+            "Random generation",
+            "Save data"
+        ]
+    }
+}
