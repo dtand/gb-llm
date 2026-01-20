@@ -1,0 +1,48 @@
+{
+    "name": "runner",
+    "version": "1.0.0",
+    "prompt": "Create a simple endless runner where a character automatically runs right while the background scrolls. The player presses A to jump over obstacles. Score increases over time. Game ends when hitting an obstacle.",
+    "description": "Endless runner demonstrating hardware scrolling",
+    "complexity": 2,
+    "features": [
+        "sprites",
+        "scrolling",
+        "background_tiles",
+        "collision_detection"
+    ],
+    "controls": {
+        "a_button": "Jump",
+        "start": "Restart after game over"
+    },
+    "sprites_used": 1,
+    "background_tiles_used": 4,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "Hardware scroll register (SCX)",
+        "Background tile wrapping",
+        "Gravity-based jump physics",
+        "Tile-based obstacle collision"
+    ],
+    "training_notes": {
+        "demonstrates": [
+            "SCX register for horizontal scrolling",
+            "Background wrapping at 256px boundary",
+            "Jump physics with gravity",
+            "Scroll position tracking"
+        ],
+        "does_not_demonstrate": [
+            "Vertical scrolling",
+            "Parallax scrolling",
+            "Animation",
+            "Sound effects",
+            "Save data"
+        ]
+    }
+}

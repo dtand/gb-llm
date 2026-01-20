@@ -1,0 +1,47 @@
+{
+    "name": "bounce",
+    "version": "1.0.0",
+    "prompt": "Create a simple demo with an animated bouncing ball. The ball sprite cycles through animation frames while bouncing around the screen. Use D-pad to change ball direction.",
+    "description": "Animated bouncing ball demonstrating sprite animation",
+    "complexity": 1,
+    "features": [
+        "sprites",
+        "animation",
+        "collision_detection"
+    ],
+    "controls": {
+        "dpad": "Push ball in direction",
+        "start": "Reset ball position"
+    },
+    "sprites_used": 1,
+    "animation_frames": 4,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "Frame-based sprite animation",
+        "Animation timing with frame counter",
+        "Tile swapping for animation",
+        "Screen boundary bouncing"
+    ],
+    "training_notes": {
+        "demonstrates": [
+            "Sprite tile animation",
+            "Frame counter for animation timing",
+            "set_sprite_tile() for frame changes",
+            "Animation speed control"
+        ],
+        "does_not_demonstrate": [
+            "Background animation",
+            "Metasprite animation",
+            "Scrolling",
+            "Sound",
+            "Complex game logic"
+        ]
+    }
+}

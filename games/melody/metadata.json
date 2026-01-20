@@ -1,0 +1,49 @@
+{
+    "name": "melody",
+    "version": "1.0.0",
+    "prompt": "Create a simple music player demo that plays a melody using the Game Boy's sound channels. Display a visual indicator that pulses with the music. Use D-pad to change tempo.",
+    "description": "Music demo demonstrating Game Boy sound registers",
+    "complexity": 2,
+    "features": [
+        "music",
+        "sound_registers",
+        "sprites"
+    ],
+    "controls": {
+        "dpad_up_down": "Change tempo",
+        "a_button": "Play/pause",
+        "start": "Reset"
+    },
+    "sprites_used": 1,
+    "sound_channels_used": 1,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "Direct sound register access",
+        "Note frequency calculation",
+        "Simple music sequencer",
+        "Volume envelope control"
+    ],
+    "training_notes": {
+        "demonstrates": [
+            "NR1x registers for channel 1",
+            "NR5x master sound control",
+            "Frequency-to-register conversion",
+            "Frame-based note timing",
+            "Sound enable/disable"
+        ],
+        "does_not_demonstrate": [
+            "Channel 2 (square)",
+            "Channel 3 (wave)",
+            "Channel 4 (noise)",
+            "Complex music engine",
+            "Sound effects layering"
+        ]
+    }
+}

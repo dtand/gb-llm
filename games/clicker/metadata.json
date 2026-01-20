@@ -1,0 +1,50 @@
+{
+    "name": "clicker",
+    "version": "1.0.0",
+    "prompt": "Create a simple clicker game where pressing A increases a counter. Save the highest count to battery-backed SRAM so it persists when the Game Boy is turned off. Display current count and high score.",
+    "description": "Click counter demonstrating battery-backed save data",
+    "complexity": 2,
+    "features": [
+        "save_data",
+        "sram",
+        "background_tiles"
+    ],
+    "controls": {
+        "a_button": "Increment counter",
+        "b_button": "Reset current counter",
+        "start": "Save high score",
+        "select": "Clear saved data"
+    },
+    "sprites_used": 0,
+    "background_tiles_used": 11,
+    "uses_sram": true,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "SRAM enable via MBC",
+        "Magic number save validation",
+        "16-bit value serialization",
+        "Number-to-tile conversion"
+    ],
+    "training_notes": {
+        "demonstrates": [
+            "ENABLE_RAM / DISABLE_RAM macros",
+            "Direct SRAM memory access (0xA000)",
+            "Save data validation pattern",
+            "Persistent storage across power cycles"
+        ],
+        "does_not_demonstrate": [
+            "MBC bank switching",
+            "Large save files",
+            "Save checksum/CRC",
+            "Multiple save slots",
+            "Sprites"
+        ]
+    }
+}

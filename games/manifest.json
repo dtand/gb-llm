@@ -20,21 +20,45 @@
             "path": "games/breakout",
             "status": "complete",
             "complexity": 3
+        },
+        {
+            "name": "runner",
+            "path": "games/runner",
+            "status": "complete",
+            "complexity": 2
+        },
+        {
+            "name": "bounce",
+            "path": "games/bounce",
+            "status": "complete",
+            "complexity": 1
+        },
+        {
+            "name": "melody",
+            "path": "games/melody",
+            "status": "complete",
+            "complexity": 2
+        },
+        {
+            "name": "clicker",
+            "path": "games/clicker",
+            "status": "complete",
+            "complexity": 2
         }
     ],
     "feature_coverage": {
-        "sprites": ["pong", "snake", "breakout"],
-        "collision_detection": ["pong", "snake", "breakout"],
+        "sprites": ["pong", "snake", "breakout", "runner", "bounce", "melody"],
+        "collision_detection": ["pong", "snake", "breakout", "runner", "bounce"],
         "simple_ai": ["pong"],
         "sound_effects": ["pong"],
         "random_number_generation": ["snake"],
         "circular_buffer": ["snake"],
-        "backgrounds": ["breakout"],
-        "tile_maps": ["breakout"],
-        "scrolling": [],
-        "animation": [],
-        "music": [],
-        "save_data": [],
+        "backgrounds": ["breakout", "runner", "clicker"],
+        "tile_maps": ["breakout", "runner"],
+        "scrolling": ["runner"],
+        "animation": ["bounce"],
+        "music": ["melody"],
+        "save_data": ["clicker"],
         "banking": []
     },
     "complexity_levels": {
