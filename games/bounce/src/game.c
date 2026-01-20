@@ -27,13 +27,13 @@ uint8_t curr_input = 0;
  * @brief   Initialize game state
  */
 void game_init(void) {
-    // Center ball
+    // Center ball horizontally, start near bottom
     game.x = SPRITE_OFFSET_X + 80 - (BALL_SIZE >> 1);
-    game.y = SPRITE_OFFSET_Y + 72 - (BALL_SIZE >> 1);
+    game.y = BALL_MAX_Y - 20;
     
-    // Initial velocity
+    // Initial velocity - toss it up and to the right
     game.dx = 2;
-    game.dy = 1;
+    game.dy = -6;
     
     // Animation
     game.frame_counter = 0;
@@ -56,18 +56,17 @@ void game_handle_input(void) {
         game_init();
     }
     
-    // D-pad: apply force
-    if (curr_input & J_UP) {
-        if (game.dy > -4) game.dy--;
+    // A button: kick the ball upward
+    if ((curr_input & J_A) && !(prev_input & J_A)) {
+        game.dy = KICK_VELOCITY;
     }
-    if (curr_input & J_DOWN) {
-        if (game.dy < 4) game.dy++;
-    }
+    
+    // D-pad: apply horizontal force
     if (curr_input & J_LEFT) {
-        if (game.dx > -4) game.dx--;
+        if (game.dx > -MAX_VELOCITY) game.dx--;
     }
     if (curr_input & J_RIGHT) {
-        if (game.dx < 4) game.dx++;
+        if (game.dx < MAX_VELOCITY) game.dx++;
     }
 }
 
@@ -85,11 +84,18 @@ void game_update(void) {
     game.frame_counter++;
     game.anim_frame = (game.frame_counter / ANIM_SPEED) % ANIM_FRAMES;
     
+    // Apply gravity (accumulating velocity)
+    game.dy += GRAVITY;
+    
+    // Cap terminal velocity
+    if (game.dy > MAX_VELOCITY) game.dy = MAX_VELOCITY;
+    if (game.dy < -MAX_VELOCITY) game.dy = -MAX_VELOCITY;
+    
     // Calculate new position
     new_x = game.x + game.dx;
     new_y = game.y + game.dy;
     
-    // Bounce off walls
+    // Bounce off left/right walls
     if (new_x <= BALL_MIN_X) {
         new_x = BALL_MIN_X;
         game.dx = -game.dx;
@@ -98,12 +104,21 @@ void game_update(void) {
         game.dx = -game.dx;
     }
     
+    // Bounce off ceiling
     if (new_y <= BALL_MIN_Y) {
         new_y = BALL_MIN_Y;
         game.dy = -game.dy;
-    } else if (new_y >= BALL_MAX_Y) {
+    }
+    
+    // Bounce off floor with energy loss
+    if (new_y >= BALL_MAX_Y) {
         new_y = BALL_MAX_Y;
+        // Reverse and reduce velocity (energy loss)
         game.dy = -game.dy;
+        game.dy = (game.dy * (4 - BOUNCE_DAMPING)) >> 2;
+        // Also reduce horizontal velocity slightly
+        if (game.dx > 0) game.dx--;
+        else if (game.dx < 0) game.dx++;
     }
     
     game.x = (uint8_t)new_x;

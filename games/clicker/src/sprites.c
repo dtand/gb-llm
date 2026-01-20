@@ -91,11 +91,29 @@ const uint8_t letter_g[] = {
     0x66, 0x66, 0x66, 0x66, 0x3E, 0x3E, 0x00, 0x00
 };
 
+// Blank tile (all zeros)
+const uint8_t blank_tile[] = {
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+
 // ============================================================
 // INITIALIZATION
 // ============================================================
 
 void sprites_init(void) {
+    uint8_t x, y;
+    
+    // Load blank tile first
+    set_bkg_data(TILE_BLANK, 1, blank_tile);
+    
+    // Clear entire visible screen with blank tiles
+    for (y = 0; y < 18; y++) {
+        for (x = 0; x < 20; x++) {
+            set_bkg_tile_xy(x, y, TILE_BLANK);
+        }
+    }
+    
     // Load digit tiles (0-9)
     set_bkg_data(TILE_DIGIT_0, 10, digit_tiles);
     
@@ -108,4 +126,29 @@ void sprites_init(void) {
     set_bkg_data(TILE_H, 1, letter_h);
     set_bkg_data(TILE_I, 1, letter_i);
     set_bkg_data(TILE_G, 1, letter_g);
+    
+    // Draw static labels "COUNT" at row 6
+    set_bkg_tile_xy(6, 6, TILE_C);
+    set_bkg_tile_xy(7, 6, TILE_O);
+    set_bkg_tile_xy(8, 6, TILE_U);
+    set_bkg_tile_xy(9, 6, TILE_N);
+    set_bkg_tile_xy(10, 6, TILE_T);
+    
+    // Draw static label "HIGH" at row 11
+    set_bkg_tile_xy(7, 11, TILE_H);
+    set_bkg_tile_xy(8, 11, TILE_I);
+    set_bkg_tile_xy(9, 11, TILE_G);
+    set_bkg_tile_xy(10, 11, TILE_H);
+    
+    // Draw initial zeros for count (row 8)
+    set_bkg_tile_xy(7, 8, TILE_DIGIT_0);
+    set_bkg_tile_xy(8, 8, TILE_DIGIT_0);
+    set_bkg_tile_xy(9, 8, TILE_DIGIT_0);
+    set_bkg_tile_xy(10, 8, TILE_DIGIT_0);
+    
+    // Draw initial zeros for high score (row 13)
+    set_bkg_tile_xy(7, 13, TILE_DIGIT_0);
+    set_bkg_tile_xy(8, 13, TILE_DIGIT_0);
+    set_bkg_tile_xy(9, 13, TILE_DIGIT_0);
+    set_bkg_tile_xy(10, 13, TILE_DIGIT_0);
 }

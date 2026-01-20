@@ -22,6 +22,9 @@
 #define TILE_DIGIT_8    8
 #define TILE_DIGIT_9    9
 
+// Blank tile for clearing screen
+#define TILE_BLANK      20
+
 // Letter tiles for labels
 #define TILE_C          10
 #define TILE_O          11

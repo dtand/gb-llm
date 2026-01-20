@@ -64,13 +64,20 @@ void game_init(void) {
 /**
  * @brief   Set up initial brick layout on background
  * 
- * Draws all brick rows using background tiles.
+ * Clears the screen then draws all brick rows using background tiles.
  * Each brick is 2 tiles wide (16 pixels).
  */
 void game_setup_bricks(void) {
     uint8_t row, col;
     uint8_t tile_y, tile_x;
     uint8_t tile_idx;
+    
+    // Clear entire visible screen (20x18 tiles)
+    for (row = 0; row < 18; row++) {
+        for (col = 0; col < 20; col++) {
+            set_bkg_tile_xy(col, row, TILE_EMPTY);
+        }
+    }
     
     // Each brick row uses a different tile for visual variety
     for (row = 0; row < BRICK_ROWS; row++) {
@@ -148,34 +155,29 @@ void game_handle_input(void) {
 // ============================================================
 
 /**
- * @brief   Check and handle ball-brick collision
+ * @brief   Check a single point for brick collision
  * 
- * Determines which brick the ball hit and destroys it.
- * Updates background tile and score.
+ * @param check_x   X coordinate in screen space
+ * @param check_y   Y coordinate in screen space
+ * @return          1 if brick was hit, 0 otherwise
  */
-static void check_brick_collision(void) {
-    int8_t ball_center_x, ball_center_y;
-    int8_t brick_row, brick_col;
+static uint8_t check_brick_at_point(uint8_t check_x, uint8_t check_y) {
+    uint8_t brick_row, brick_col;
     uint8_t tile_x, tile_y;
     
-    // Get ball center in screen coordinates
-    ball_center_x = (game.ball_x - SPRITE_OFFSET_X) + (BALL_SIZE >> 1);
-    ball_center_y = (game.ball_y - SPRITE_OFFSET_Y) + (BALL_SIZE >> 1);
-    
-    // Check if ball is in brick area
-    if (ball_center_y < BRICK_START_Y || 
-        ball_center_y >= BRICK_START_Y + (BRICK_ROWS * BRICK_HEIGHT)) {
-        return;
+    // Check if point is in brick area
+    if (check_y < BRICK_START_Y || 
+        check_y >= BRICK_START_Y + (BRICK_ROWS * BRICK_HEIGHT)) {
+        return 0;
     }
     
     // Calculate which brick
-    brick_row = (ball_center_y - BRICK_START_Y) / BRICK_HEIGHT;
-    brick_col = ball_center_x / BRICK_WIDTH;
+    brick_row = (check_y - BRICK_START_Y) / BRICK_HEIGHT;
+    brick_col = check_x / BRICK_WIDTH;
     
     // Bounds check
-    if (brick_row < 0 || brick_row >= BRICK_ROWS ||
-        brick_col < 0 || brick_col >= BRICK_COLS) {
-        return;
+    if (brick_row >= BRICK_ROWS || brick_col >= BRICK_COLS) {
+        return 0;
     }
     
     // Check if brick exists
@@ -183,7 +185,7 @@ static void check_brick_collision(void) {
         // Destroy brick
         game.bricks[brick_row][brick_col] = 0;
         game.bricks_remaining--;
-        game.score += (BRICK_ROWS - brick_row);  // Higher rows = more points
+        game.score += (BRICK_ROWS - brick_row);
         
         // Update background tiles
         tile_y = (BRICK_START_Y >> 3) + brick_row;
@@ -191,13 +193,56 @@ static void check_brick_collision(void) {
         set_bkg_tile_xy(tile_x, tile_y, TILE_EMPTY);
         set_bkg_tile_xy(tile_x + 1, tile_y, TILE_EMPTY);
         
-        // Bounce ball (reverse Y direction)
-        game.ball_dy = -game.ball_dy;
-        
         // Check win condition
         if (game.bricks_remaining == 0) {
             game.game_won = 1;
         }
+        return 1;
+    }
+    return 0;
+}
+
+/**
+ * @brief   Check and handle ball-brick collision
+ * 
+ * Checks leading edges of ball based on movement direction.
+ * Updates background tile and score.
+ */
+static void check_brick_collision(void) {
+    uint8_t ball_left, ball_right, ball_top, ball_bottom;
+    uint8_t hit = 0;
+    
+    // Get ball edges in screen coordinates
+    ball_left = game.ball_x - SPRITE_OFFSET_X;
+    ball_right = ball_left + BALL_SIZE - 1;
+    ball_top = game.ball_y - SPRITE_OFFSET_Y;
+    ball_bottom = ball_top + BALL_SIZE - 1;
+    
+    // Check based on ball direction for better detection
+    if (game.ball_dy < 0) {
+        // Moving up - check top edge
+        hit = check_brick_at_point(ball_left + (BALL_SIZE >> 1), ball_top);
+    } else {
+        // Moving down - check bottom edge
+        hit = check_brick_at_point(ball_left + (BALL_SIZE >> 1), ball_bottom);
+    }
+    
+    if (hit) {
+        game.ball_dy = -game.ball_dy;
+        return;
+    }
+    
+    // Also check horizontal edges for side hits
+    if (game.ball_dx < 0) {
+        // Moving left - check left edge
+        hit = check_brick_at_point(ball_left, ball_top + (BALL_SIZE >> 1));
+    } else {
+        // Moving right - check right edge
+        hit = check_brick_at_point(ball_right, ball_top + (BALL_SIZE >> 1));
+    }
+    
+    if (hit) {
+        game.ball_dx = -game.ball_dx;
     }
 }
 

@@ -7,6 +7,7 @@
  */
 
 #include <gb/gb.h>
+#include <stdio.h>
 #include <stdint.h>
 #include "game.h"
 #include "sprites.h"
@@ -164,25 +165,38 @@ static void draw_number(uint8_t x, uint8_t y, uint16_t num, uint8_t digits) {
 }
 
 /**
- * @brief   Render score display
+ * @brief   Render score display using set_win_tiles
  */
 void game_render(void) {
-    // Row 6: "COUNT"
-    set_bkg_tile_xy(6, 6, TILE_C);
-    set_bkg_tile_xy(7, 6, TILE_O);
-    set_bkg_tile_xy(8, 6, TILE_U);
-    set_bkg_tile_xy(9, 6, TILE_N);
-    set_bkg_tile_xy(10, 6, TILE_T);
+    static uint8_t last_count = 255;
+    static uint16_t last_high = 65535;
+    uint8_t digits[4];
+    uint16_t temp;
+    uint8_t i;
     
-    // Row 8: current count (4 digits)
-    draw_number(7, 8, game.count, 4);
-    
-    // Row 11: "HIGH"
-    set_bkg_tile_xy(7, 11, TILE_H);
-    set_bkg_tile_xy(8, 11, TILE_I);
-    set_bkg_tile_xy(9, 11, TILE_G);
-    set_bkg_tile_xy(10, 11, TILE_H);
-    
-    // Row 13: high score (4 digits)
-    draw_number(7, 13, game.highscore, 4);
+    // Only update if changed
+    if (game.count != last_count || game.highscore != last_high) {
+        last_count = game.count;
+        last_high = game.highscore;
+        
+        // Draw current count digits at row 8
+        temp = game.count;
+        for (i = 0; i < 4; i++) {
+            digits[3 - i] = temp % 10;
+            temp /= 10;
+        }
+        for (i = 0; i < 4; i++) {
+            set_bkg_tile_xy(7 + i, 8, digits[i]);
+        }
+        
+        // Draw high score digits at row 13
+        temp = game.highscore;
+        for (i = 0; i < 4; i++) {
+            digits[3 - i] = temp % 10;
+            temp /= 10;
+        }
+        for (i = 0; i < 4; i++) {
+            set_bkg_tile_xy(7 + i, 13, digits[i]);
+        }
+    }
 }

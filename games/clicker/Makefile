@@ -3,8 +3,8 @@
 PROJECT = clicker
 GBDK = $(GBDK_HOME)
 LCC = $(GBDK)/bin/lcc
-# Enable MBC1+RAM+BATTERY for save support
-CFLAGS = -Wa-l -Wl-m -Wl-j -Wm-yn"$(PROJECT)" -Wm-yc -Wm-ya1
+# Enable MBC5+RAM+BATTERY for save support (-Wm-yt0x1B)
+CFLAGS = -Wa-l -Wl-m -Wl-j -Wm-yn"$(PROJECT)" -Wm-yt0x1B -Wm-yoA -Wm-ya1
 SOURCES = src/main.c src/game.c src/sprites.c
 BUILD_DIR = build
 ROM = $(BUILD_DIR)/$(PROJECT).gb

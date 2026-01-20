@@ -48,15 +48,17 @@ void game_init(void) {
 /**
  * @brief   Set up the background tile map
  * 
- * Creates ground and obstacles in the 32x32 tile map.
+ * Clears screen and creates ground with obstacles in the 32x32 tile map.
  */
 void game_setup_background(void) {
-    uint8_t x, i;
+    uint8_t x, y, i;
     uint8_t is_obstacle;
     
-    // Fill sky with empty tiles
-    for (x = 0; x < BKG_MAP_WIDTH; x++) {
-        set_bkg_tile_xy(x, GROUND_TILE_Y - 1, TILE_EMPTY);
+    // Clear entire visible area (20x18 tiles) plus extra for scrolling
+    for (y = 0; y < 18; y++) {
+        for (x = 0; x < BKG_MAP_WIDTH; x++) {
+            set_bkg_tile_xy(x, y, TILE_EMPTY);
+        }
     }
     
     // Draw ground row with obstacles
@@ -122,19 +124,26 @@ void game_handle_input(void) {
 static uint8_t check_obstacle_collision(void) {
     uint8_t i;
     uint8_t player_tile_x;
-    uint8_t obstacle_screen_x;
-    int16_t diff;
+    uint8_t player_screen_bottom;
+    uint8_t obstacle_screen_top;
     
     // Player is at fixed X, convert to tile considering scroll
-    // Player sprite X in background coordinates
+    // Player sprite X in background coordinates (subtract sprite offset 8)
     player_tile_x = (PLAYER_X - 8 + game.scroll_x) >> 3;
+    
+    // Player bottom edge in screen coordinates
+    // Sprite Y has +16 offset, so screen Y = sprite_Y - 16
+    // Bottom = top + height = (sprite_Y - 16) + 8
+    player_screen_bottom = (uint8_t)game.player_y - 16 + PLAYER_HEIGHT;
+    
+    // Obstacle is at tile row (GROUND_TILE_Y - 1), top of obstacle in screen coords
+    obstacle_screen_top = (GROUND_TILE_Y - 1) * 8;  // = 15 * 8 = 120
     
     for (i = 0; i < NUM_OBSTACLES; i++) {
         // Check if obstacle is at player's X position
         if ((player_tile_x & 0x1F) == obstacle_positions[i]) {
-            // Check if player is low enough to hit obstacle
-            // Obstacle is 8 pixels tall, sitting on ground
-            if (game.player_y >= GROUND_Y - 8) {
+            // Check if player's bottom is below obstacle top
+            if (player_screen_bottom > obstacle_screen_top) {
                 return 1;
             }
         }
@@ -143,14 +152,24 @@ static uint8_t check_obstacle_collision(void) {
     return 0;
 }
 
+// Gravity accumulator for slower falling
+static uint8_t gravity_timer = 0;
+
 /**
  * @brief   Update game state
  */
 void game_update(void) {
     if (game.game_over) return;
     
-    // Apply gravity
-    game.velocity_y += GRAVITY;
+    // Apply gravity every 4 frames for floatier jump
+    gravity_timer++;
+    if (gravity_timer >= 4) {
+        gravity_timer = 0;
+        if (game.velocity_y < 4) {  // Terminal velocity
+            game.velocity_y += 1;
+        }
+    }
+    
     game.player_y += game.velocity_y;
     
     // Ground collision
@@ -181,5 +200,5 @@ void game_update(void) {
  * @brief   Update sprite positions
  */
 void game_render(void) {
-    move_sprite(SPRITE_PLAYER, PLAYER_X, game.player_y);
+    move_sprite(SPRITE_PLAYER, PLAYER_X, (uint8_t)game.player_y);
 }

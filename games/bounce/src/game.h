@@ -23,6 +23,12 @@
 #define BALL_MIN_Y          SPRITE_OFFSET_Y
 #define BALL_MAX_Y          (SPRITE_OFFSET_Y + 144 - BALL_SIZE)
 
+// Physics
+#define GRAVITY             1       // Downward acceleration per frame
+#define BOUNCE_DAMPING      1       // Energy loss: multiply by (4-DAMPING)/4 = 75%
+#define KICK_VELOCITY       -8      // Upward velocity when pressing A
+#define MAX_VELOCITY        8       // Terminal velocity cap
+
 // Animation
 #define ANIM_FRAMES         4       // Number of animation frames
 #define ANIM_SPEED          8       // Game frames per animation frame
