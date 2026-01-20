@@ -1,0 +1,32 @@
+# Build outputs
+*.o
+*.lst
+*.sym
+*.map
+*.gb
+*.gbc
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/settings.json
+
+# Python (for generator tools)
+__pycache__/
+*.py[cod]
+.env
+.venv/
+venv/
+
+# Node (if used for tooling)
+node_modules/
+
+# Temporary files
+*.tmp
+*.bak
