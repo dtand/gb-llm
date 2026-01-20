@@ -78,3 +78,4 @@ A successful v1.0 will:
 - [Generation Strategy](docs/GENERATION_STRATEGY.md)
 - [Toolchain](docs/TOOLCHAIN.md)
 - [Game Patterns](docs/GAME_PATTERNS.md)
+- [Code Standards](docs/CODE_STANDARDS.md) - **Required reading before adding games**

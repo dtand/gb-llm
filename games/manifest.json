@@ -1,0 +1,33 @@
+{
+    "version": "1.0.0",
+    "description": "Training dataset for GameBoy code generation",
+    "standards_version": "1.0",
+    "games": [
+        {
+            "name": "pong",
+            "path": "games/pong",
+            "status": "needs_update",
+            "complexity": 2
+        }
+    ],
+    "feature_coverage": {
+        "sprites": ["pong"],
+        "collision_detection": ["pong"],
+        "simple_ai": ["pong"],
+        "sound_effects": ["pong"],
+        "backgrounds": [],
+        "scrolling": [],
+        "tile_maps": [],
+        "animation": [],
+        "music": [],
+        "save_data": [],
+        "banking": []
+    },
+    "complexity_levels": {
+        "1": "Minimal (single mechanic)",
+        "2": "Simple (2-3 mechanics, basic game)",
+        "3": "Medium (multiple systems, polish)",
+        "4": "Complex (advanced techniques)",
+        "5": "Advanced (pushing hardware limits)"
+    }
+}

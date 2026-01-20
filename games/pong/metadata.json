@@ -1,0 +1,52 @@
+{
+    "name": "pong",
+    "version": "1.0.0",
+    "prompt": "Create a Pong game with two paddles, a bouncing ball, and a simple AI opponent. The player controls the left paddle with the D-pad. First to 5 points wins.",
+    "description": "Classic Pong arcade game with single-player vs AI",
+    "complexity": 2,
+    "features": [
+        "sprites",
+        "collision_detection",
+        "simple_ai",
+        "sound_effects",
+        "game_state_machine"
+    ],
+    "controls": {
+        "dpad_up": "Move paddle up",
+        "dpad_down": "Move paddle down",
+        "start": "Pause/unpause, restart after game over"
+    },
+    "sprites_used": 7,
+    "max_sprites_per_scanline": 3,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "AABB collision detection",
+        "Frame-based AI throttling",
+        "Speed ramping on paddle hits",
+        "Simple sound via NR registers"
+    ],
+    "training_notes": {
+        "demonstrates": [
+            "Basic game loop structure",
+            "Sprite initialization and movement",
+            "Rectangle collision between ball and paddles",
+            "Simple AI that follows ball with delay",
+            "Game state (playing, paused, game over)",
+            "Sound effect triggers"
+        ],
+        "does_not_demonstrate": [
+            "Background tiles",
+            "Scrolling",
+            "Multiple levels",
+            "Save data",
+            "ROM banking"
+        ]
+    }
+}
