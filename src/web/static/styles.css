@@ -1,0 +1,1065 @@
+/* CSS Variables */
+:root {
+    --gb-green: #9bbc0f;
+    --gb-light-green: #8bac0f;
+    --gb-dark-green: #306230;
+    --gb-darkest: #0f380f;
+    
+    --bg-dark: #1a1a2e;
+    --bg-card: #16213e;
+    --bg-input: #0f3460;
+    
+    --text-primary: #eaeaea;
+    --text-secondary: #a0a0a0;
+    --text-muted: #6c6c6c;
+    
+    --accent: #00d4ff;
+    --accent-hover: #00b8e6;
+    --success: #4ade80;
+    --error: #f87171;
+    --warning: #fbbf24;
+    
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+}
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, var(--bg-dark) 0%, #0f0f23 100%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* App Layout */
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+.header {
+    background: rgba(22, 33, 62, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.logo {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+.logo-gb {
+    color: #8bff8b;
+    text-shadow: 3px 3px 0 var(--gb-darkest);
+}
+
+.logo-studio {
+    color: #8b949e;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.logo-img {
+    height: 5rem;
+    width: auto;
+    vertical-align: middle;
+    filter: drop-shadow(2px 2px 0 var(--gb-darkest));
+}
+
+.tagline {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Main Content */
+.main {
+    flex: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    width: 100%;
+}
+
+/* Cards */
+.card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+/* Generate Section */
+.generate-section {
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+textarea,
+select,
+input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--bg-input);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+textarea:focus,
+select:focus,
+input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+textarea::placeholder {
+    color: var(--text-muted);
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent) 0%, #0099cc 100%);
+    color: white;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--accent-hover) 0%, #007aa3 100%);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.btn-success {
+    background: var(--success);
+    color: var(--bg-dark);
+}
+
+.btn-success:hover {
+    background: #22c55e;
+}
+
+/* Spinner */
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Progress Section */
+.progress-section {
+    margin-bottom: 2rem;
+}
+
+.progress-container {
+    margin-top: 1rem;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+}
+
+#progress-phase {
+    color: var(--accent);
+    font-weight: 500;
+}
+
+#progress-step {
+    color: var(--text-secondary);
+}
+
+.progress-bar {
+    height: 8px;
+    background: var(--bg-input);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gb-green), var(--accent));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-log {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: 'Monaco', 'Menlo', monospace;
+    font-size: 0.8rem;
+    line-height: 1.8;
+}
+
+.progress-log .log-entry {
+    padding: 0.25rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.progress-log .log-entry:last-child {
+    border-bottom: none;
+}
+
+.progress-log .log-success { color: var(--success); }
+.progress-log .log-error { color: var(--error); }
+.progress-log .log-warning { color: var(--warning); }
+.progress-log .log-info { color: var(--accent); }
+
+/* Gallery Section */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.section-header h2 {
+    font-size: 1.25rem;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.project-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.project-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(0, 212, 255, 0.3);
+}
+
+.project-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.project-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.project-status {
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-verified {
+    background: rgba(74, 222, 128, 0.2);
+    color: var(--success);
+}
+
+.status-pending_review {
+    background: rgba(168, 85, 247, 0.2);
+    color: #a855f7;
+}
+
+.status-completed {
+    background: rgba(0, 212, 255, 0.2);
+    color: var(--accent);
+}
+
+.status-in_progress {
+    background: rgba(251, 191, 36, 0.2);
+    color: var(--warning);
+}
+
+.status-pending {
+    background: rgba(160, 160, 160, 0.2);
+    color: var(--text-secondary);
+}
+
+.status-failed {
+    background: rgba(248, 113, 113, 0.2);
+    color: var(--error);
+}
+
+.project-description {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.project-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.project-meta {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-secondary);
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    position: relative;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: var(--text-primary);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-header {
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.modal-section {
+    margin-bottom: 1.5rem;
+}
+
+.modal-section h4 {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.modal-section p {
+    color: var(--text-primary);
+}
+
+.verification-checks {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius-sm);
+}
+
+.check-icon {
+    font-size: 1rem;
+}
+
+.check-passed .check-icon { color: var(--success); }
+.check-failed .check-icon { color: var(--error); }
+
+.check-name {
+    font-weight: 500;
+    flex: 1;
+}
+
+.check-message {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.modal-actions .btn {
+    flex: 1;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .header {
+        padding: 1rem;
+    }
+    
+    .logo {
+        font-size: 1.1rem;
+    }
+    
+    .main {
+        padding: 1rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+}
+
+/* Emulator Modal - GameBoy Style */
+.gameboy-shell {
+    position: relative;
+    background: linear-gradient(180deg, #c4c4c4 0%, #b8b8b8 50%, #a8a8a8 100%);
+    border-radius: 20px 20px 60px 60px;
+    padding: 20px;
+    width: 380px;
+    box-shadow: 
+        0 10px 40px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+}
+
+.gameboy-close {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 36px;
+    height: 36px;
+    background: var(--error);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    transition: transform 0.2s;
+}
+
+.gameboy-close:hover {
+    transform: scale(1.1);
+}
+
+/* Top ridge lines */
+.gameboy-top-ridge {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-start;
+    padding-left: 10px;
+    margin-bottom: 12px;
+}
+
+.gameboy-ridge-line {
+    width: 25px;
+    height: 4px;
+    background: linear-gradient(180deg, #888 0%, #999 50%, #888 100%);
+    border-radius: 2px;
+}
+
+/* Screen bezel (dark purple area) */
+.gameboy-screen-bezel {
+    background: linear-gradient(180deg, #5c5478 0%, #4a4268 50%, #3c3558 100%);
+    border-radius: 10px 10px 30px 10px;
+    padding: 15px 20px 20px 20px;
+    margin-bottom: 15px;
+}
+
+.gameboy-screen-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding-left: 5px;
+}
+
+.gameboy-screen-label .dot {
+    width: 8px;
+    height: 8px;
+    background: #a00;
+    border-radius: 50%;
+    box-shadow: inset 0 -1px 2px rgba(255, 100, 100, 0.5);
+}
+
+.gameboy-model-text {
+    font-size: 7px;
+    color: #b8b0c8;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+}
+
+/* Screen border (darker inner border) */
+.gameboy-screen-border {
+    background: #0f380f;
+    padding: 8px;
+    border-radius: 4px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+/* The actual screen */
+.gameboy-screen {
+    width: 320px;
+    height: 288px;
+    background: #9bbc0f;
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* EmulatorJS container overrides */
+#emulator-game,
+#emulator-game #ejs-container,
+#emulator-game > div {
+    width: 320px !important;
+    max-width: 320px !important;
+    height: 288px !important;
+    max-height: 288px !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+#emulator-game iframe,
+#emulator-game canvas,
+#emulator-game video {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 320px !important;
+    max-height: 288px !important;
+    object-fit: contain;
+}
+
+/* Hide EmulatorJS default UI elements that don't fit */
+#emulator-game .ejs_menu_bar,
+#emulator-game .ejs_game_info,
+#emulator-game .ejs_cheat_menu,
+#emulator-game .ejs_control_bar {
+    display: none !important;
+}
+
+/* Ensure the game canvas fills the screen */
+#emulator-game .ejs_main_container,
+#emulator-game .ejs_game_container {
+    width: 320px !important;
+    max-width: 320px !important;
+    height: 288px !important;
+    max-height: 288px !important;
+    overflow: hidden !important;
+}
+
+/* Battery indicator */
+.gameboy-battery-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding-left: 5px;
+}
+
+.battery-led {
+    width: 8px;
+    height: 8px;
+    background: #dc2626;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #dc2626;
+    animation: battery-pulse 2s ease-in-out infinite;
+}
+
+@keyframes battery-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.battery-text {
+    font-size: 7px;
+    color: #b8b0c8;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+/* Nintendo/GameBoy logo */
+.gameboy-logo {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.nintendo-text {
+    font-family: serif;
+    font-style: italic;
+    font-size: 14px;
+    color: #4a4a5c;
+    font-weight: bold;
+}
+
+.gameboy-text {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 18px;
+    color: #1a1a2e;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.tm-text {
+    font-size: 6px;
+    color: #4a4a5c;
+    vertical-align: super;
+}
+
+/* Game title */
+.gameboy-title {
+    text-align: center;
+    font-size: 10px;
+    color: #5a5a6a;
+    margin-bottom: 15px;
+    font-family: 'Press Start 2P', cursive;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 10px;
+}
+
+/* Controls area */
+.gameboy-controls {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+    margin-bottom: 20px;
+}
+
+/* D-Pad */
+.gameboy-dpad-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gameboy-dpad {
+    position: relative;
+    width: 90px;
+    height: 90px;
+}
+
+.dpad-up, .dpad-down, .dpad-left, .dpad-right {
+    position: absolute;
+    background: linear-gradient(180deg, #3a3a4a 0%, #2a2a3a 100%);
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dpad-up, .dpad-down {
+    width: 28px;
+    height: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 4px 4px 0 0;
+}
+
+.dpad-up { top: 0; }
+.dpad-down { 
+    bottom: 0; 
+    border-radius: 0 0 4px 4px;
+}
+
+.dpad-left, .dpad-right {
+    width: 32px;
+    height: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 4px 0 0 4px;
+}
+
+.dpad-left { left: 0; }
+.dpad-right { 
+    right: 0;
+    border-radius: 0 4px 4px 0;
+}
+
+.dpad-center {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(180deg, #3a3a4a 0%, #2a2a3a 100%);
+    border-radius: 50%;
+}
+
+.dpad-label {
+    margin-top: 8px;
+}
+
+/* A/B Buttons */
+.gameboy-ab-area {
+    display: flex;
+    align-items: center;
+}
+
+.gameboy-ab-buttons {
+    display: flex;
+    gap: 15px;
+    transform: rotate(-25deg);
+}
+
+.ab-button-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ab-button {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(180deg, #9c1b51 0%, #8a1646 50%, #6a1036 100%);
+    border-radius: 50%;
+    box-shadow: 
+        0 4px 0 #5a0a26,
+        0 6px 8px rgba(0, 0, 0, 0.3),
+        inset 0 2px 4px rgba(255, 255, 255, 0.2);
+}
+
+.ab-label {
+    margin-top: 8px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #4a4a5c;
+    transform: rotate(25deg);
+}
+
+/* Key hints */
+.key-hint {
+    font-size: 8px;
+    color: #888;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-top: 2px;
+    transform: rotate(25deg);
+    display: inline-block;
+}
+
+.dpad-label .key-hint {
+    transform: none;
+}
+
+/* Start/Select buttons */
+.gameboy-start-select {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    transform: rotate(-25deg);
+    margin-left: 40px;
+}
+
+.ss-button-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ss-button {
+    width: 40px;
+    height: 12px;
+    background: linear-gradient(180deg, #6a6a7a 0%, #5a5a6a 100%);
+    border-radius: 6px;
+    box-shadow: 
+        0 2px 0 #4a4a5a,
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.ss-label {
+    margin-top: 6px;
+    font-size: 8px;
+    color: #4a4a5c;
+    letter-spacing: 1px;
+    transform: rotate(25deg);
+}
+
+.ss-button-wrapper .key-hint {
+    margin-top: 4px;
+    transform: rotate(25deg);
+}
+
+/* Speaker grille */
+.gameboy-speaker {
+    position: absolute;
+    bottom: 30px;
+    right: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transform: rotate(-25deg);
+}
+
+.speaker-line {
+    width: 30px;
+    height: 4px;
+    background: linear-gradient(180deg, #888 0%, #777 100%);
+    border-radius: 2px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Phones jack indicator */
+.gameboy-phones {
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    font-size: 8px;
+    color: #6a6a7a;
+}
+
+/* Responsive adjustments for GameBoy modal */
+@media (max-width: 420px) {
+    .gameboy-shell {
+        width: 95vw;
+        max-width: 360px;
+        padding: 15px;
+    }
+    
+    .gameboy-screen {
+        width: 280px;
+        height: 252px;
+    }
+    
+    .gameboy-controls {
+        padding: 0 10px;
+    }
+    
+    .gameboy-dpad {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .ab-button {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* Play button on project cards */
+.btn-play {
+    background: var(--gb-green);
+    color: var(--gb-darkest);
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+}
+
+.btn-play:hover {
+    background: var(--gb-light-green);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-input);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}

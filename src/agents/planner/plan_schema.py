@@ -1,8 +1,7 @@
 """
-Plan schema and generation for the planning agent.
+Plan schema for the LLM planning agent.
 
-Defines the structure of implementation plans and provides utilities
-for generating plans from feature requirements.
+Defines the data structures for implementation plans.
 """
 
 import json
@@ -45,14 +44,14 @@ class ImplementationStep:
 class ImplementationPlan:
     """Complete implementation plan for a game."""
     id: str
-    created_at: str
-    game_description: str
-    detected_game_type: Optional[str]
-    required_features: List[str]
-    feature_confidence: Dict[str, float]
-    relevant_samples: List[str]
-    steps: List[ImplementationStep]
-    estimated_total_complexity: int
+    created_at: str = field(default_factory=lambda: datetime.now().isoformat())
+    game_description: str = ""
+    detected_game_type: Optional[str] = None
+    required_features: List[str] = field(default_factory=list)
+    feature_confidence: Dict[str, float] = field(default_factory=dict)
+    relevant_samples: List[str] = field(default_factory=list)
+    steps: List[ImplementationStep] = field(default_factory=list)
+    estimated_total_complexity: int = 0
     notes: List[str] = field(default_factory=list)
     
     def to_dict(self) -> Dict:
@@ -86,7 +85,7 @@ class ImplementationPlan:
         ])
         
         for feature in self.required_features:
-            conf = self.feature_confidence.get(feature, 0)
+            conf = self.feature_confidence.get(feature, 1.0)
             lines.append(f"- `{feature}` ({conf:.0%} confidence)")
         
         lines.extend([
@@ -141,151 +140,7 @@ class ImplementationPlan:
         return "\n".join(lines)
 
 
-# Standard implementation step templates
-STEP_TEMPLATES = {
-    "project_setup": ImplementationStep(
-        order=0,
-        title="Project Setup",
-        description="Create project structure with Makefile, main.c, game.c, game.h, sprites.c, sprites.h",
-        feature="game_loop",
-        estimated_complexity=1,
-        acceptance_criteria=[
-            "Project compiles with `make`",
-            "ROM runs in emulator (blank screen OK)",
-            "All standard files created following CODE_STANDARDS.md"
-        ]
-    ),
-    "sprites_basic": ImplementationStep(
-        order=0,
-        title="Basic Sprite Setup",
-        description="Define sprite tile data and initialize OAM for game objects",
-        feature="sprites",
-        estimated_complexity=2,
-        acceptance_criteria=[
-            "Sprite data defined in sprites.c",
-            "sprites_init() loads data to VRAM",
-            "At least one sprite visible on screen"
-        ]
-    ),
-    "player_movement": ImplementationStep(
-        order=0,
-        title="Player Movement",
-        description="Implement D-pad input handling and player position updates",
-        feature="dpad",
-        estimated_complexity=1,
-        acceptance_criteria=[
-            "Player responds to D-pad input",
-            "Movement is smooth (~60fps)",
-            "Player stays within screen bounds"
-        ]
-    ),
-    "gravity_physics": ImplementationStep(
-        order=0,
-        title="Gravity Physics",
-        description="Add gravity accumulation and jump mechanics",
-        feature="gravity",
-        estimated_complexity=2,
-        acceptance_criteria=[
-            "Player falls when not on ground",
-            "Jump has proper arc (rise then fall)",
-            "Terminal velocity prevents infinite acceleration"
-        ]
-    ),
-    "collision_detection": ImplementationStep(
-        order=0,
-        title="Collision Detection",
-        description="Implement AABB collision between game objects",
-        feature="collision_aabb",
-        estimated_complexity=2,
-        acceptance_criteria=[
-            "Collisions detected between relevant objects",
-            "Collision response is correct (bounce/stop/damage)",
-            "No objects pass through each other"
-        ]
-    ),
-    "background_tiles": ImplementationStep(
-        order=0,
-        title="Background Tiles",
-        description="Design and load background tile map",
-        feature="backgrounds",
-        estimated_complexity=2,
-        acceptance_criteria=[
-            "Background tiles defined and loaded",
-            "Tile map displays correctly",
-            "No garbage tiles visible"
-        ]
-    ),
-    "scrolling": ImplementationStep(
-        order=0,
-        title="Scrolling",
-        description="Implement hardware scrolling using SCX/SCY registers",
-        feature="scrolling",
-        estimated_complexity=2,
-        acceptance_criteria=[
-            "Background scrolls smoothly",
-            "Tile wrapping works correctly at boundaries",
-            "Scroll position synced with game logic"
-        ]
-    ),
-    "sound_setup": ImplementationStep(
-        order=0,
-        title="Sound Setup",
-        description="Initialize sound hardware and implement basic audio",
-        feature="music",
-        estimated_complexity=2,
-        acceptance_criteria=[
-            "Sound registers configured correctly",
-            "At least one sound plays",
-            "No audio glitches or noise"
-        ]
-    ),
-    "save_system": ImplementationStep(
-        order=0,
-        title="Save System",
-        description="Implement SRAM save/load with magic number validation",
-        feature="save_sram",
-        estimated_complexity=2,
-        acceptance_criteria=[
-            "ROM header specifies MBC with RAM+BATTERY",
-            "Save data persists across sessions",
-            "Invalid saves handled gracefully"
-        ]
-    ),
-    "game_loop_polish": ImplementationStep(
-        order=0,
-        title="Game Loop Polish",
-        description="Add game states, win/lose conditions, and restart logic",
-        feature="game_state",
-        estimated_complexity=2,
-        acceptance_criteria=[
-            "Game has clear start state",
-            "Win/lose conditions trigger correctly",
-            "Player can restart without ROM reset"
-        ]
-    ),
-}
-
-
 def generate_plan_id() -> str:
     """Generate a unique plan ID."""
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     return f"plan_{timestamp}"
-
-
-def create_step_from_template(template_key: str, order: int, **overrides) -> ImplementationStep:
-    """Create a step from a template with customizations."""
-    if template_key not in STEP_TEMPLATES:
-        raise ValueError(f"Unknown template: {template_key}")
-    
-    template = STEP_TEMPLATES[template_key]
-    
-    return ImplementationStep(
-        order=order,
-        title=overrides.get("title", template.title),
-        description=overrides.get("description", template.description),
-        feature=overrides.get("feature", template.feature),
-        estimated_complexity=overrides.get("estimated_complexity", template.estimated_complexity),
-        references=overrides.get("references", []),
-        dependencies=overrides.get("dependencies", []),
-        acceptance_criteria=overrides.get("acceptance_criteria", template.acceptance_criteria.copy())
-    )

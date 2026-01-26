@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GB Game Studio</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo"><span class="logo-gb">gb</span><span class="logo-studio">Studio</span></h1>
+                <p class="tagline">Generate GameBoy ROMs with AI</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Generate Section -->
+            <section class="generate-section">
+                <div class="card">
+                    <h2>Create a New Game</h2>
+                    <form id="generate-form">
+                        <div class="form-group">
+                            <label for="description">Describe your game idea:</label>
+                            <textarea 
+                                id="description" 
+                                name="description" 
+                                placeholder="A bouncing ball that bounces off all walls and changes color on each bounce..."
+                                rows="4"
+                                required
+                            ></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="planner-model">Planner Model:</label>
+                                <select id="planner-model" name="planner_model">
+                                    <option value="claude-opus-4-20250514">Claude Opus (Best)</option>
+                                    <option value="claude-sonnet-4-20250514">Claude Sonnet (Faster)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="coder-model">Coder Model:</label>
+                                <select id="coder-model" name="coder_model">
+                                    <option value="claude-sonnet-4-20250514" selected>Claude Sonnet</option>
+                                    <option value="claude-opus-4-20250514">Claude Opus</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="generate-btn">
+                            <span class="btn-text">🚀 Generate Game</span>
+                            <span class="btn-loading" style="display: none;">
+                                <span class="spinner"></span> Generating...
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Progress Section (hidden by default) -->
+            <section class="progress-section" id="progress-section" style="display: none;">
+                <div class="card">
+                    <h2>Generation Progress</h2>
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <span id="progress-phase">Initializing...</span>
+                            <span id="progress-step"></span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-log" id="progress-log"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Gallery -->
+            <section class="gallery-section">
+                <div class="section-header">
+                    <h2>Your Games</h2>
+                    <button class="btn btn-secondary" id="refresh-btn">🔄 Refresh</button>
+                </div>
+                <div class="projects-grid" id="projects-grid">
+                    <div class="loading">Loading projects...</div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Project Detail Modal -->
+        <div class="modal" id="project-modal" style="display: none;">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <button class="modal-close" id="modal-close">&times;</button>
+                <div class="modal-body" id="modal-body">
+                    <!-- Filled dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Emulator Modal - GameBoy Style -->
+        <div class="modal" id="emulator-modal" style="display: none;">
+            <div class="modal-backdrop" onclick="closeEmulator()"></div>
+            <div class="gameboy-shell">
+                <button class="gameboy-close" onclick="closeEmulator()">&times;</button>
+                
+                <!-- Top ridge/speaker area -->
+                <div class="gameboy-top-ridge">
+                    <div class="gameboy-ridge-line"></div>
+                    <div class="gameboy-ridge-line"></div>
+                    <div class="gameboy-ridge-line"></div>
+                    <div class="gameboy-ridge-line"></div>
+                    <div class="gameboy-ridge-line"></div>
+                    <div class="gameboy-ridge-line"></div>
+                </div>
+                
+                <!-- Screen bezel -->
+                <div class="gameboy-screen-bezel">
+                    <div class="gameboy-screen-label">
+                        <span class="dot"></span>
+                        <span class="gameboy-model-text">DOT MATRIX WITH STEREO SOUND</span>
+                    </div>
+                    <div class="gameboy-screen-border">
+                        <div class="gameboy-screen" id="emulator-game"></div>
+                    </div>
+                    <div class="gameboy-battery-indicator">
+                        <span class="battery-led"></span>
+                        <span class="battery-text">BATTERY</span>
+                    </div>
+                </div>
+                
+                <!-- Nintendo logo -->
+                <div class="gameboy-logo">
+                    <span class="nintendo-text">Nintendo</span>
+                    <span class="gameboy-text">GAME BOY</span>
+                    <span class="tm-text">TM</span>
+                </div>
+                
+                <!-- Game title display -->
+                <div class="gameboy-title" id="emulator-title">Game Title</div>
+                
+                <!-- Controls section -->
+                <div class="gameboy-controls">
+                    <!-- D-Pad -->
+                    <div class="gameboy-dpad-area">
+                        <div class="gameboy-dpad">
+                            <div class="dpad-up"></div>
+                            <div class="dpad-right"></div>
+                            <div class="dpad-down"></div>
+                            <div class="dpad-left"></div>
+                            <div class="dpad-center"></div>
+                        </div>
+                        <div class="dpad-label">
+                            <span class="key-hint">↑↓←→</span>
+                        </div>
+                    </div>
+                    
+                    <!-- A/B Buttons -->
+                    <div class="gameboy-ab-area">
+                        <div class="gameboy-ab-buttons">
+                            <div class="ab-button-wrapper b-button">
+                                <div class="ab-button"></div>
+                                <span class="ab-label">B</span>
+                                <span class="key-hint">X</span>
+                            </div>
+                            <div class="ab-button-wrapper a-button">
+                                <div class="ab-button"></div>
+                                <span class="ab-label">A</span>
+                                <span class="key-hint">Z</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Start/Select -->
+                <div class="gameboy-start-select">
+                    <div class="ss-button-wrapper">
+                        <div class="ss-button"></div>
+                        <span class="ss-label">SELECT</span>
+                        <span class="key-hint">Shift</span>
+                    </div>
+                    <div class="ss-button-wrapper">
+                        <div class="ss-button"></div>
+                        <span class="ss-label">START</span>
+                        <span class="key-hint">Enter</span>
+                    </div>
+                </div>
+                
+                <!-- Speaker grille -->
+                <div class="gameboy-speaker">
+                    <div class="speaker-line"></div>
+                    <div class="speaker-line"></div>
+                    <div class="speaker-line"></div>
+                    <div class="speaker-line"></div>
+                    <div class="speaker-line"></div>
+                    <div class="speaker-line"></div>
+                </div>
+                
+                <!-- Headphone jack indicator -->
+                <div class="gameboy-phones">
+                    <span>🎧 PHONES</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Built with GBDK-2020 + Claude AI</p>
+        </footer>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GB Game Studio - Workspace</title>
+    <link rel="stylesheet" href="/static/workspace.css?v=21">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="workspace">
+        <!-- Sidebar: Project List -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1 class="logo"><span class="logo-gb">gb</span><span class="logo-studio">Studio</span></h1>
+                <button class="btn-icon" id="new-project-btn" title="New Project">+</button>
+            </div>
+            
+            <!-- Templates Section -->
+            <div class="sidebar-section">
+                <div class="section-title">Templates</div>
+                <div id="templates-list" class="project-list templates">
+                    <!-- Filled dynamically -->
+                </div>
+            </div>
+            
+            <!-- Projects Section -->
+            <div class="sidebar-section">
+                <div class="section-title">
+                    Projects
+                    <button class="btn-small" id="refresh-projects">↻</button>
+                </div>
+                <div id="projects-list" class="project-list">
+                    <!-- Filled dynamically -->
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Sidebar Resizer -->
+        <div class="resizer resizer-vertical" id="sidebar-resizer"></div>
+        
+        <!-- Main Area -->
+        <main class="main-area">
+            <!-- No Project Selected State -->
+            <div class="empty-state" id="empty-state">
+                <div class="empty-icon"><img src="/static/gbStudio.png" alt="GB Game Studio" style="width: 120px; height: auto;"></div>
+                <h2>Welcome to GB Game Studio</h2>
+                <p>Select a project from the sidebar or create a new one to get started.</p>
+                <button class="btn btn-primary" id="create-first-project">
+                    Create New Project
+                </button>
+            </div>
+            
+            <!-- Project View (hidden by default) -->
+            <div class="project-view" id="project-view" style="display: none;">
+                <!-- Project Header -->
+                <header class="project-header">
+                    <div class="project-info">
+                        <h2 id="project-name">Project Name</h2>
+                        <div class="project-meta">
+                            <span class="status-badge" id="project-status">scaffolded</span>
+                            <span class="meta-item" id="project-template">From: platformer</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn btn-secondary" id="build-btn">🔨 Build</button>
+                        <button class="btn btn-secondary" id="play-btn" disabled>▶️ Play</button>
+                        <button class="btn btn-secondary" id="download-btn" disabled>💾 ROM</button>
+                        <button class="btn btn-secondary" id="rollback-btn" title="Rollback to previous version">⏪ Rollback</button>
+                        <button class="btn btn-danger" id="delete-btn" title="Delete project">🗑️</button>
+                    </div>
+                </header>
+                
+                <!-- Split View: Code + Chat -->
+                <div class="split-view">
+                    <!-- Left: File Browser & Code / Emulator -->
+                    <div class="code-panel" id="code-panel">
+                        <div class="panel-header">
+                            <div class="panel-tabs">
+                                <button class="panel-tab active" id="emulator-tab" data-tab="emulator">🎮 Emulator</button>
+                                <button class="panel-tab" id="files-tab" data-tab="files">📁 Files</button>
+                                <button class="panel-tab" id="sprites-tab" data-tab="sprites">🖼️ Sprites</button>
+                                <button class="panel-tab" id="tuning-tab" data-tab="tuning">⚙️ Tuning</button>
+                                <button class="panel-tab" id="data-tab" data-tab="data">📊 Data</button>
+                                <button class="panel-tab" id="agents-tab" data-tab="agents">🤖 Agents</button>
+                            </div>
+                            <div class="file-tabs" id="file-tabs">
+                                <!-- Filled dynamically -->
+                            </div>
+                        </div>
+                        
+                        <!-- Emulator View -->
+                        <div class="tab-content active" id="emulator-content">
+                            <div class="emulator-container">
+                                <div class="emulator-screen">
+                                    <canvas id="emulator-canvas"></canvas>
+                                    <div class="emulator-overlay" id="emulator-overlay">
+                                        <div class="emulator-message">
+                                            <span class="emulator-icon">🎮</span>
+                                            <p>Build the project to play</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="emulator-controls">
+                                    <button class="btn btn-secondary" id="emu-play-btn" disabled>▶️ Play</button>
+                                    <button class="btn btn-secondary" id="emu-pause-btn" disabled>⏸️ Pause</button>
+                                    <button class="btn btn-secondary" id="emu-reload-btn" disabled>🔄 Reload</button>
+                                    <div class="volume-control">
+                                        <span>🔊</span>
+                                        <input type="range" id="emu-volume" min="0" max="100" value="50">
+                                    </div>
+                                </div>
+                                <div class="emulator-help">
+                                    <p><strong>Controls:</strong> Arrow keys = D-Pad, Z = B, X = A, Enter = Start, Tab = Select</p>
+                                    <p><strong>Special:</strong> Shift = Fast-forward, Backspace = Rewind, Space = Pause</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Files View -->
+                        <div class="tab-content" id="files-content">
+                            <div class="file-browser" id="file-browser">
+                                <!-- Filled dynamically -->
+                            </div>
+                            <div class="code-editor" id="code-editor">
+                                <div class="editor-placeholder">
+                                    Select a file to view its contents
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Agents View -->
+                        <div class="tab-content" id="agents-content">
+                            <div class="agents-panel">
+                                <div class="agents-header">
+                                    <h3>Pipeline Agents</h3>
+                                    <p class="agents-subtitle">Configure which models power each step of the build pipeline</p>
+                                </div>
+                                <div class="agents-grid" id="agents-grid">
+                                    <!-- Filled dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sprites View -->
+                        <div class="tab-content" id="sprites-content">
+                            <div class="sprites-panel">
+                                <div class="sprites-header">
+                                    <div class="sprites-header-row">
+                                        <div>
+                                            <h3>Sprite Assets</h3>
+                                            <p class="sprites-subtitle">View and edit tile graphics</p>
+                                        </div>
+                                        <button class="btn btn-primary" id="create-sprite-btn">
+                                            ✨ Create Sprite
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="sprites-empty" id="sprites-empty">
+                                    <span class="empty-icon">🖼️</span>
+                                    <p>No sprites found</p>
+                                    <p class="empty-hint">Sprites will appear here after building a project</p>
+                                </div>
+                                <div class="sprites-grid" id="sprites-grid">
+                                    <!-- Filled dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tuning View -->
+                        <div class="tab-content" id="tuning-content">
+                            <div class="tuning-panel">
+                                <div class="tuning-header">
+                                    <div class="tuning-header-row">
+                                        <div>
+                                            <h3>Game Tuning</h3>
+                                            <p class="tuning-subtitle">Adjust gameplay parameters without code changes</p>
+                                        </div>
+                                        <div class="tuning-actions">
+                                            <button class="btn btn-secondary" id="reset-tuning-btn" title="Reset to defaults">
+                                                ↺ Reset
+                                            </button>
+                                            <button class="btn btn-primary" id="apply-tuning-btn">
+                                                ✓ Apply & Rebuild
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tuning-empty" id="tuning-empty">
+                                    <span class="empty-icon">⚙️</span>
+                                    <p>No tunable parameters found</p>
+                                    <p class="empty-hint">Build a feature to generate code with @tunable annotations</p>
+                                </div>
+                                <div class="tuning-categories" id="tuning-categories">
+                                    <!-- Filled dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Data View -->
+                        <div class="tab-content" id="data-content">
+                            <div class="data-panel">
+                                <div class="data-header">
+                                    <div class="data-header-row">
+                                        <div>
+                                            <h3>Game Data</h3>
+                                            <p class="data-subtitle">Edit characters, items, enemies and other game content</p>
+                                        </div>
+                                        <div class="data-budget" id="data-budget">
+                                            <!-- ROM budget indicator -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="data-empty" id="data-empty">
+                                    <span class="empty-icon">📊</span>
+                                    <p>No data schema found</p>
+                                    <p class="empty-hint">Request a data-driven feature like "add RPG characters" to generate a schema</p>
+                                </div>
+                                <div class="data-container" id="data-container" style="display: none;">
+                                    <div class="data-sidebar">
+                                        <div class="data-tables-header">
+                                            <span>Tables</span>
+                                        </div>
+                                        <div class="data-tables-list" id="data-tables-list">
+                                            <!-- Table list -->
+                                        </div>
+                                    </div>
+                                    <div class="data-editor">
+                                        <div class="data-table-header" id="data-table-header">
+                                            <div class="data-table-info">
+                                                <h4 id="data-table-name">Select a table</h4>
+                                                <span class="data-table-count" id="data-table-count"></span>
+                                            </div>
+                                            <div class="data-table-actions">
+                                                <input type="text" class="data-search" id="data-search" placeholder="Search...">
+                                                <button class="btn btn-primary btn-small" id="add-row-btn">+ Add Row</button>
+                                            </div>
+                                        </div>
+                                        <div class="data-spreadsheet" id="data-spreadsheet">
+                                            <!-- Spreadsheet grid -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Split View Resizer -->
+                    <div class="resizer resizer-vertical" id="split-resizer"></div>
+                    
+                    <!-- Right: Chat -->
+                    <div class="chat-panel" id="chat-panel">
+                        <div class="panel-header">
+                            <span class="panel-title">💬 Chat</span>
+                            <div class="panel-actions">
+                                <button class="btn-small" id="new-chat-btn" title="Start a new conversation">🔄 New Chat</button>
+                                <span class="panel-subtitle" id="chat-status">Ready</span>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-messages" id="chat-messages">
+                            <!-- Filled dynamically -->
+                        </div>
+                        
+                        <div class="chat-input-container">
+                            <textarea 
+                                id="chat-input" 
+                                placeholder="Discuss your game ideas... When ready, click Build Feature"
+                                rows="3"
+                            ></textarea>
+                            <div class="chat-buttons">
+                                <button class="btn btn-secondary" id="send-btn" title="Continue the conversation">
+                                    💬 Send
+                                </button>
+                                <button class="btn btn-primary" id="build-feature-btn" title="Implement features based on conversation">
+                                    ⚡ Build Feature
+                                </button>
+                                <button class="btn btn-warning" id="retry-btn" title="Retry the last failed build" style="display: none;">
+                                    🔄 Retry
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Log Resizer -->
+                <div class="resizer resizer-horizontal" id="log-resizer"></div>
+                
+                <!-- Bottom: Agent Log -->
+                <div class="agent-log" id="agent-log">
+                    <div class="log-header">
+                        <span class="log-title">🤖 Agent Activity</span>
+                        <button class="btn-small" id="toggle-log">▼</button>
+                    </div>
+                    <div class="log-content" id="log-content">
+                        <!-- Filled dynamically -->
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- New Project Modal -->
+        <div class="modal" id="new-project-modal" style="display: none;">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Create New Project</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <form id="new-project-form">
+                    <div class="form-group">
+                        <label for="project-name-input">Project Name</label>
+                        <input type="text" id="project-name-input" placeholder="my-game" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="template-select">Start from Template</label>
+                        <select id="template-select">
+                            <option value="">Blank Project</option>
+                            <!-- Filled dynamically -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-description">Description</label>
+                        <textarea id="project-description" rows="3" 
+                            placeholder="What kind of game do you want to make?"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancel-create">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Project</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Rollback Modal -->
+        <div class="modal" id="rollback-modal" style="display: none;">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Rollback Project</h3>
+                    <button class="modal-close" onclick="hideRollbackModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Select a snapshot to restore:</p>
+                    <div class="snapshot-list" id="snapshot-list">
+                        <div class="loading">Loading snapshots...</div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="hideRollbackModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Delete Confirmation Modal -->
+        <div class="modal" id="delete-modal" style="display: none;">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Delete Project?</h3>
+                    <button class="modal-close" onclick="hideDeleteModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>This will permanently delete the project and all its files.</p>
+                    <p><strong id="delete-project-name"></strong></p>
+                    <p class="warning">⚠️ This action cannot be undone!</p>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="hideDeleteModal()">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirm-delete-btn">Delete Project</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sprite Editor Modal -->
+        <div class="modal sprite-editor-modal" id="sprite-editor-modal" style="display: none;">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content sprite-editor-content">
+                <div class="modal-header">
+                    <h3 id="sprite-editor-title">Create Sprite</h3>
+                    <button class="modal-close" onclick="hideSpriteEditor()">&times;</button>
+                </div>
+                <div class="modal-body sprite-editor-body">
+                    <div class="sprite-editor-main">
+                        <!-- Canvas Area -->
+                        <div class="sprite-canvas-container">
+                            <canvas id="sprite-editor-canvas" width="8" height="8"></canvas>
+                            <div class="sprite-grid-overlay" id="sprite-grid-overlay"></div>
+                        </div>
+                        
+                        <!-- Preview -->
+                        <div class="sprite-preview-section">
+                            <span class="preview-label">Preview</span>
+                            <canvas id="sprite-preview-canvas" width="8" height="8"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Tools Sidebar -->
+                    <div class="sprite-editor-sidebar">
+                        <!-- Sprite Name -->
+                        <div class="editor-section">
+                            <label>Name</label>
+                            <input type="text" id="sprite-name-input" placeholder="my_sprite" pattern="[a-z_][a-z0-9_]*">
+                        </div>
+                        
+                        <!-- Size -->
+                        <div class="editor-section">
+                            <label>Size</label>
+                            <div class="size-buttons">
+                                <button class="size-btn active" data-size="8x8">8×8</button>
+                                <button class="size-btn" data-size="8x16">8×16</button>
+                                <button class="size-btn" data-size="16x16">16×16</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Palette -->
+                        <div class="editor-section">
+                            <label>Color</label>
+                            <div class="palette-picker" id="palette-picker">
+                                <button class="palette-color active" data-color="0" style="background: #e0f8d0;" title="Lightest"></button>
+                                <button class="palette-color" data-color="1" style="background: #88c070;" title="Light"></button>
+                                <button class="palette-color" data-color="2" style="background: #346856;" title="Dark"></button>
+                                <button class="palette-color" data-color="3" style="background: #081820;" title="Darkest"></button>
+                            </div>
+                        </div>
+                        
+                        <!-- Tools -->
+                        <div class="editor-section">
+                            <label>Tools</label>
+                            <div class="tool-buttons">
+                                <button class="tool-btn active" data-tool="pencil" title="Pencil">✏️</button>
+                                <button class="tool-btn" data-tool="fill" title="Fill">🫧</button>
+                                <button class="tool-btn" data-tool="eraser" title="Eraser">🧹</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Actions -->
+                        <div class="editor-section">
+                            <label>Actions</label>
+                            <div class="action-buttons">
+                                <button class="action-btn" onclick="clearSpriteCanvas()" title="Clear">🗑️ Clear</button>
+                                <button class="action-btn" onclick="flipSpriteH()" title="Flip Horizontal">↔️ Flip H</button>
+                                <button class="action-btn" onclick="flipSpriteV()" title="Flip Vertical">↕️ Flip V</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="hideSpriteEditor()">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="save-sprite-btn">Save Sprite</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Emulator Scripts -->
+    <script src="/static/emulator/binjgb.js"></script>
+    <script src="/static/emulator/emulator.js"></script>
+    
+    <script src="/static/workspace.js?v=33"></script>
+</body>
+</html>

@@ -1,15 +1,18 @@
 # Planning Agent Package
-from .plan import PlanningAgent
-from .feature_extractor import extract_features
-from .corpus_search import search_by_features, get_feature_examples
+#
+# LLM-powered planning using Claude for high-level reasoning.
+# Uses the corpus as context to generate implementation plans.
+
+from .llm_planner import LLMPlanner
+from .corpus_search import load_manifest, search_by_features, get_feature_examples
 from .plan_schema import ImplementationPlan, ImplementationStep, CodeReference
 
 __all__ = [
-    "PlanningAgent",
-    "extract_features",
+    "LLMPlanner",
+    "load_manifest",
     "search_by_features",
     "get_feature_examples",
     "ImplementationPlan",
-    "ImplementationStep", 
-    "CodeReference"
+    "ImplementationStep",
+    "CodeReference",
 ]
