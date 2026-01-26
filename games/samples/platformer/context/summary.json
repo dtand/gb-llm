@@ -1,0 +1,316 @@
+{
+  "project_id": "sample-platformer",
+  "project_name": "platformer",
+  "description": "Basic platformer demonstrating platform collision and variable jump",
+  "template_source": null,
+  "template_name": null,
+  "current_state": "refined",
+  "features": {
+    "from_template": [],
+    "added": [
+      "platform_collision",
+      "variable_jump",
+      "gravity",
+      "sprites",
+      "tiles",
+      "dpad"
+    ],
+    "planned": []
+  },
+  "files": [
+    {
+      "path": "src/game.c",
+      "description": "Core game logic for Platformer",
+      "structs": [],
+      "functions": [
+        {
+          "name": "game_init",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 144,
+          "line_end": 154
+        },
+        {
+          "name": "game_handle_input",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 163,
+          "line_end": 218
+        },
+        {
+          "name": "game_update",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 227,
+          "line_end": 296
+        },
+        {
+          "name": "game_render",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 305,
+          "line_end": 310
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "game.h",
+        "sprites.h"
+      ],
+      "lines": 311
+    },
+    {
+      "path": "src/main.c",
+      "description": "Entry point for Platformer game",
+      "structs": [],
+      "functions": [
+        {
+          "name": "main",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 21,
+          "line_end": 41
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "game.h",
+        "sprites.h"
+      ],
+      "lines": 42
+    },
+    {
+      "path": "src/sprites.c",
+      "description": "Tile data and initialization for Platformer",
+      "structs": [],
+      "functions": [
+        {
+          "name": "sprites_init",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 50,
+          "line_end": 60
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "sprites.h"
+      ],
+      "lines": 61
+    },
+    {
+      "path": "src/game.h",
+      "description": "Game state and constants for Platformer",
+      "structs": [
+        {
+          "name": "GameState",
+          "fields": [
+            {
+              "name": "player_x",
+              "type": "uint8_t",
+              "comment": ""
+            },
+            {
+              "name": "player_y",
+              "type": "int16_t",
+              "comment": "Signed for calculations"
+            },
+            {
+              "name": "velocity_y",
+              "type": "int8_t",
+              "comment": ""
+            },
+            {
+              "name": "on_ground",
+              "type": "uint8_t",
+              "comment": "Jump state"
+            },
+            {
+              "name": "jumping",
+              "type": "uint8_t",
+              "comment": "Currently in a jump"
+            },
+            {
+              "name": "jump_held",
+              "type": "uint8_t",
+              "comment": "A button still held since jump start"
+            },
+            {
+              "name": "jump_timer",
+              "type": "uint8_t",
+              "comment": "Frames A has been held"
+            }
+          ],
+          "description": "",
+          "line_start": 54,
+          "line_end": 67
+        }
+      ],
+      "functions": [],
+      "constants": [
+        {
+          "name": "SCREEN_WIDTH",
+          "value": "160",
+          "comment": ""
+        },
+        {
+          "name": "SCREEN_HEIGHT",
+          "value": "144",
+          "comment": ""
+        },
+        {
+          "name": "SCREEN_TILES_X",
+          "value": "20",
+          "comment": ""
+        },
+        {
+          "name": "SCREEN_TILES_Y",
+          "value": "18",
+          "comment": "Sprite offsets"
+        },
+        {
+          "name": "SPRITE_X_OFFSET",
+          "value": "8",
+          "comment": ""
+        },
+        {
+          "name": "SPRITE_Y_OFFSET",
+          "value": "16",
+          "comment": "Player constants"
+        },
+        {
+          "name": "PLAYER_WIDTH",
+          "value": "8",
+          "comment": ""
+        },
+        {
+          "name": "PLAYER_HEIGHT",
+          "value": "8",
+          "comment": ""
+        },
+        {
+          "name": "PLAYER_START_X",
+          "value": "20",
+          "comment": ""
+        },
+        {
+          "name": "PLAYER_START_Y",
+          "value": "120",
+          "comment": ""
+        },
+        {
+          "name": "PLAYER_SPEED",
+          "value": "2",
+          "comment": "Physics"
+        },
+        {
+          "name": "GRAVITY",
+          "value": "1",
+          "comment": ""
+        },
+        {
+          "name": "JUMP_HOLD_REDUCTION",
+          "value": "1",
+          "comment": "Subtract from gravity while holding (not zero!)"
+        },
+        {
+          "name": "TERMINAL_VELOCITY",
+          "value": "4",
+          "comment": ""
+        },
+        {
+          "name": "MAX_JUMP_HOLD",
+          "value": "10",
+          "comment": "Frames to hold for max jump"
+        },
+        {
+          "name": "MIN_X",
+          "value": "0",
+          "comment": ""
+        },
+        {
+          "name": "MIN_Y",
+          "value": "0",
+          "comment": ""
+        }
+      ],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h"
+      ],
+      "lines": 83
+    },
+    {
+      "path": "src/sprites.h",
+      "description": "Sprite and tile declarations for Platformer",
+      "structs": [],
+      "functions": [],
+      "constants": [
+        {
+          "name": "TILE_EMPTY",
+          "value": "0",
+          "comment": ""
+        },
+        {
+          "name": "TILE_PLATFORM",
+          "value": "1",
+          "comment": "============================================================"
+        },
+        {
+          "name": "TILE_PLAYER",
+          "value": "0",
+          "comment": "============================================================"
+        },
+        {
+          "name": "SPRITE_PLAYER",
+          "value": "0",
+          "comment": "============================================================"
+        }
+      ],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h"
+      ],
+      "lines": 39
+    }
+  ],
+  "patterns": [
+    "state_machine",
+    "physics",
+    "sprites",
+    "tiles",
+    "gravity",
+    "jumping"
+  ],
+  "known_issues": [],
+  "last_build_success": true,
+  "last_build_error": null,
+  "rom_size_bytes": 32768,
+  "created_at": "2026-01-22T10:41:46.990581",
+  "last_updated": "2026-01-22T10:41:46.990582",
+  "summary_generated_at": "2026-01-22T10:41:46.990583"
+}

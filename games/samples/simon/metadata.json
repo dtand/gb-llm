@@ -1,0 +1,36 @@
+{
+    "name": "simon",
+    "version": "1.0.0",
+    "prompt": "Create a Simon pattern memory game. Display 4 buttons arranged in a cross pattern (up/down/left/right). The computer shows a pattern by lighting buttons with sound. The player must repeat the pattern using the D-pad. Each round adds one more step. Game over if wrong button or timeout. Track score (rounds completed).",
+    "description": "Pattern memory game demonstrating sequence tracking, audio feedback, and timed input",
+    "complexity": 2,
+    "features": [
+        "pattern_sequence",
+        "audio_feedback",
+        "timed_input",
+        "button_flash",
+        "score_tracking"
+    ],
+    "controls": {
+        "dpad": "Press matching direction",
+        "start": "Start game / Restart"
+    },
+    "sprites_used": 0,
+    "background_tiles_used": 37,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "Pattern array storage and playback",
+        "Sound register control (NR10-NR14)",
+        "State machine for game flow",
+        "Input timeout handling",
+        "Visual button state (lit/unlit)",
+        "Random sequence generation"
+    ]
+}

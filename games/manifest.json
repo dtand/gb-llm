@@ -169,36 +169,330 @@
                 "Persistent data storage",
                 "Number display with tiles"
             ]
+        },
+        {
+            "id": "shooter",
+            "name": "Space Shooter",
+            "path": "samples/shooter",
+            "description": "Vertical scrolling shooter with metasprites",
+            "complexity": 3,
+            "status": "tested",
+            "features": {
+                "primary": ["vertical_scrolling", "metasprites", "window_layer", "sprites"],
+                "secondary": ["collision_aabb", "rng", "game_loop", "buttons"]
+            },
+            "teaches": [
+                "Vertical scrolling (SCY_REG)",
+                "Metasprite composition (16x16 from 4 8x8)",
+                "Window layer for HUD",
+                "Entity pooling (bullets, enemies)",
+                "Star background parallax"
+            ]
+        },
+        {
+            "id": "timer",
+            "name": "Reaction Timer",
+            "path": "samples/timer",
+            "description": "Timer interrupt demo with millisecond precision",
+            "complexity": 2,
+            "status": "tested",
+            "features": {
+                "primary": ["timer_interrupt", "interrupt_handlers", "rng"],
+                "secondary": ["backgrounds", "tiles", "buttons", "game_state"]
+            },
+            "teaches": [
+                "Timer interrupt setup (TMA_REG, TAC_REG)",
+                "ISR registration (add_TIM)",
+                "Millisecond timing",
+                "Volatile variables for ISR",
+                "Random delay generation"
+            ]
+        },
+        {
+            "id": "parallax",
+            "name": "Parallax Scroller",
+            "path": "samples/parallax",
+            "description": "Multi-layer parallax using LYC interrupt",
+            "complexity": 3,
+            "status": "tested",
+            "features": {
+                "primary": ["lyc_interrupt", "interrupt_handlers", "parallax_scrolling", "scrolling"],
+                "secondary": ["backgrounds", "tiles", "game_loop"]
+            },
+            "teaches": [
+                "LYC interrupt setup (STAT_REG, LYC_REG)",
+                "Scanline-triggered scroll changes",
+                "Multi-layer parallax effect",
+                "Mid-frame register manipulation",
+                "Visual depth illusion"
+            ]
+        },
+        {
+            "id": "platformer",
+            "name": "Platformer",
+            "path": "samples/platformer",
+            "description": "Tile-based platformer with variable jump",
+            "complexity": 3,
+            "status": "tested",
+            "features": {
+                "primary": ["collision_tile", "gravity", "velocity", "sprites"],
+                "secondary": ["backgrounds", "tiles", "dpad", "buttons", "game_loop"]
+            },
+            "teaches": [
+                "Tile-based collision detection",
+                "Variable jump height (hold to jump higher)",
+                "Gravity and terminal velocity",
+                "Ground and ceiling collision",
+                "Platform game physics"
+            ]
+        },
+        {
+            "id": "puzzle",
+            "name": "Falling Blocks",
+            "path": "samples/puzzle",
+            "description": "Tetris-style puzzle with grid and line clearing",
+            "complexity": 4,
+            "status": "tested",
+            "features": {
+                "primary": ["grid_system", "piece_rotation", "line_clearing", "backgrounds"],
+                "secondary": ["tiles", "dpad", "buttons", "game_loop", "rng"]
+            },
+            "teaches": [
+                "2D grid array management",
+                "Piece rotation matrices",
+                "Line completion detection",
+                "Row shifting after clear",
+                "VRAM-safe rendering (minimal updates)"
+            ]
+        },
+        {
+            "id": "adventure",
+            "name": "Top-Down Adventure",
+            "path": "samples/adventure",
+            "description": "Tile map exploration with NPC dialog",
+            "complexity": 3,
+            "status": "tested",
+            "features": {
+                "primary": ["tile_map", "collision_tile", "window_layer", "sprites"],
+                "secondary": ["dpad", "buttons", "game_state", "text_rendering"]
+            },
+            "teaches": [
+                "Tile map storage and rendering",
+                "4-directional grid movement",
+                "NPC proximity interaction",
+                "Window layer for dialog",
+                "Simple font/text display"
+            ]
+        },
+        {
+            "id": "rpg",
+            "name": "RPG Battle Demo",
+            "path": "samples/rpg",
+            "description": "Turn-based RPG battle with menu system",
+            "complexity": 3,
+            "status": "tested",
+            "features": {
+                "primary": ["menu_system", "state_machine", "stat_bars", "turn_based_combat"],
+                "secondary": ["dpad", "buttons", "text_rendering", "rng"]
+            },
+            "teaches": [
+                "Menu navigation with D-pad (2x2 grid)",
+                "State machine for battle flow",
+                "HP/MP bar rendering with tiles",
+                "Damage calculation with attack/defense",
+                "Box drawing for UI windows",
+                "Text rendering with letter tiles"
+            ]
+        },
+        {
+            "id": "memory",
+            "name": "Memory Card Game",
+            "path": "samples/memory",
+            "description": "Card matching memory game with grid selection",
+            "complexity": 2,
+            "status": "tested",
+            "features": {
+                "primary": ["grid_selection", "card_flip", "match_detection", "shuffle_algorithm"],
+                "secondary": ["dpad", "buttons", "game_state", "tiles"]
+            },
+            "teaches": [
+                "Grid-based cursor navigation (4x4)",
+                "Card state tracking (face-down, face-up, matched)",
+                "Fisher-Yates shuffle algorithm",
+                "Match detection and comparison logic",
+                "Timer-based reveal delay",
+                "Move counter display"
+            ]
+        },
+        {
+            "id": "racing",
+            "name": "Racing Game",
+            "path": "samples/racing",
+            "description": "Top-down racing game with vertical scrolling track",
+            "complexity": 3,
+            "status": "tested",
+            "features": {
+                "primary": ["vertical_scrolling", "speed_control", "lap_counting", "window_layer"],
+                "secondary": ["metasprites", "collision_aabb", "dpad", "buttons", "game_state"]
+            },
+            "teaches": [
+                "Vertical background scrolling (SCY_REG)",
+                "Speed-based scroll rate",
+                "Window layer for fixed HUD",
+                "Metasprite composition (2x2 car sprites)",
+                "Lap counting with finish line detection",
+                "Countdown sequence before race",
+                "Obstacle spawning and avoidance"
+            ]
+        },
+        {
+            "id": "simon",
+            "name": "Simon Says",
+            "path": "samples/simon",
+            "description": "Pattern memory game with sound and visual feedback",
+            "complexity": 2,
+            "status": "tested",
+            "features": {
+                "primary": ["pattern_memory", "sound_feedback", "state_machine", "sequence_array"],
+                "secondary": ["dpad", "buttons", "game_state", "tiles", "sfx"]
+            },
+            "teaches": [
+                "Pattern sequence storage and playback",
+                "Sound register setup (NR10-NR14)",
+                "Pulse wave tones for button feedback",
+                "State machine for game flow",
+                "Visual button feedback (lit/unlit tiles)",
+                "Input timing and validation",
+                "Progressive difficulty (growing sequence)"
+            ]
+        },
+        {
+            "id": "maze",
+            "name": "Maze Explorer",
+            "path": "samples/maze",
+            "description": "Procedural maze generation with player navigation",
+            "complexity": 3,
+            "status": "tested",
+            "features": {
+                "primary": ["procedural_generation", "recursive_backtracker", "grid_navigation"],
+                "secondary": ["dpad", "game_state", "tiles", "rng"]
+            },
+            "teaches": [
+                "Recursive backtracker maze algorithm",
+                "Stack-based depth-first search",
+                "LCG pseudo-random number generator",
+                "Fisher-Yates shuffle for directions",
+                "Grid-based collision detection",
+                "Breadcrumb trail visualization",
+                "Level progression system"
+            ]
+        },
+        {
+            "id": "slots",
+            "name": "Slot Machine",
+            "path": "samples/slots",
+            "description": "Classic slot machine with spinning reels and payouts",
+            "complexity": 2,
+            "status": "tested",
+            "features": {
+                "primary": ["spinning_reels", "payout_calculation", "coin_system", "symbol_matching"],
+                "secondary": ["buttons", "game_state", "tiles", "rng", "state_machine"]
+            },
+            "teaches": [
+                "Reel animation with staggered stopping",
+                "Multi-tier payout calculation",
+                "Currency/coin management system",
+                "2x2 tile symbol rendering",
+                "Box drawing UI with corner/edge tiles",
+                "LCG random for fair results",
+                "State machine for spin flow"
+            ]
+        },
+        {
+            "id": "fishing",
+            "name": "Fishing Minigame",
+            "path": "samples/fishing",
+            "description": "Timing-based fishing game with reaction window",
+            "complexity": 2,
+            "status": "tested",
+            "features": {
+                "primary": ["timing_mechanics", "reaction_window", "water_animation", "state_machine"],
+                "secondary": ["buttons", "game_state", "tiles", "rng"]
+            },
+            "teaches": [
+                "Reaction timing window mechanics",
+                "Random delay generation for tension",
+                "Frame-based tile animation (water)",
+                "Multi-tile character rendering (fisherman)",
+                "State machine for game flow",
+                "Visual feedback (exclamation indicator)",
+                "Scene composition with layered elements"
+            ]
         }
     ],
 
     "feature_index": {
-        "sprites": ["pong", "snake", "breakout", "runner", "bounce"],
-        "backgrounds": ["breakout", "runner", "clicker"],
-        "tiles": ["breakout", "runner", "clicker"],
-        "animation": ["bounce"],
-        "scrolling": ["runner"],
-        "dpad": ["pong", "snake", "melody"],
-        "buttons": ["runner", "bounce", "melody", "clicker"],
-        "velocity": ["pong", "bounce", "runner"],
-        "gravity": ["runner", "bounce"],
-        "collision_aabb": ["pong", "breakout", "runner"],
-        "collision_tile": ["snake", "breakout"],
+        "sprites": ["pong", "snake", "breakout", "runner", "bounce", "shooter", "platformer", "adventure"],
+        "backgrounds": ["breakout", "runner", "clicker", "timer", "parallax", "platformer", "puzzle", "adventure"],
+        "tiles": ["breakout", "runner", "clicker", "timer", "parallax", "platformer", "puzzle", "adventure", "memory", "simon", "maze", "slots", "fishing"],
+        "animation": ["bounce", "fishing"],
+        "scrolling": ["runner", "parallax"],
+        "vertical_scrolling": ["shooter", "racing"],
+        "parallax_scrolling": ["parallax"],
+        "dpad": ["pong", "snake", "melody", "platformer", "puzzle", "adventure", "memory", "racing", "simon", "maze"],
+        "buttons": ["runner", "bounce", "melody", "clicker", "shooter", "timer", "platformer", "puzzle", "adventure", "memory", "racing", "simon", "slots", "fishing"],
+        "velocity": ["pong", "bounce", "runner", "platformer"],
+        "gravity": ["runner", "bounce", "platformer"],
+        "collision_aabb": ["pong", "breakout", "runner", "shooter", "racing"],
+        "collision_tile": ["snake", "breakout", "platformer", "adventure"],
         "bounce": ["bounce"],
-        "sfx": [],
+        "sfx": ["simon"],
         "music": ["melody"],
         "channels": ["melody"],
         "envelopes": ["melody"],
-        "game_state": ["pong", "snake", "clicker"],
+        "game_state": ["pong", "snake", "clicker", "timer", "adventure", "rpg", "memory", "racing", "simon", "maze", "slots", "fishing"],
         "save_sram": ["clicker"],
         "highscores": ["clicker"],
-        "rng": ["snake"],
-        "game_loop": ["pong", "snake", "breakout", "runner", "bounce", "melody", "clicker"],
+        "rng": ["snake", "shooter", "timer", "puzzle", "rpg", "memory", "racing", "maze", "slots", "fishing"],
+        "game_loop": ["pong", "snake", "breakout", "runner", "bounce", "melody", "clicker", "shooter", "timer", "parallax", "platformer", "puzzle", "adventure", "rpg", "memory", "racing", "simon", "maze", "slots", "fishing"],
         "ai": ["pong"],
         "buffers": ["snake"],
         "banking": [],
-        "vram": [],
-        "oam": []
+        "vram": ["puzzle"],
+        "oam": [],
+        "metasprites": ["shooter", "racing"],
+        "window_layer": ["shooter", "adventure", "racing"],
+        "timer_interrupt": ["timer"],
+        "lyc_interrupt": ["parallax"],
+        "interrupt_handlers": ["timer", "parallax"],
+        "grid_system": ["puzzle", "memory"],
+        "piece_rotation": ["puzzle"],
+        "line_clearing": ["puzzle"],
+        "tile_map": ["adventure"],
+        "text_rendering": ["adventure", "rpg"],
+        "menu_system": ["rpg"],
+        "state_machine": ["rpg", "simon", "fishing"],
+        "stat_bars": ["rpg"],
+        "turn_based_combat": ["rpg"],
+        "grid_selection": ["memory"],
+        "card_flip": ["memory"],
+        "match_detection": ["memory"],
+        "shuffle_algorithm": ["memory"],
+        "speed_control": ["racing"],
+        "lap_counting": ["racing"],
+        "pattern_memory": ["simon"],
+        "sound_feedback": ["simon"],
+        "sequence_array": ["simon"],
+        "procedural_generation": ["maze"],
+        "recursive_backtracker": ["maze"],
+        "grid_navigation": ["maze"],
+        "spinning_reels": ["slots"],
+        "payout_calculation": ["slots"],
+        "coin_system": ["slots"],
+        "symbol_matching": ["slots"],
+        "timing_mechanics": ["fishing"],
+        "reaction_window": ["fishing"],
+        "water_animation": ["fishing"]
     },
 
     "complexity_levels": {
@@ -211,14 +505,10 @@
 
     "missing_coverage": [
         "banking",
-        "metasprites", 
-        "parallax_scrolling",
-        "vertical_scrolling",
-        "window_layer",
         "dma_transfer",
-        "interrupt_handlers",
-        "timer",
         "serial_link",
-        "color_palettes_gbc"
+        "color_palettes_gbc",
+        "sprite_animation",
+        "sound_effects"
     ]
 }

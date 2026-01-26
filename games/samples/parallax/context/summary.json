@@ -1,0 +1,295 @@
+{
+  "project_id": "sample-parallax",
+  "project_name": "parallax",
+  "description": "Parallax scrolling demo with multiple depth layers",
+  "template_source": null,
+  "template_name": null,
+  "current_state": "refined",
+  "features": {
+    "from_template": [],
+    "added": [
+      "parallax_scrolling",
+      "scrolling",
+      "backgrounds",
+      "tiles"
+    ],
+    "planned": []
+  },
+  "files": [
+    {
+      "path": "src/game.c",
+      "description": "Core game logic for Parallax Scroller",
+      "structs": [],
+      "functions": [
+        {
+          "name": "lcd_isr",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 41,
+          "line_end": 64
+        },
+        {
+          "name": "game_init",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 147,
+          "line_end": 180
+        },
+        {
+          "name": "game_handle_input",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 189,
+          "line_end": 211
+        },
+        {
+          "name": "game_update",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 220,
+          "line_end": 249
+        },
+        {
+          "name": "game_render",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 258,
+          "line_end": 265
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "game.h",
+        "sprites.h"
+      ],
+      "lines": 266
+    },
+    {
+      "path": "src/main.c",
+      "description": "Entry point for Parallax Scroller demo",
+      "structs": [],
+      "functions": [
+        {
+          "name": "main",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 21,
+          "line_end": 40
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "game.h",
+        "sprites.h"
+      ],
+      "lines": 41
+    },
+    {
+      "path": "src/sprites.c",
+      "description": "Tile data and initialization for Parallax Scroller",
+      "structs": [],
+      "functions": [
+        {
+          "name": "sprites_init",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 64,
+          "line_end": 73
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "sprites.h"
+      ],
+      "lines": 74
+    },
+    {
+      "path": "src/game.h",
+      "description": "Game state and constants for Parallax Scroller",
+      "structs": [
+        {
+          "name": "GameState",
+          "fields": [
+            {
+              "name": "scroll_x",
+              "type": "int16_t",
+              "comment": "Computed layer scroll values"
+            },
+            {
+              "name": "scroll_sky",
+              "type": "uint8_t",
+              "comment": ""
+            },
+            {
+              "name": "scroll_mountain",
+              "type": "uint8_t",
+              "comment": ""
+            },
+            {
+              "name": "scroll_hills",
+              "type": "uint8_t",
+              "comment": ""
+            },
+            {
+              "name": "scroll_ground",
+              "type": "uint8_t",
+              "comment": "Input state"
+            },
+            {
+              "name": "moving",
+              "type": "uint8_t",
+              "comment": ""
+            },
+            {
+              "name": "direction",
+              "type": "int8_t",
+              "comment": "-1 = left, 0 = still, 1 = right"
+            },
+            {
+              "name": "fast_mode",
+              "type": "uint8_t",
+              "comment": ""
+            }
+          ],
+          "description": "",
+          "line_start": 39,
+          "line_end": 53
+        }
+      ],
+      "functions": [],
+      "constants": [
+        {
+          "name": "SCREEN_TILES_X",
+          "value": "20",
+          "comment": ""
+        },
+        {
+          "name": "SCREEN_TILES_Y",
+          "value": "18",
+          "comment": "Parallax layer scanline boundaries"
+        },
+        {
+          "name": "SKY_START",
+          "value": "0",
+          "comment": ""
+        },
+        {
+          "name": "MOUNTAIN_START",
+          "value": "32",
+          "comment": ""
+        },
+        {
+          "name": "HILLS_START",
+          "value": "64",
+          "comment": ""
+        },
+        {
+          "name": "GROUND_START",
+          "value": "96",
+          "comment": ""
+        },
+        {
+          "name": "SCREEN_END",
+          "value": "144",
+          "comment": "Scroll speeds (as bit shifts for division)"
+        },
+        {
+          "name": "SCROLL_SPEED",
+          "value": "2",
+          "comment": "============================================================"
+        }
+      ],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h"
+      ],
+      "lines": 77
+    },
+    {
+      "path": "src/sprites.h",
+      "description": "Tile declarations for Parallax Scroller",
+      "structs": [],
+      "functions": [],
+      "constants": [
+        {
+          "name": "TILE_SKY",
+          "value": "0",
+          "comment": "Light/empty sky"
+        },
+        {
+          "name": "TILE_MOUNTAIN",
+          "value": "1",
+          "comment": "Dark mountain silhouette"
+        },
+        {
+          "name": "TILE_HILLS",
+          "value": "2",
+          "comment": "Medium hills"
+        },
+        {
+          "name": "TILE_GRASS",
+          "value": "3",
+          "comment": "Grass top"
+        },
+        {
+          "name": "TILE_GROUND",
+          "value": "4",
+          "comment": "Dirt/ground fill"
+        },
+        {
+          "name": "TILE_ROCK",
+          "value": "5",
+          "comment": "Rock marker on ground"
+        },
+        {
+          "name": "TILE_TREE",
+          "value": "6",
+          "comment": "Tree marker"
+        }
+      ],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h"
+      ],
+      "lines": 32
+    }
+  ],
+  "patterns": [
+    "state_machine",
+    "tiles"
+  ],
+  "known_issues": [],
+  "last_build_success": true,
+  "last_build_error": null,
+  "rom_size_bytes": 32768,
+  "created_at": "2026-01-22T10:41:46.989188",
+  "last_updated": "2026-01-22T10:41:46.989190",
+  "summary_generated_at": "2026-01-22T10:41:46.989190"
+}

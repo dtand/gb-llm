@@ -1,0 +1,52 @@
+{
+    "name": "puzzle",
+    "version": "1.0.0",
+    "prompt": "Create a falling block puzzle game (Tetris-style). Pieces fall from the top, player can move left/right and rotate. When a horizontal line is complete, it clears. Game ends when pieces stack to the top.",
+    "description": "Falling block puzzle demonstrating grid systems and line clearing",
+    "complexity": 4,
+    "features": [
+        "grid_system",
+        "piece_rotation",
+        "line_clearing",
+        "collision_grid",
+        "rng"
+    ],
+    "controls": {
+        "dpad_left_right": "Move piece",
+        "dpad_down": "Fast drop",
+        "a_button": "Rotate clockwise",
+        "start": "Pause / Restart"
+    },
+    "sprites_used": 0,
+    "background_tiles_used": 4,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "2D grid array for playfield",
+        "Piece rotation matrices",
+        "Line completion detection",
+        "Row shifting after clear",
+        "Piece spawn and collision check"
+    ],
+    "training_notes": {
+        "demonstrates": [
+            "Fixed-size 2D array grid",
+            "Rotation via coordinate transform",
+            "Full row detection",
+            "Array row shifting",
+            "Piece templates as const data"
+        ],
+        "does_not_demonstrate": [
+            "Sprites (uses background tiles only)",
+            "Scrolling",
+            "Sound effects",
+            "Save data"
+        ]
+    }
+}

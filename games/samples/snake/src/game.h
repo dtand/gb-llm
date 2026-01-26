@@ -33,9 +33,9 @@
 // GAME CONSTANTS
 // ============================================================
 
-#define SNAKE_MAX_LENGTH    64      // Maximum snake segments
-#define SNAKE_START_LENGTH  3       // Initial snake length
-#define MOVE_DELAY          8       // Frames between moves (lower = faster)
+#define SNAKE_MAX_LENGTH    64      // @tunable range:32-128 step:16 desc:"Maximum snake length (win condition)"
+#define SNAKE_START_LENGTH  3       // @tunable range:2-6 step:1 desc:"Initial snake length"
+#define MOVE_DELAY          8       // @tunable range:4-16 step:2 desc:"Frames between moves (lower = faster)"
 
 // ============================================================
 // DIRECTION CONSTANTS

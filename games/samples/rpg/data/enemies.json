@@ -1,0 +1,23 @@
+[
+  {
+    "id": 0,
+    "name": "SLIME",
+    "max_hp": 40,
+    "attack": 6,
+    "defense": 2
+  },
+  {
+    "id": 1,
+    "name": "GOBLIN",
+    "max_hp": 55,
+    "attack": 9,
+    "defense": 3
+  },
+  {
+    "id": 2,
+    "name": "SKELETON",
+    "max_hp": 35,
+    "attack": 12,
+    "defense": 1
+  }
+]

@@ -1,0 +1,310 @@
+{
+  "project_id": "sample-melody",
+  "project_name": "melody",
+  "description": "Music demo demonstrating Game Boy sound registers",
+  "template_source": null,
+  "template_name": null,
+  "current_state": "refined",
+  "features": {
+    "from_template": [],
+    "added": [
+      "music",
+      "sound_registers",
+      "sprites"
+    ],
+    "planned": []
+  },
+  "files": [
+    {
+      "path": "src/game.c",
+      "description": "Music sequencer and sound control for Melody",
+      "structs": [],
+      "functions": [
+        {
+          "name": "sound_init",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 45,
+          "line_end": 63
+        },
+        {
+          "name": "sound_play_note",
+          "return_type": "void",
+          "parameters": [
+            "uint16_t freq"
+          ],
+          "description": "",
+          "line_start": 70,
+          "line_end": 84
+        },
+        {
+          "name": "sound_stop",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 89,
+          "line_end": 92
+        },
+        {
+          "name": "game_init",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 101,
+          "line_end": 109
+        },
+        {
+          "name": "game_handle_input",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 118,
+          "line_end": 146
+        },
+        {
+          "name": "game_update",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 155,
+          "line_end": 183
+        },
+        {
+          "name": "game_render",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 192,
+          "line_end": 198
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "game.h",
+        "sprites.h"
+      ],
+      "lines": 199
+    },
+    {
+      "path": "src/main.c",
+      "description": "Entry point for Melody music demo",
+      "structs": [],
+      "functions": [
+        {
+          "name": "main",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 12,
+          "line_end": 25
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "game.h",
+        "sprites.h"
+      ],
+      "lines": 26
+    },
+    {
+      "path": "src/sprites.c",
+      "description": "Visual indicator tiles for Melody",
+      "structs": [],
+      "functions": [
+        {
+          "name": "sprites_init",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 67,
+          "line_end": 74
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "sprites.h"
+      ],
+      "lines": 75
+    },
+    {
+      "path": "src/game.h",
+      "description": "Music state and note definitions for Melody",
+      "structs": [
+        {
+          "name": "GameState",
+          "fields": [
+            {
+              "name": "playing",
+              "type": "uint8_t",
+              "comment": "Music is playing"
+            },
+            {
+              "name": "tempo",
+              "type": "uint8_t",
+              "comment": "Frames per note"
+            },
+            {
+              "name": "frame_count",
+              "type": "uint8_t",
+              "comment": "Frames since last note"
+            },
+            {
+              "name": "note_index",
+              "type": "uint8_t",
+              "comment": "Current note in sequence"
+            },
+            {
+              "name": "visual_pulse",
+              "type": "uint8_t",
+              "comment": "Visual indicator size (0-3)"
+            }
+          ],
+          "description": "",
+          "line_start": 52,
+          "line_end": 58
+        }
+      ],
+      "functions": [],
+      "constants": [
+        {
+          "name": "NOTE_C4",
+          "value": "1046",
+          "comment": "~262 Hz"
+        },
+        {
+          "name": "NOTE_D4",
+          "value": "1178",
+          "comment": "~294 Hz"
+        },
+        {
+          "name": "NOTE_E4",
+          "value": "1294",
+          "comment": "~330 Hz"
+        },
+        {
+          "name": "NOTE_F4",
+          "value": "1346",
+          "comment": "~349 Hz"
+        },
+        {
+          "name": "NOTE_G4",
+          "value": "1430",
+          "comment": "~392 Hz"
+        },
+        {
+          "name": "NOTE_A4",
+          "value": "1542",
+          "comment": "~440 Hz"
+        },
+        {
+          "name": "NOTE_B4",
+          "value": "1622",
+          "comment": "~494 Hz"
+        },
+        {
+          "name": "NOTE_C5",
+          "value": "1710",
+          "comment": "~523 Hz"
+        },
+        {
+          "name": "NOTE_REST",
+          "value": "0",
+          "comment": "Silence"
+        },
+        {
+          "name": "DEFAULT_TEMPO",
+          "value": "15",
+          "comment": "Frames per note"
+        },
+        {
+          "name": "MIN_TEMPO",
+          "value": "5",
+          "comment": ""
+        },
+        {
+          "name": "MAX_TEMPO",
+          "value": "30",
+          "comment": ""
+        }
+      ],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h"
+      ],
+      "lines": 78
+    },
+    {
+      "path": "src/sprites.h",
+      "description": "Sprite definitions for Melody",
+      "structs": [],
+      "functions": [],
+      "constants": [
+        {
+          "name": "TILE_PULSE_0",
+          "value": "0",
+          "comment": "Small"
+        },
+        {
+          "name": "TILE_PULSE_1",
+          "value": "1",
+          "comment": ""
+        },
+        {
+          "name": "TILE_PULSE_2",
+          "value": "2",
+          "comment": ""
+        },
+        {
+          "name": "TILE_PULSE_3",
+          "value": "3",
+          "comment": "Large"
+        },
+        {
+          "name": "SPRITE_INDICATOR",
+          "value": "0",
+          "comment": ""
+        }
+      ],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h"
+      ],
+      "lines": 25
+    }
+  ],
+  "patterns": [
+    "state_machine",
+    "sprites",
+    "tiles"
+  ],
+  "known_issues": [],
+  "last_build_success": true,
+  "last_build_error": null,
+  "rom_size_bytes": 32768,
+  "created_at": "2026-01-22T10:41:46.987663",
+  "last_updated": "2026-01-22T10:41:46.987668",
+  "summary_generated_at": "2026-01-22T10:41:46.987669"
+}

@@ -1,0 +1,28 @@
+{
+    "id": "maze",
+    "name": "Maze Explorer",
+    "version": "1.0.0",
+    "description": "Procedural maze generation with player navigation",
+    "author": "GB-LLM Corpus",
+    "created": "2026-01-23",
+    "category": "puzzle",
+    "features": [
+        "procedural_generation",
+        "recursive_backtracker",
+        "grid_navigation",
+        "breadcrumb_trail",
+        "level_progression"
+    ],
+    "controls": {
+        "dpad": "Move player through maze",
+        "start": "Start game / Next level",
+        "a": "Next level (after win)"
+    },
+    "technical": {
+        "rom_size": "32KB",
+        "ram_size": "None",
+        "mbc": "None",
+        "sprites_used": 0,
+        "background_tiles": 34
+    }
+}

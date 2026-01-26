@@ -18,8 +18,8 @@
 #define GROUND_Y            136     // Ground level for sprite (sprite Y coord where feet touch ground)
 #define PLAYER_HEIGHT       8       // Player sprite height
 #define GRAVITY             0       // Accumulated manually for slower fall
-#define JUMP_VELOCITY       (-4)    // Initial jump velocity (smaller = slower rise)
-#define SCROLL_SPEED        1       // Pixels per frame
+#define JUMP_VELOCITY       (-4)    // @tunable range:-6--2 step:1 desc:"Initial jump velocity (more negative = higher jump)"
+#define SCROLL_SPEED        1       // @tunable range:1-3 step:1 desc:"Background scroll speed in pixels per frame"
 
 // Background map is 32 tiles wide = 256 pixels
 #define BKG_MAP_WIDTH       32

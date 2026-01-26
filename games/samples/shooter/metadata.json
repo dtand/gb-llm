@@ -1,0 +1,51 @@
+{
+    "name": "shooter",
+    "version": "1.0.0",
+    "prompt": "Create a vertical scrolling space shooter. The player controls a ship at the bottom that can move left/right and shoot upward. Enemies spawn from the top and move down. Use the window layer for a HUD showing score and lives. The player ship should be a metasprite (16x16).",
+    "description": "Space shooter demonstrating vertical scrolling, metasprites, and window layer",
+    "complexity": 3,
+    "features": [
+        "vertical_scrolling",
+        "metasprites",
+        "window_layer",
+        "sprites",
+        "collision_aabb"
+    ],
+    "controls": {
+        "dpad": "Move ship left/right",
+        "a_button": "Fire bullet",
+        "start": "Restart after game over"
+    },
+    "sprites_used": 12,
+    "background_tiles_used": 4,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "Vertical scrolling (SCY register)",
+        "Metasprite rendering (16x16 from 4 sprites)",
+        "Window layer for static HUD",
+        "Multiple entity management (bullets, enemies)",
+        "AABB collision detection"
+    ],
+    "training_notes": {
+        "demonstrates": [
+            "SCY register for vertical scrolling",
+            "Window layer positioning (WX, WY registers)",
+            "Metasprite composition from 8x8 tiles",
+            "Entity pooling for bullets and enemies",
+            "Sprite hiding/showing"
+        ],
+        "does_not_demonstrate": [
+            "Horizontal scrolling",
+            "Sound effects",
+            "Save data",
+            "Animation frames"
+        ]
+    }
+}

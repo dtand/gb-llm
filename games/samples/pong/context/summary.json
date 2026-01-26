@@ -1,0 +1,345 @@
+{
+  "project_id": "sample-pong",
+  "project_name": "pong",
+  "description": "Classic Pong arcade game with single-player vs AI",
+  "template_source": null,
+  "template_name": null,
+  "current_state": "refined",
+  "features": {
+    "from_template": [],
+    "added": [
+      "sprites",
+      "collision_detection",
+      "simple_ai",
+      "sound_effects",
+      "game_state_machine"
+    ],
+    "planned": []
+  },
+  "files": [
+    {
+      "path": "src/game.c",
+      "description": "Core game logic for Pong",
+      "structs": [],
+      "functions": [
+        {
+          "name": "game_init",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 36,
+          "line_end": 57
+        },
+        {
+          "name": "game_reset_ball",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 65,
+          "line_end": 75
+        },
+        {
+          "name": "game_handle_input",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 88,
+          "line_end": 100
+        },
+        {
+          "name": "game_update",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 243,
+          "line_end": 253
+        },
+        {
+          "name": "game_render",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 265,
+          "line_end": 278
+        },
+        {
+          "name": "sound_play_beep",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 290,
+          "line_end": 300
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "game.h",
+        "sprites.h"
+      ],
+      "lines": 301
+    },
+    {
+      "path": "src/main.c",
+      "description": "Entry point for Pong game",
+      "structs": [],
+      "functions": [
+        {
+          "name": "main",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 21,
+          "line_end": 41
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "game.h",
+        "sprites.h"
+      ],
+      "lines": 42
+    },
+    {
+      "path": "src/sprites.c",
+      "description": "Sprite tile data and initialization for Pong",
+      "structs": [],
+      "functions": [
+        {
+          "name": "sprites_init",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 94,
+          "line_end": 115
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "sprites.h"
+      ],
+      "lines": 116
+    },
+    {
+      "path": "src/game.h",
+      "description": "Game state and constants for Pong",
+      "structs": [
+        {
+          "name": "GameState",
+          "fields": [
+            {
+              "name": "paddle_left_y",
+              "type": "uint8_t",
+              "comment": ""
+            },
+            {
+              "name": "paddle_right_y",
+              "type": "uint8_t",
+              "comment": "Ball position"
+            },
+            {
+              "name": "ball_x",
+              "type": "uint8_t",
+              "comment": ""
+            },
+            {
+              "name": "ball_y",
+              "type": "uint8_t",
+              "comment": "Ball velocity (signed for direction)"
+            },
+            {
+              "name": "ball_dx",
+              "type": "int8_t",
+              "comment": ""
+            },
+            {
+              "name": "ball_dy",
+              "type": "int8_t",
+              "comment": "Ball speed magnitude (increases on paddle hits)"
+            },
+            {
+              "name": "ball_speed",
+              "type": "uint8_t",
+              "comment": "Player scores"
+            },
+            {
+              "name": "score_left",
+              "type": "uint8_t",
+              "comment": ""
+            },
+            {
+              "name": "score_right",
+              "type": "uint8_t",
+              "comment": "State flags"
+            },
+            {
+              "name": "game_over",
+              "type": "uint8_t",
+              "comment": ""
+            },
+            {
+              "name": "paused",
+              "type": "uint8_t",
+              "comment": ""
+            }
+          ],
+          "description": "",
+          "line_start": 63,
+          "line_end": 86
+        }
+      ],
+      "functions": [],
+      "constants": [
+        {
+          "name": "SCREEN_LEFT",
+          "value": "8",
+          "comment": ""
+        },
+        {
+          "name": "SCREEN_RIGHT",
+          "value": "168",
+          "comment": ""
+        },
+        {
+          "name": "SCREEN_TOP",
+          "value": "16",
+          "comment": ""
+        },
+        {
+          "name": "SCREEN_BOTTOM",
+          "value": "160",
+          "comment": "============================================================"
+        },
+        {
+          "name": "PADDLE_HEIGHT",
+          "value": "24",
+          "comment": "Paddle is 3 tiles tall (3 * 8px)"
+        },
+        {
+          "name": "PADDLE_WIDTH",
+          "value": "8",
+          "comment": "Paddle is 1 tile wide"
+        },
+        {
+          "name": "BALL_SIZE",
+          "value": "8",
+          "comment": "Ball is 1 tile (8x8)"
+        },
+        {
+          "name": "PADDLE_SPEED",
+          "value": "2",
+          "comment": "Pixels per frame when moving"
+        },
+        {
+          "name": "BALL_SPEED_INIT",
+          "value": "1",
+          "comment": "Starting ball speed"
+        },
+        {
+          "name": "PADDLE_LEFT_X",
+          "value": "16",
+          "comment": ""
+        },
+        {
+          "name": "PADDLE_RIGHT_X",
+          "value": "152",
+          "comment": "Paddle Y movement bounds"
+        },
+        {
+          "name": "WIN_SCORE",
+          "value": "5",
+          "comment": "============================================================"
+        }
+      ],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h"
+      ],
+      "lines": 118
+    },
+    {
+      "path": "src/sprites.h",
+      "description": "Sprite and tile definitions for Pong",
+      "structs": [],
+      "functions": [],
+      "constants": [
+        {
+          "name": "TILE_BALL",
+          "value": "0",
+          "comment": ""
+        },
+        {
+          "name": "TILE_PADDLE_TOP",
+          "value": "1",
+          "comment": ""
+        },
+        {
+          "name": "TILE_PADDLE_MID",
+          "value": "2",
+          "comment": ""
+        },
+        {
+          "name": "TILE_PADDLE_BOT",
+          "value": "3",
+          "comment": "============================================================"
+        },
+        {
+          "name": "SPRITE_BALL",
+          "value": "0",
+          "comment": ""
+        },
+        {
+          "name": "SPRITE_PADDLE_L",
+          "value": "1",
+          "comment": "Uses sprites 1, 2, 3"
+        },
+        {
+          "name": "SPRITE_PADDLE_R",
+          "value": "4",
+          "comment": "Uses sprites 4, 5, 6"
+        }
+      ],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h"
+      ],
+      "lines": 48
+    }
+  ],
+  "patterns": [
+    "state_machine",
+    "sprites",
+    "tiles",
+    "scoring",
+    "paddle",
+    "ball_physics"
+  ],
+  "known_issues": [],
+  "last_build_success": true,
+  "last_build_error": null,
+  "rom_size_bytes": 32768,
+  "created_at": "2026-01-22T10:41:46.991774",
+  "last_updated": "2026-01-22T10:41:46.991775",
+  "summary_generated_at": "2026-01-22T10:41:46.991775"
+}

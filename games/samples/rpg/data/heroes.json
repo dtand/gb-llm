@@ -1,0 +1,11 @@
+[
+  {
+    "id": 0,
+    "name": "HERO",
+    "max_hp": 50,
+    "max_mp": 20,
+    "attack": 8,
+    "defense": 4,
+    "magic_dmg": 15
+  }
+]

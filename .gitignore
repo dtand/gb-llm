@@ -7,6 +7,12 @@
 *.gbc
 build/
 
+# Generated projects (keep manifest only)
+games/projects/*/
+
+# Vector db
+games/corpus_db/*/
+
 # OS files
 .DS_Store
 Thumbs.db

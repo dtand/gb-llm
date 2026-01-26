@@ -1,0 +1,26 @@
+{
+    "id": "fishing",
+    "name": "Fishing Minigame",
+    "version": "1.0.0",
+    "description": "Timing-based fishing game with reaction window",
+    "author": "GB-LLM Corpus",
+    "created": "2026-01-24",
+    "category": "minigame",
+    "features": [
+        "timing_mechanics",
+        "reaction_window",
+        "water_animation",
+        "bobber_physics",
+        "catch_feedback"
+    ],
+    "controls": {
+        "a": "Cast line / Catch fish"
+    },
+    "technical": {
+        "rom_size": "32KB",
+        "ram_size": "None",
+        "mbc": "None",
+        "sprites_used": 0,
+        "background_tiles": 50
+    }
+}

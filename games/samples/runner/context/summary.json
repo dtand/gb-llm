@@ -1,0 +1,278 @@
+{
+  "project_id": "sample-runner",
+  "project_name": "runner",
+  "description": "Endless runner demonstrating hardware scrolling",
+  "template_source": null,
+  "template_name": null,
+  "current_state": "refined",
+  "features": {
+    "from_template": [],
+    "added": [
+      "sprites",
+      "scrolling",
+      "background_tiles",
+      "collision_detection"
+    ],
+    "planned": []
+  },
+  "files": [
+    {
+      "path": "src/game.c",
+      "description": "Core game logic for Runner",
+      "structs": [],
+      "functions": [
+        {
+          "name": "game_init",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 34,
+          "line_end": 46
+        },
+        {
+          "name": "game_setup_background",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 53,
+          "line_end": 83
+        },
+        {
+          "name": "game_handle_input",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 92,
+          "line_end": 112
+        },
+        {
+          "name": "game_update",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 161,
+          "line_end": 193
+        },
+        {
+          "name": "game_render",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 202,
+          "line_end": 204
+        }
+      ],
+      "constants": [
+        {
+          "name": "NUM_OBSTACLES",
+          "value": "3",
+          "comment": "============================================================"
+        }
+      ],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "game.h",
+        "sprites.h"
+      ],
+      "lines": 205
+    },
+    {
+      "path": "src/main.c",
+      "description": "Entry point for Runner game",
+      "structs": [],
+      "functions": [
+        {
+          "name": "main",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 12,
+          "line_end": 26
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "game.h",
+        "sprites.h"
+      ],
+      "lines": 27
+    },
+    {
+      "path": "src/sprites.c",
+      "description": "Tile data and initialization for Runner",
+      "structs": [],
+      "functions": [
+        {
+          "name": "sprites_init",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 58,
+          "line_end": 69
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "sprites.h"
+      ],
+      "lines": 70
+    },
+    {
+      "path": "src/game.h",
+      "description": "Game state and constants for Runner",
+      "structs": [
+        {
+          "name": "GameState",
+          "fields": [
+            {
+              "name": "player_y",
+              "type": "int16_t",
+              "comment": "Sprite Y position (signed for jump math)"
+            },
+            {
+              "name": "velocity_y",
+              "type": "int8_t",
+              "comment": "Vertical velocity (negative = up)"
+            },
+            {
+              "name": "on_ground",
+              "type": "uint8_t",
+              "comment": "Is player on ground?"
+            },
+            {
+              "name": "scroll_x",
+              "type": "uint8_t",
+              "comment": "Current SCX value (0-255, wraps)"
+            },
+            {
+              "name": "score",
+              "type": "uint16_t",
+              "comment": "State flags"
+            },
+            {
+              "name": "game_over",
+              "type": "uint8_t",
+              "comment": ""
+            }
+          ],
+          "description": "",
+          "line_start": 32,
+          "line_end": 46
+        }
+      ],
+      "functions": [],
+      "constants": [
+        {
+          "name": "PLAYER_X",
+          "value": "24",
+          "comment": "Fixed X position (sprite coords)"
+        },
+        {
+          "name": "GROUND_Y",
+          "value": "136",
+          "comment": "Ground level for sprite (sprite Y coord where feet touch ground)"
+        },
+        {
+          "name": "PLAYER_HEIGHT",
+          "value": "8",
+          "comment": "Player sprite height"
+        },
+        {
+          "name": "GRAVITY",
+          "value": "0",
+          "comment": "Accumulated manually for slower fall"
+        },
+        {
+          "name": "SCROLL_SPEED",
+          "value": "1",
+          "comment": "Pixels per frame"
+        },
+        {
+          "name": "BKG_MAP_WIDTH",
+          "value": "32",
+          "comment": ""
+        },
+        {
+          "name": "GROUND_TILE_Y",
+          "value": "16",
+          "comment": "Tile row for ground (16 * 8 = 128 screen Y)"
+        }
+      ],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h"
+      ],
+      "lines": 63
+    },
+    {
+      "path": "src/sprites.h",
+      "description": "Sprite and tile definitions for Runner",
+      "structs": [],
+      "functions": [],
+      "constants": [
+        {
+          "name": "TILE_EMPTY",
+          "value": "0",
+          "comment": ""
+        },
+        {
+          "name": "TILE_GROUND",
+          "value": "1",
+          "comment": ""
+        },
+        {
+          "name": "TILE_OBSTACLE",
+          "value": "2",
+          "comment": "Sprite tiles"
+        },
+        {
+          "name": "TILE_PLAYER",
+          "value": "0",
+          "comment": "Sprite indices"
+        },
+        {
+          "name": "SPRITE_PLAYER",
+          "value": "0",
+          "comment": ""
+        }
+      ],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h"
+      ],
+      "lines": 27
+    }
+  ],
+  "patterns": [
+    "state_machine",
+    "sprites",
+    "tiles",
+    "gravity"
+  ],
+  "known_issues": [],
+  "last_build_success": true,
+  "last_build_error": null,
+  "rom_size_bytes": 32768,
+  "created_at": "2026-01-22T10:41:46.995720",
+  "last_updated": "2026-01-22T10:41:46.995722",
+  "summary_generated_at": "2026-01-22T10:41:46.995723"
+}

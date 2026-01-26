@@ -1,0 +1,39 @@
+{
+    "name": "rpg",
+    "version": "1.0.0",
+    "prompt": "Create a turn-based RPG battle demo. The player controls a hero fighting a monster. Implement a menu system with Attack, Magic, Defend, and Flee options. Show HP/MP bars for the hero and HP for the monster. Use a state machine for turn-based combat flow.",
+    "description": "Turn-based RPG battle demonstrating menu systems, state machines, and stat management",
+    "complexity": 3,
+    "features": [
+        "menu_system",
+        "state_machine",
+        "stat_bars",
+        "turn_based_combat",
+        "metasprites"
+    ],
+    "controls": {
+        "dpad": "Navigate menu options",
+        "a_button": "Select menu option",
+        "start": "Restart after battle ends"
+    },
+    "sprites_used": 4,
+    "background_tiles_used": 74,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "State machine for battle flow (MENU, PLAYER_TURN, ENEMY_TURN, etc.)",
+        "Menu navigation with D-pad (2x2 grid layout)",
+        "HP/MP bar rendering with filled/empty tiles",
+        "Damage calculation with attack, defense, and variance",
+        "Box drawing for UI windows",
+        "Text rendering with letter tiles",
+        "16x16 metasprite for hero character",
+        "32x32 monster using background tiles"
+    ]
+}

@@ -1,0 +1,48 @@
+{
+    "name": "parallax",
+    "version": "1.0.0",
+    "prompt": "Create a parallax scrolling demo showing a landscape with mountains in the back, hills in the middle, and ground in the front. Each layer scrolls at a different speed to create depth. Use HBlank or split the screen to achieve the effect.",
+    "description": "Parallax scrolling demo with multiple depth layers",
+    "complexity": 3,
+    "features": [
+        "parallax_scrolling",
+        "scrolling",
+        "backgrounds",
+        "tiles"
+    ],
+    "controls": {
+        "dpad_left_right": "Scroll scene left/right",
+        "a_button": "Speed up scrolling"
+    },
+    "sprites_used": 0,
+    "background_tiles_used": 8,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "Multiple scroll speeds for depth",
+        "LYC interrupt for mid-screen scroll change",
+        "Scanline-based scroll register updates",
+        "Landscape tile composition"
+    ],
+    "training_notes": {
+        "demonstrates": [
+            "LYC_REG for scanline interrupts",
+            "SCX_REG manipulation per scanline region",
+            "STAT interrupt for HBlank timing",
+            "Parallax depth illusion",
+            "Layer-based scene composition"
+        ],
+        "does_not_demonstrate": [
+            "Sprites",
+            "Sound effects",
+            "Save data",
+            "Window layer"
+        ]
+    }
+}

@@ -249,6 +249,194 @@ y = value & 0x03;       // Modulo 4 (power of 2 only)
 
 ---
 
+## Tunable Parameters (REQUIRED)
+
+Games should expose key gameplay values as tunable parameters that users can adjust without code changes. Mark these with the `@tunable` comment annotation.
+
+### Syntax
+
+```c
+// @tunable [category] range:MIN-MAX Description
+#define CONSTANT_NAME value
+```
+
+The constant name can be anything appropriate for the game—the annotation defines the category and range.
+
+### Categories
+
+Identify tunable values by their **purpose** and assign the appropriate category:
+
+| Category | What to include |
+|----------|-----------------|
+| `player` | Movement speeds, jump strength, lives, health, starting positions |
+| `physics` | Gravity, friction, acceleration, terminal velocities, bounce factors |
+| `difficulty` | Enemy speeds, spawn rates, max enemies, obstacle counts |
+| `timing` | Animation delays, invincibility frames, cooldowns, level durations |
+| `scoring` | Points per action, bonuses, multipliers |
+| `enemies` | Enemy-specific values: patrol ranges, attack speeds, damage amounts |
+
+### How to Identify Tunables
+
+Mark a constant as tunable if:
+- It controls **how fast** something moves or animates
+- It controls **how many** of something exists
+- It controls **how often** something happens
+- It affects **game balance** (lives, damage, points)
+- A player might want to adjust it to change difficulty
+
+### Range Guidelines
+
+Choose ranges that keep the game playable:
+- **Speeds**: Usually 1-8 pixels/frame (higher breaks collision detection)
+- **Counts**: Based on sprite limits and gameplay balance
+- **Timing**: Consider 60fps (60 frames = 1 second)
+- **Lives/Health**: 1-9 is reasonable for most games
+
+### Using Tunables with Structs
+
+When a tunable value initializes a struct field, define the constant and use it:
+
+```c
+// In game.h
+// @tunable player range:1-5 Starting health points
+#define INITIAL_HEALTH 3
+
+// In game.c
+void player_init(Player* p) {
+    p->health = INITIAL_HEALTH;  // Use the tunable constant
+}
+```
+
+### What NOT to Make Tunable
+
+- Screen dimensions (160x144 is fixed)
+- Hardware addresses (VRAM, OAM, etc.)
+- Sprite tile indices (depend on asset layout)
+- Internal counters/flags
+- Buffer sizes
+- Tile map dimensions
+
+### Example
+
+```c
+// @tunable player range:1-4 How fast the ship moves
+#define SHIP_VELOCITY 2
+
+// @tunable physics range:0-3 Slowdown when not thrusting
+#define DRAG_FACTOR 1
+
+// @tunable difficulty range:30-120 Frames between asteroid spawns
+#define ASTEROID_INTERVAL 60
+
+// @tunable scoring range:50-200 Points for destroying large asteroid
+#define LARGE_ASTEROID_POINTS 100
+
+// @tunable enemies range:8-24 How far enemies patrol
+#define PATROL_DISTANCE 16
+```
+
+---
+
+## Data Tables (For Content-Heavy Games)
+
+For games with multiple instances of similar content (characters, items, enemies, levels), use the data table system instead of hardcoding values. This allows designers to edit content via the UI without touching code.
+
+### When to Use Data Tables vs Tunables
+
+| Use Case | Solution |
+|----------|----------|
+| Single global value (gravity, player speed) | `@tunable` |
+| Multiple instances with same structure (enemies, items) | Data table |
+| One setting that affects entire game | `@tunable` |
+| Collection of distinct objects with stats | Data table |
+
+**Rule of thumb:**
+- `@tunable` = "How the game feels" (sliders)
+- Data tables = "What exists in the game" (spreadsheets)
+
+### Schema Definition
+
+Define data structures in `_schema.json`:
+
+```json
+{
+  "version": 1,
+  "tables": {
+    "enemies": {
+      "description": "Enemy types in the game",
+      "fields": {
+        "id": {"type": "uint8", "auto": true},
+        "name": {"type": "string", "length": 10, "required": true},
+        "hp": {"type": "uint8", "min": 1, "max": 255, "default": 5},
+        "attack": {"type": "uint8", "default": 3},
+        "element": {"type": "enum", "values": ["none", "fire", "water"]},
+        "drop_id": {"type": "ref", "target": "items", "nullable": true}
+      }
+    }
+  }
+}
+```
+
+### Field Types
+
+| Type | C Type | Size | Properties |
+|------|--------|------|------------|
+| `uint8` | `uint8_t` | 1 byte | `min`, `max`, `default` |
+| `int8` | `int8_t` | 1 byte | `min`, `max`, `default` |
+| `uint16` | `uint16_t` | 2 bytes | `min`, `max`, `default` |
+| `int16` | `int16_t` | 2 bytes | `min`, `max`, `default` |
+| `bool` | `uint8_t` | 1 byte | `default` |
+| `string` | `char[N]` | N bytes | `length` (required), `required` |
+| `enum` | `uint8_t` | 1 byte | `values` (required), `default` |
+| `ref` | `uint8_t` | 1 byte | `target` (required), `nullable` |
+
+### Generated Code
+
+The data generator creates `build/data.h` and `build/data.c`:
+
+```c
+// In your game code
+#include "../build/data.h"
+
+void show_enemy(uint8_t enemy_id) {
+    const Enemy* e = get_enemy(enemy_id);
+    if (e) {
+        draw_text(e->name);
+        draw_number(e->hp);
+    }
+}
+```
+
+### File Structure
+
+```
+project/
+├── _schema.json         # Table definitions
+├── data/
+│   ├── enemies.json     # Enemy data (edited via UI)
+│   ├── items.json       # Item data
+│   └── characters.json  # Character data
+├── build/
+│   ├── data.h           # Auto-generated header
+│   ├── data.c           # Auto-generated source
+│   └── rom_budget.json  # Memory usage report
+└── src/
+    └── main.c           # #include "../build/data.h"
+```
+
+### ROM Budget
+
+The generator tracks memory usage per bank (16KB limit). Monitor `build/rom_budget.json` to ensure data fits in ROM.
+
+### Best Practices
+
+1. **Keep strings short** - Every character costs a byte
+2. **Use uint8 when possible** - Most stats fit in 0-255
+3. **Reference other tables** - Use `ref` type instead of duplicating data
+4. **Group related data** - One table per concept (enemies, items, maps)
+
+---
+
 ## Metadata Requirements
 
 ### metadata.json (Mandatory)

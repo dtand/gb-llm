@@ -1,0 +1,27 @@
+{
+    "id": "slots",
+    "name": "Slot Machine",
+    "version": "1.0.0",
+    "description": "Classic slot machine with spinning reels and payouts",
+    "author": "GB-LLM Corpus",
+    "created": "2026-01-23",
+    "category": "casino",
+    "features": [
+        "spinning_reels",
+        "payout_calculation",
+        "coin_system",
+        "symbol_matching",
+        "animated_reels"
+    ],
+    "controls": {
+        "a": "Spin reels / Start game",
+        "start": "Restart after game over"
+    },
+    "technical": {
+        "rom_size": "32KB",
+        "ram_size": "None",
+        "mbc": "None",
+        "sprites_used": 0,
+        "background_tiles": 54
+    }
+}

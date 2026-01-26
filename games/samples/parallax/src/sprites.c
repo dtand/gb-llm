@@ -1,0 +1,73 @@
+/**
+ * @file    sprites.c
+ * @brief   Tile data and initialization for Parallax Scroller
+ * @game    parallax
+ */
+
+#include <gb/gb.h>
+#include <stdint.h>
+#include "sprites.h"
+
+// ============================================================
+// BACKGROUND TILES
+// ============================================================
+
+/** Sky tile - lightest shade */
+const uint8_t sky_tile[] = {
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+
+/** Mountain tile - darkest shade (silhouette) */
+const uint8_t mountain_tile[] = {
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+};
+
+/** Hills tile - medium-dark shade with slight texture */
+const uint8_t hills_tile[] = {
+    0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55,
+    0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55
+};
+
+/** Grass tile - top of ground with grass texture */
+const uint8_t grass_tile[] = {
+    0x55, 0x00, 0xAA, 0x00, 0x55, 0x00, 0xFF, 0x00,
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+};
+
+/** Ground tile - dirt fill with texture */
+const uint8_t ground_tile[] = {
+    0xFF, 0x55, 0xFF, 0xAA, 0xFF, 0x55, 0xFF, 0xAA,
+    0xFF, 0x55, 0xFF, 0xAA, 0xFF, 0x55, 0xFF, 0xAA
+};
+
+/** Rock tile - visible marker on ground */
+const uint8_t rock_tile[] = {
+    0xFF, 0xFF, 0xFF, 0xFF, 0xE7, 0xE7, 0xC3, 0xC3,
+    0xC3, 0xC3, 0xC3, 0xC3, 0xE7, 0xE7, 0xFF, 0xFF
+};
+
+/** Tree tile - visible marker */
+const uint8_t tree_tile[] = {
+    0xE7, 0xE7, 0xC3, 0xC3, 0x81, 0x81, 0x00, 0x00,
+    0x00, 0x00, 0x81, 0x81, 0xE7, 0xE7, 0xE7, 0xE7
+};
+
+// ============================================================
+// INITIALIZATION
+// ============================================================
+
+/**
+ * @brief   Initialize all background tiles
+ */
+void sprites_init(void) {
+    // Load background tiles
+    set_bkg_data(TILE_SKY, 1, sky_tile);
+    set_bkg_data(TILE_MOUNTAIN, 1, mountain_tile);
+    set_bkg_data(TILE_HILLS, 1, hills_tile);
+    set_bkg_data(TILE_GRASS, 1, grass_tile);
+    set_bkg_data(TILE_GROUND, 1, ground_tile);
+    set_bkg_data(TILE_ROCK, 1, rock_tile);
+    set_bkg_data(TILE_TREE, 1, tree_tile);
+}

@@ -1,0 +1,41 @@
+{
+    "name": "racing",
+    "version": "1.0.0",
+    "prompt": "Create a top-down racing game. The player car is at the bottom of the screen and steers left/right. The track scrolls vertically. Press A to accelerate, B to brake. Avoid obstacle cars. Complete 3 laps to finish. Show lap counter, timer, and speed.",
+    "description": "Top-down racing game demonstrating vertical scrolling, speed control, and lap counting",
+    "complexity": 3,
+    "features": [
+        "vertical_scrolling",
+        "speed_control",
+        "lap_counting",
+        "obstacle_avoidance",
+        "metasprites",
+        "countdown_timer"
+    ],
+    "controls": {
+        "dpad_lr": "Steer left/right",
+        "a_button": "Accelerate",
+        "b_button": "Brake",
+        "start": "Restart after finish"
+    },
+    "sprites_used": 8,
+    "background_tiles_used": 32,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "Vertical background scrolling (SCY_REG)",
+        "Speed-based scroll rate",
+        "Metasprite composition (2x2 car sprites)",
+        "Obstacle spawning and movement",
+        "AABB collision detection",
+        "Lap counting with finish line detection",
+        "Countdown sequence before race",
+        "Timer display in HUD"
+    ]
+}

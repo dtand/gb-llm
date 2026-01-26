@@ -1,0 +1,311 @@
+{
+  "project_id": "sample-clicker",
+  "project_name": "clicker",
+  "description": "Click counter demonstrating battery-backed save data",
+  "template_source": null,
+  "template_name": null,
+  "current_state": "refined",
+  "features": {
+    "from_template": [],
+    "added": [
+      "save_data",
+      "sram",
+      "background_tiles"
+    ],
+    "planned": []
+  },
+  "files": [
+    {
+      "path": "src/game.c",
+      "description": "Counter logic and SRAM save/load for Clicker",
+      "structs": [],
+      "functions": [
+        {
+          "name": "save_load",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 32,
+          "line_end": 47
+        },
+        {
+          "name": "save_write",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 54,
+          "line_end": 62
+        },
+        {
+          "name": "save_clear",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 69,
+          "line_end": 80
+        },
+        {
+          "name": "game_init",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 89,
+          "line_end": 92
+        },
+        {
+          "name": "game_handle_input",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 101,
+          "line_end": 126
+        },
+        {
+          "name": "game_update",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 135,
+          "line_end": 141
+        },
+        {
+          "name": "game_render",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 170,
+          "line_end": 202
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdio.h",
+        "stdint.h",
+        "game.h",
+        "sprites.h"
+      ],
+      "lines": 203
+    },
+    {
+      "path": "src/main.c",
+      "description": "Entry point for Clicker save demo",
+      "structs": [],
+      "functions": [
+        {
+          "name": "main",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 13,
+          "line_end": 29
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdio.h",
+        "stdint.h",
+        "game.h",
+        "sprites.h"
+      ],
+      "lines": 30
+    },
+    {
+      "path": "src/sprites.c",
+      "description": "Number and letter tiles for Clicker",
+      "structs": [],
+      "functions": [
+        {
+          "name": "sprites_init",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 104,
+          "line_end": 154
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "sprites.h"
+      ],
+      "lines": 155
+    },
+    {
+      "path": "src/game.h",
+      "description": "Game state and SRAM definitions for Clicker",
+      "structs": [
+        {
+          "name": "GameState",
+          "fields": [
+            {
+              "name": "count",
+              "type": "uint16_t",
+              "comment": "Current count"
+            },
+            {
+              "name": "highscore",
+              "type": "uint16_t",
+              "comment": "Loaded from SRAM"
+            },
+            {
+              "name": "save_valid",
+              "type": "uint8_t",
+              "comment": "Save data was valid on load"
+            }
+          ],
+          "description": "",
+          "line_start": 32,
+          "line_end": 36
+        }
+      ],
+      "functions": [],
+      "constants": [
+        {
+          "name": "SAVE_MAGIC",
+          "value": "0x42",
+          "comment": "============================================================"
+        }
+      ],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h"
+      ],
+      "lines": 56
+    },
+    {
+      "path": "src/sprites.h",
+      "description": "Tile definitions for Clicker",
+      "structs": [],
+      "functions": [],
+      "constants": [
+        {
+          "name": "TILE_DIGIT_0",
+          "value": "0",
+          "comment": ""
+        },
+        {
+          "name": "TILE_DIGIT_1",
+          "value": "1",
+          "comment": ""
+        },
+        {
+          "name": "TILE_DIGIT_2",
+          "value": "2",
+          "comment": ""
+        },
+        {
+          "name": "TILE_DIGIT_3",
+          "value": "3",
+          "comment": ""
+        },
+        {
+          "name": "TILE_DIGIT_4",
+          "value": "4",
+          "comment": ""
+        },
+        {
+          "name": "TILE_DIGIT_5",
+          "value": "5",
+          "comment": ""
+        },
+        {
+          "name": "TILE_DIGIT_6",
+          "value": "6",
+          "comment": ""
+        },
+        {
+          "name": "TILE_DIGIT_7",
+          "value": "7",
+          "comment": ""
+        },
+        {
+          "name": "TILE_DIGIT_8",
+          "value": "8",
+          "comment": ""
+        },
+        {
+          "name": "TILE_DIGIT_9",
+          "value": "9",
+          "comment": "Blank tile for clearing screen"
+        },
+        {
+          "name": "TILE_BLANK",
+          "value": "20",
+          "comment": "Letter tiles for labels"
+        },
+        {
+          "name": "TILE_C",
+          "value": "10",
+          "comment": ""
+        },
+        {
+          "name": "TILE_O",
+          "value": "11",
+          "comment": ""
+        },
+        {
+          "name": "TILE_U",
+          "value": "12",
+          "comment": ""
+        },
+        {
+          "name": "TILE_N",
+          "value": "13",
+          "comment": ""
+        },
+        {
+          "name": "TILE_T",
+          "value": "14",
+          "comment": ""
+        },
+        {
+          "name": "TILE_I",
+          "value": "16",
+          "comment": ""
+        },
+        {
+          "name": "TILE_G",
+          "value": "17",
+          "comment": ""
+        }
+      ],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h"
+      ],
+      "lines": 41
+    }
+  ],
+  "patterns": [
+    "state_machine",
+    "tiles"
+  ],
+  "known_issues": [],
+  "last_build_success": true,
+  "last_build_error": null,
+  "rom_size_bytes": 32768,
+  "created_at": "2026-01-22T10:41:46.984340",
+  "last_updated": "2026-01-22T10:41:46.984342",
+  "summary_generated_at": "2026-01-22T10:41:46.984343"
+}

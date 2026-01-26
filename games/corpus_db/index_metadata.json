@@ -1,0 +1,17 @@
+{
+  "indexed_at": "2026-01-24T11:12:14.806170",
+  "stats": {
+    "files_processed": 100,
+    "functions_indexed": 271,
+    "sprites_indexed": 120,
+    "structs_indexed": 29,
+    "constants_indexed": 353,
+    "errors": []
+  },
+  "stores": {
+    "functions": 271,
+    "sprites": 120,
+    "structs": 29,
+    "constants": 225
+  }
+}

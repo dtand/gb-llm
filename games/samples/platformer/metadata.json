@@ -1,0 +1,52 @@
+{
+    "name": "platformer",
+    "version": "1.0.0",
+    "prompt": "Create a simple platformer where a character can run left/right and jump onto platforms. Include variable jump height (hold A longer = jump higher). Show a few platforms at different heights to jump between.",
+    "description": "Basic platformer demonstrating platform collision and variable jump",
+    "complexity": 3,
+    "features": [
+        "platform_collision",
+        "variable_jump",
+        "gravity",
+        "sprites",
+        "tiles",
+        "dpad"
+    ],
+    "controls": {
+        "dpad_left_right": "Move left/right",
+        "a_button": "Jump (hold for higher jump)",
+        "start": "Restart"
+    },
+    "sprites_used": 1,
+    "background_tiles_used": 4,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "Tile-based platform collision",
+        "Variable jump height mechanic",
+        "Gravity with terminal velocity",
+        "Ground detection from below",
+        "Horizontal movement with boundary checks"
+    ],
+    "training_notes": {
+        "demonstrates": [
+            "Checking tile at player position",
+            "Jump buffering/variable height",
+            "Separating X and Y collision",
+            "Platform landing detection",
+            "Coyote time concept (simplified)"
+        ],
+        "does_not_demonstrate": [
+            "Scrolling camera",
+            "Enemies",
+            "Sound effects",
+            "Animation frames"
+        ]
+    }
+}

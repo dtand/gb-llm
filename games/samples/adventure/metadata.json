@@ -1,0 +1,50 @@
+{
+    "name": "adventure",
+    "version": "1.0.0",
+    "prompt": "Create a top-down adventure game. Player moves in 4 directions through a tile-based world with walls, trees, and an NPC to interact with. Press A near the NPC to show a dialog message.",
+    "description": "Top-down adventure demonstrating tile maps, 4-way movement, and NPC interaction",
+    "complexity": 3,
+    "features": [
+        "top_down_movement",
+        "tile_map",
+        "wall_collision",
+        "npc_interaction",
+        "dialog_system"
+    ],
+    "controls": {
+        "dpad": "Move in 4 directions",
+        "a_button": "Interact with NPC"
+    },
+    "sprites_used": 2,
+    "background_tiles_used": 5,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "Tile-based world map",
+        "4-directional grid movement",
+        "Collision with solid tiles",
+        "NPC proximity detection",
+        "Simple dialog box display"
+    ],
+    "training_notes": {
+        "demonstrates": [
+            "2D tile map stored as array",
+            "Tile collision lookup",
+            "Sprite-based player character",
+            "Proximity-based interaction",
+            "Window layer for dialog"
+        ],
+        "does_not_demonstrate": [
+            "Scrolling maps",
+            "Multiple rooms",
+            "Inventory system",
+            "Save data"
+        ]
+    }
+}

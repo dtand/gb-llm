@@ -28,8 +28,8 @@
 // BRICK LAYOUT
 // ============================================================
 
-#define BRICK_ROWS          5       // Number of brick rows
-#define BRICK_COLS          10      // Bricks per row
+#define BRICK_ROWS          5       // @tunable range:3-6 step:1 desc:"Number of brick rows"
+#define BRICK_COLS          10      // @tunable range:8-10 step:1 desc:"Number of bricks per row"
 #define BRICK_WIDTH         16      // Pixels (2 tiles)
 #define BRICK_HEIGHT        8       // Pixels (1 tile)
 #define BRICK_START_Y       24      // Y position of top brick row (in pixels)
@@ -44,7 +44,7 @@
 #define PADDLE_WIDTH        16      // Pixels (2 sprites)
 #define PADDLE_HEIGHT       8
 #define PADDLE_Y            128     // Fixed Y position
-#define PADDLE_SPEED        3       // Pixels per frame
+#define PADDLE_SPEED        3       // @tunable range:1-5 step:1 desc:"Paddle movement speed in pixels per frame"
 
 // Paddle screen boundaries (for sprite position)
 #define PADDLE_MIN_X        SPRITE_OFFSET_X
@@ -55,7 +55,7 @@
 // ============================================================
 
 #define BALL_SIZE           8       // 8x8 pixels
-#define BALL_SPEED          2       // Base speed (pixels per frame)
+#define BALL_SPEED          2       // @tunable range:1-4 step:1 desc:"Ball base speed in pixels per frame"
 
 // Ball boundaries (for sprite position)
 #define BALL_MIN_X          SPRITE_OFFSET_X
@@ -67,7 +67,7 @@
 // GAME STATE
 // ============================================================
 
-#define INITIAL_LIVES       3
+#define INITIAL_LIVES       3       // @tunable range:1-5 step:1 desc:"Starting number of lives"
 
 /**
  * @brief   Complete game state

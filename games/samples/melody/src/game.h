@@ -45,9 +45,9 @@
 // GAME STATE
 // ============================================================
 
-#define DEFAULT_TEMPO   15      // Frames per note
-#define MIN_TEMPO       5
-#define MAX_TEMPO       30
+#define DEFAULT_TEMPO   15      // @tunable range:5-30 step:5 desc:"Default frames per note"
+#define MIN_TEMPO       5       // @tunable range:3-10 step:1 desc:"Minimum tempo (fastest)"
+#define MAX_TEMPO       30      // @tunable range:20-60 step:5 desc:"Maximum tempo (slowest)"
 
 typedef struct {
     uint8_t playing;        // Music is playing

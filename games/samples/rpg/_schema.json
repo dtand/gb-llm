@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "tables": {
+    "heroes": {
+      "description": "Playable hero characters",
+      "fields": {
+        "id": {
+          "type": "uint8",
+          "auto": true
+        },
+        "name": {
+          "type": "string",
+          "length": 8,
+          "required": true
+        },
+        "max_hp": {
+          "type": "uint8",
+          "min": 10,
+          "max": 255,
+          "default": 50
+        },
+        "max_mp": {
+          "type": "uint8",
+          "min": 0,
+          "max": 99,
+          "default": 20
+        },
+        "attack": {
+          "type": "uint8",
+          "min": 1,
+          "max": 50,
+          "default": 8
+        },
+        "defense": {
+          "type": "uint8",
+          "min": 0,
+          "max": 50,
+          "default": 4
+        },
+        "magic_dmg": {
+          "type": "uint8",
+          "min": 0,
+          "max": 99,
+          "default": 15
+        }
+      }
+    },
+    "enemies": {
+      "description": "Enemy monsters",
+      "fields": {
+        "id": {
+          "type": "uint8",
+          "auto": true
+        },
+        "name": {
+          "type": "string",
+          "length": 8,
+          "required": true
+        },
+        "max_hp": {
+          "type": "uint8",
+          "min": 5,
+          "max": 255,
+          "default": 40
+        },
+        "attack": {
+          "type": "uint8",
+          "min": 1,
+          "max": 50,
+          "default": 6
+        },
+        "defense": {
+          "type": "uint8",
+          "min": 0,
+          "max": 50,
+          "default": 2
+        }
+      }
+    }
+  }
+}

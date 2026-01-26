@@ -1,0 +1,377 @@
+{
+  "project_id": "sample-adventure",
+  "project_name": "adventure",
+  "description": "Top-down adventure demonstrating tile maps, 4-way movement, and NPC interaction",
+  "template_source": null,
+  "template_name": null,
+  "current_state": "refined",
+  "features": {
+    "from_template": [],
+    "added": [
+      "top_down_movement",
+      "tile_map",
+      "wall_collision",
+      "npc_interaction",
+      "dialog_system"
+    ],
+    "planned": []
+  },
+  "files": [
+    {
+      "path": "src/game.c",
+      "description": "Core game logic for Top-Down Adventure",
+      "structs": [],
+      "functions": [
+        {
+          "name": "game_init",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 210,
+          "line_end": 228
+        },
+        {
+          "name": "game_handle_input",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 237,
+          "line_end": 270
+        },
+        {
+          "name": "game_update",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 279,
+          "line_end": 296
+        },
+        {
+          "name": "game_render",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 305,
+          "line_end": 315
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "game.h",
+        "sprites.h"
+      ],
+      "lines": 316
+    },
+    {
+      "path": "src/main.c",
+      "description": "Entry point for Top-Down Adventure game",
+      "structs": [],
+      "functions": [
+        {
+          "name": "main",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 17,
+          "line_end": 38
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "game.h",
+        "sprites.h"
+      ],
+      "lines": 39
+    },
+    {
+      "path": "src/sprites.c",
+      "description": "Sprite and tile data for Top-Down Adventure",
+      "structs": [],
+      "functions": [
+        {
+          "name": "sprites_init",
+          "return_type": "void",
+          "parameters": [
+            "void"
+          ],
+          "description": "",
+          "line_start": 118,
+          "line_end": 144
+        }
+      ],
+      "constants": [],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h",
+        "sprites.h"
+      ],
+      "lines": 145
+    },
+    {
+      "path": "src/game.h",
+      "description": "Game state and constants for Top-Down Adventure",
+      "structs": [
+        {
+          "name": "Player",
+          "fields": [
+            {
+              "name": "tile_x",
+              "type": "uint8_t",
+              "comment": "Position in tiles"
+            },
+            {
+              "name": "tile_y",
+              "type": "uint8_t",
+              "comment": ""
+            },
+            {
+              "name": "pixel_x",
+              "type": "uint8_t",
+              "comment": "Position in pixels (for sprite)"
+            },
+            {
+              "name": "pixel_y",
+              "type": "uint8_t",
+              "comment": ""
+            },
+            {
+              "name": "direction",
+              "type": "uint8_t",
+              "comment": "Facing direction"
+            },
+            {
+              "name": "move_timer",
+              "type": "uint8_t",
+              "comment": "Movement cooldown"
+            }
+          ],
+          "description": "",
+          "line_start": 44,
+          "line_end": 51
+        },
+        {
+          "name": "NPC",
+          "fields": [
+            {
+              "name": "tile_x",
+              "type": "uint8_t",
+              "comment": ""
+            },
+            {
+              "name": "tile_y",
+              "type": "uint8_t",
+              "comment": ""
+            },
+            {
+              "name": "active",
+              "type": "uint8_t",
+              "comment": ""
+            }
+          ],
+          "description": "",
+          "line_start": 56,
+          "line_end": 60
+        },
+        {
+          "name": "GameState",
+          "fields": [
+            {
+              "name": "player",
+              "type": "Player",
+              "comment": ""
+            },
+            {
+              "name": "npc",
+              "type": "NPC",
+              "comment": ""
+            },
+            {
+              "name": "dialog_active",
+              "type": "uint8_t",
+              "comment": ""
+            },
+            {
+              "name": "dialog_timer",
+              "type": "uint8_t",
+              "comment": ""
+            }
+          ],
+          "description": "",
+          "line_start": 65,
+          "line_end": 70
+        }
+      ],
+      "functions": [],
+      "constants": [
+        {
+          "name": "MAP_WIDTH",
+          "value": "20",
+          "comment": ""
+        },
+        {
+          "name": "MAP_HEIGHT",
+          "value": "18",
+          "comment": "Player movement"
+        },
+        {
+          "name": "MOVE_DELAY",
+          "value": "8",
+          "comment": "Frames between moves"
+        },
+        {
+          "name": "TILE_FLOOR",
+          "value": "0",
+          "comment": ""
+        },
+        {
+          "name": "TILE_WALL",
+          "value": "1",
+          "comment": ""
+        },
+        {
+          "name": "TILE_TREE",
+          "value": "2",
+          "comment": ""
+        },
+        {
+          "name": "TILE_PATH",
+          "value": "3",
+          "comment": ""
+        },
+        {
+          "name": "TILE_DOOR",
+          "value": "4",
+          "comment": "Directions"
+        },
+        {
+          "name": "DIR_DOWN",
+          "value": "0",
+          "comment": ""
+        },
+        {
+          "name": "DIR_UP",
+          "value": "1",
+          "comment": ""
+        },
+        {
+          "name": "DIR_LEFT",
+          "value": "2",
+          "comment": ""
+        },
+        {
+          "name": "DIR_RIGHT",
+          "value": "3",
+          "comment": "============================================================"
+        }
+      ],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h"
+      ],
+      "lines": 86
+    },
+    {
+      "path": "src/sprites.h",
+      "description": "Sprite and tile declarations for Top-Down Adventure",
+      "structs": [],
+      "functions": [],
+      "constants": [
+        {
+          "name": "SPR_PLAYER",
+          "value": "0",
+          "comment": ""
+        },
+        {
+          "name": "SPR_NPC",
+          "value": "1",
+          "comment": "============================================================"
+        },
+        {
+          "name": "BG_FLOOR",
+          "value": "0",
+          "comment": ""
+        },
+        {
+          "name": "BG_WALL",
+          "value": "1",
+          "comment": ""
+        },
+        {
+          "name": "BG_TREE",
+          "value": "2",
+          "comment": ""
+        },
+        {
+          "name": "BG_PATH",
+          "value": "3",
+          "comment": ""
+        },
+        {
+          "name": "BG_DOOR",
+          "value": "4",
+          "comment": ""
+        },
+        {
+          "name": "BG_DIALOG",
+          "value": "5",
+          "comment": "Solid dialog background"
+        },
+        {
+          "name": "BG_DIALOG_BORDER",
+          "value": "6",
+          "comment": "Dialog border"
+        },
+        {
+          "name": "BG_E",
+          "value": "8",
+          "comment": ""
+        },
+        {
+          "name": "BG_L",
+          "value": "9",
+          "comment": ""
+        },
+        {
+          "name": "BG_O",
+          "value": "10",
+          "comment": ""
+        },
+        {
+          "name": "BG_EXCLAIM",
+          "value": "11",
+          "comment": "============================================================"
+        }
+      ],
+      "includes": [
+        "gb/gb.h",
+        "stdint.h"
+      ],
+      "lines": 46
+    }
+  ],
+  "patterns": [
+    "state_machine",
+    "tiles"
+  ],
+  "known_issues": [],
+  "last_build_success": true,
+  "last_build_error": null,
+  "rom_size_bytes": 32768,
+  "created_at": "2026-01-22T10:41:46.978756",
+  "last_updated": "2026-01-22T10:41:46.978757",
+  "summary_generated_at": "2026-01-22T10:41:46.978758"
+}

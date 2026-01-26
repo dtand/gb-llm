@@ -27,11 +27,11 @@
 // GAME CONSTANTS
 // ============================================================
 
-#define PADDLE_HEIGHT   24      // Paddle is 3 tiles tall (3 * 8px)
+#define PADDLE_HEIGHT   24      // @tunable range:16-32 step:8 desc:"Paddle height in pixels (affects difficulty)"
 #define PADDLE_WIDTH    8       // Paddle is 1 tile wide
 #define BALL_SIZE       8       // Ball is 1 tile (8x8)
-#define PADDLE_SPEED    2       // Pixels per frame when moving
-#define BALL_SPEED_INIT 1       // Starting ball speed
+#define PADDLE_SPEED    2       // @tunable range:1-5 step:1 desc:"Paddle movement speed in pixels per frame"
+#define BALL_SPEED_INIT 1       // @tunable range:1-3 step:1 desc:"Starting ball speed"
 
 // Paddle X positions (fixed, paddles only move vertically)
 #define PADDLE_LEFT_X   16
@@ -48,7 +48,7 @@
 #define BALL_MAX_Y      (SCREEN_BOTTOM - BALL_SIZE)
 
 // Win condition
-#define WIN_SCORE       5
+#define WIN_SCORE       5       // @tunable range:3-10 step:1 desc:"Score needed to win the game"
 
 // ============================================================
 // GAME STATE

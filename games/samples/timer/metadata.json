@@ -1,0 +1,49 @@
+{
+    "name": "timer",
+    "version": "1.0.0",
+    "prompt": "Create a reaction time test game. After a random delay (1-3 seconds), show a prompt. The player presses A as fast as possible. Display their reaction time in milliseconds. Use the timer interrupt for accurate timing.",
+    "description": "Reaction time game demonstrating timer interrupts",
+    "complexity": 2,
+    "features": [
+        "timer",
+        "interrupt_handlers",
+        "rng",
+        "backgrounds"
+    ],
+    "controls": {
+        "a_button": "React to prompt / Start new round",
+        "start": "Start game"
+    },
+    "sprites_used": 0,
+    "background_tiles_used": 15,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "Timer interrupt setup (TMA, TAC registers)",
+        "Interrupt handler registration",
+        "Millisecond-accurate timing",
+        "Random delay generation",
+        "Number display with background tiles"
+    ],
+    "training_notes": {
+        "demonstrates": [
+            "TMA_REG for timer modulo",
+            "TAC_REG for timer control",
+            "add_TIM() for interrupt handler",
+            "enable_interrupts() / disable_interrupts()",
+            "Volatile variables for interrupt communication"
+        ],
+        "does_not_demonstrate": [
+            "Sprites",
+            "Scrolling",
+            "Sound effects",
+            "Save data"
+        ]
+    }
+}

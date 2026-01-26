@@ -1,0 +1,38 @@
+{
+    "name": "memory",
+    "version": "1.0.0",
+    "prompt": "Create a memory card matching game. Display a 4x4 grid of face-down cards. The player moves a cursor with the D-pad and flips cards with A. When two cards are flipped, check if they match. If they match, remove them. If not, flip them back after a short delay. Track moves and show victory when all pairs are matched.",
+    "description": "Card matching memory game demonstrating grid selection, state tracking, and match detection",
+    "complexity": 2,
+    "features": [
+        "grid_selection",
+        "card_flip_logic",
+        "match_detection",
+        "cursor_movement",
+        "shuffle_algorithm"
+    ],
+    "controls": {
+        "dpad": "Move cursor",
+        "a_button": "Flip selected card",
+        "start": "Restart after victory"
+    },
+    "sprites_used": 0,
+    "background_tiles_used": 43,
+    "rom_size_kb": 32,
+    "files": [
+        "src/main.c",
+        "src/game.h",
+        "src/game.c",
+        "src/sprites.h",
+        "src/sprites.c"
+    ],
+    "techniques": [
+        "4x4 grid card layout",
+        "Card state tracking (face-down, face-up, matched)",
+        "Fisher-Yates shuffle algorithm",
+        "Cursor-based grid navigation",
+        "Match detection comparing card symbols",
+        "Timer-based card reveal delay",
+        "Move counter display"
+    ]
+}
