@@ -1,0 +1,140 @@
+{
+  "files": {
+    "src/game.h": {
+      "type": "header",
+      "lines": 126,
+      "includes": [
+        "gb.h",
+        "stdint.h"
+      ],
+      "structs": {
+        "GameState": {
+          "kind": "struct",
+          "fields": [
+            "paddle_x",
+            "ball_x",
+            "ball_y",
+            "ball_dx",
+            "ball_dy",
+            "ball_active",
+            "bricks_remaining",
+            "score",
+            "lives",
+            "game_over",
+            "game_won"
+          ]
+        }
+      },
+      "constants": [
+        "SCREEN_WIDTH",
+        "SCREEN_HEIGHT",
+        "SPRITE_OFFSET_X",
+        "SPRITE_OFFSET_Y",
+        "BRICK_ROWS",
+        "BRICK_COLS",
+        "BRICK_WIDTH",
+        "BRICK_HEIGHT",
+        "BRICK_START_Y",
+        "TOTAL_BRICKS",
+        "PADDLE_WIDTH",
+        "PADDLE_HEIGHT",
+        "PADDLE_Y",
+        "PADDLE_SPEED",
+        "PADDLE_MIN_X",
+        "PADDLE_MAX_X",
+        "BALL_SIZE",
+        "BALL_SPEED",
+        "BALL_MIN_X",
+        "BALL_MAX_X",
+        "BALL_MIN_Y",
+        "BALL_MAX_Y",
+        "INITIAL_LIVES"
+      ]
+    },
+    "src/sprites.h": {
+      "type": "header",
+      "lines": 58,
+      "includes": [
+        "gb.h",
+        "stdint.h"
+      ],
+      "constants": [
+        "SPRITE_BALL",
+        "SPRITE_PADDLE_L",
+        "SPRITE_PADDLE_R"
+      ]
+    },
+    "src/game.c": {
+      "type": "implementation",
+      "lines": 379,
+      "includes": [
+        "gb.h",
+        "stdint.h",
+        "game.h",
+        "sprites.h"
+      ],
+      "implements": [
+        "check_brick_at_point",
+        "check_brick_collision",
+        "check_paddle_collision"
+      ]
+    },
+    "src/main.c": {
+      "type": "implementation",
+      "lines": 42,
+      "includes": [
+        "gb.h",
+        "stdint.h",
+        "game.h",
+        "sprites.h"
+      ]
+    },
+    "src/sprites.c": {
+      "type": "implementation",
+      "lines": 182,
+      "includes": [
+        "gb.h",
+        "stdint.h",
+        "sprites.h"
+      ]
+    }
+  },
+  "call_graph": {
+    "check_brick_at_point": {
+      "in": "game.c",
+      "calls": [
+        "set_bkg_tile_xy"
+      ],
+      "called_by": [
+        "check_brick_collision"
+      ]
+    },
+    "check_brick_collision": {
+      "in": "game.c",
+      "calls": [
+        "check_brick_at_point"
+      ],
+      "called_by": []
+    },
+    "check_paddle_collision": {
+      "in": "game.c",
+      "calls": [
+        "position"
+      ],
+      "called_by": []
+    }
+  },
+  "dependencies": {
+    "src/game.c": [
+      "src/game.h",
+      "src/sprites.h"
+    ],
+    "src/main.c": [
+      "src/game.h",
+      "src/sprites.h"
+    ],
+    "src/sprites.c": [
+      "src/sprites.h"
+    ]
+  }
+}

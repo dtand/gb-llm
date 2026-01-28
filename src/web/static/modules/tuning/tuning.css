@@ -1,0 +1,231 @@
+/**
+ * GB Game Studio - Tuning Styles
+ * 
+ * Tunable parameters panel and slider styles.
+ */
+
+/* Tuning Panel */
+.tuning-panel {
+    padding: 24px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.tuning-header {
+    margin-bottom: 24px;
+}
+
+.tuning-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.tuning-header h3 {
+    font-size: 18px;
+    color: var(--text-bright);
+    margin-bottom: 8px;
+}
+
+.tuning-subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.tuning-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.tuning-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.tuning-empty .empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.tuning-empty p {
+    margin: 4px 0;
+}
+
+.tuning-empty .empty-hint {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.tuning-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.tuning-category {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    background: var(--bg-hover);
+    border-bottom: 1px solid var(--border);
+}
+
+.category-icon {
+    font-size: 20px;
+}
+
+.category-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-bright);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.category-tunables {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tunable-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 8px;
+    background: transparent;
+    transition: background 0.2s;
+}
+
+.tunable-item.changed {
+    background: rgba(139, 92, 246, 0.1);
+    border-left: 3px solid var(--accent);
+    margin-left: -3px;
+}
+
+.tunable-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.tunable-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-bright);
+}
+
+.tunable-description {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.tunable-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.tunable-slider {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--bg-dark);
+    border-radius: 3px;
+    outline: none;
+}
+
+.tunable-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.tunable-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.tunable-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+.tunable-value-input {
+    width: 60px;
+    padding: 6px 8px;
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-align: center;
+}
+
+.tunable-value-input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.tunable-range {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    min-width: 50px;
+    text-align: right;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .tuning-header-row {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .tuning-actions {
+        width: 100%;
+    }
+    
+    .tuning-actions .btn {
+        flex: 1;
+    }
+    
+    .tunable-header {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .tunable-description {
+        text-align: left;
+    }
+}

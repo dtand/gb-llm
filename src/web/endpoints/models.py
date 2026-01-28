@@ -156,3 +156,19 @@ class BuildFeatureResponse(BaseModel):
 class RetryFeatureRequest(BaseModel):
     """Request to retry a failed feature implementation."""
     additional_guidance: Optional[str] = None  # Extra instructions for the retry
+
+
+class DevModeRequest(BaseModel):
+    """Request for dev mode - direct implementation without Designer."""
+    message: str  # The user's direct request
+    attached_files: Optional[list[str]] = None  # Files to always include
+
+
+class DevModeResponse(BaseModel):
+    """Response from dev mode implementation."""
+    success: bool
+    response: str = ""  # Summary of what was done
+    files_changed: list[str] = []
+    build_success: bool = True
+    error: Optional[str] = None
+    logs: list[dict] = []

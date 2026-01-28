@@ -1,0 +1,417 @@
+/**
+ * GB Game Studio - Data Module Styles
+ * 
+ * Spreadsheet-style data management.
+ */
+
+/* Data Panel */
+.data-panel {
+    padding: 24px;
+    height: 100%;
+    overflow-y: auto;
+    position: relative;
+}
+
+.data-header {
+    margin-bottom: 24px;
+}
+
+.data-header h3 {
+    font-size: 18px;
+    color: var(--text-bright);
+    margin-bottom: 8px;
+}
+
+.data-subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* ROM Budget - Top Right Corner */
+.data-budget {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.data-budget-bar {
+    width: 80px;
+    height: 8px;
+    background: var(--bg-dark);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.data-budget-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.3s;
+}
+
+.data-budget-fill.warning {
+    background: #f59e0b;
+}
+
+.data-budget-fill.danger {
+    background: var(--error);
+}
+
+/* Data Panel Empty State */
+.data-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.data-empty .empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.data-empty p {
+    margin: 4px 0;
+}
+
+.data-empty .empty-hint {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+/* Data Container Layout */
+.data-container {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Data Sidebar */
+.data-sidebar {
+    width: 200px;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+}
+
+.data-sidebar-header {
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+}
+
+.data-tables-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.data-table-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 4px;
+    transition: background 0.2s;
+}
+
+.data-table-item:hover {
+    background: var(--bg-hover);
+}
+
+.data-table-item.active {
+    background: var(--accent);
+    color: white;
+}
+
+.data-table-item.active .data-table-item-count {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.data-table-item-name {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.data-table-item-count {
+    font-size: 12px;
+    padding: 2px 8px;
+    background: var(--bg-dark);
+    border-radius: 10px;
+    color: var(--text-muted);
+}
+
+/* Data Editor */
+.data-editor {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.data-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    gap: 16px;
+}
+
+.data-table-info {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.data-table-info h4 {
+    font-size: 16px;
+    color: var(--text-bright);
+    margin: 0;
+}
+
+.data-table-count {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.data-table-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.data-search {
+    padding: 6px 12px;
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 13px;
+    width: 200px;
+}
+
+.data-search:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+/* Data Spreadsheet */
+.data-spreadsheet {
+    flex: 1;
+    overflow: auto;
+    padding: 0;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.data-table th {
+    background: var(--bg-card);
+    font-weight: 600;
+    color: var(--text-muted);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.data-table th:hover {
+    background: var(--bg-hover);
+}
+
+.data-table th.sorted {
+    color: var(--accent);
+}
+
+.data-table th .sort-indicator {
+    margin-left: 4px;
+    opacity: 0.5;
+}
+
+.data-table th.sorted .sort-indicator {
+    opacity: 1;
+}
+
+.data-table tr:hover td {
+    background: var(--bg-hover);
+}
+
+.data-table td {
+    color: var(--text);
+}
+
+/* Data Cell Inputs */
+.data-cell-input {
+    width: 100%;
+    padding: 4px 8px;
+    background: var(--bg-dark);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+}
+
+.data-cell-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--bg);
+}
+
+.data-cell-select {
+    width: 100%;
+    padding: 4px 8px;
+    background: var(--bg-dark);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: var(--text);
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.data-cell-select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.data-cell-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Cell Actions */
+.data-cell-actions {
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.data-table tr:hover .data-cell-actions {
+    opacity: 1;
+}
+
+.data-cell-btn {
+    padding: 4px 8px;
+    background: var(--bg-dark);
+    border: none;
+    border-radius: 4px;
+    color: var(--text-muted);
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.data-cell-btn:hover {
+    background: var(--bg-hover);
+    color: var(--text);
+}
+
+.data-cell-btn.delete:hover {
+    background: var(--error);
+    color: white;
+}
+
+.data-no-results {
+    padding: 40px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+/* Ref field dropdown styling */
+.data-cell-ref {
+    position: relative;
+}
+
+.data-cell-ref-display {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    background: var(--bg-dark);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.data-cell-ref-display:hover {
+    background: var(--bg-hover);
+}
+
+.data-cell-null {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Responsive adjustments for data panel */
+@media (max-width: 768px) {
+    .data-container {
+        flex-direction: column;
+    }
+    
+    .data-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        max-height: 150px;
+    }
+    
+    .data-tables-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 8px;
+    }
+    
+    .data-table-item {
+        margin-bottom: 0;
+    }
+    
+    .data-table-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    
+    .data-search {
+        width: 100%;
+    }
+}

@@ -2,6 +2,115 @@
 
 > Essential rules for generating GBDK-2020 GameBoy code.
 
+---
+
+## ⚠️ CRITICAL: Code Preservation Rules
+
+**YOU MUST PRESERVE ALL EXISTING FUNCTIONALITY** unless explicitly told to remove it.
+
+When modifying files:
+1. **Keep all existing functions** - Don't delete functions that aren't mentioned in the task
+2. **Keep all existing variables/structs** - Don't remove state that other code depends on
+3. **Keep all existing includes** - Other modules may depend on them
+4. **Add, don't replace** - New features should ADD to existing code, not REPLACE it
+5. **Surgical changes only** - Modify only the specific code needed for the task
+
+### What "modify this feature" means:
+- ✅ Change the specific behavior mentioned
+- ✅ Add new code to implement the change
+- ❌ Delete unrelated functions
+- ❌ Remove existing features not mentioned
+- ❌ Rewrite the entire file "for cleanliness"
+
+### Example:
+Task: "Make the barrier taller"
+- ✅ Change the barrier height constant or loop bounds
+- ✅ Adjust barrier drawing code
+- ❌ Remove player rendering code
+- ❌ Delete enemy spawn logic
+- ❌ Remove existing sprites
+
+---
+
+## @config Data Tables (UI-Editable Data)
+
+When creating **data tables** that users should be able to edit via the UI (units, enemies, items, levels, etc.), use `@config` annotations instead of hardcoding data.
+
+### How @config Works:
+1. You define the **schema** (struct + annotations) in a `.h` file
+2. The build system generates `build/data.c` from `data/*.json`
+3. Users can edit values in the UI without regenerating code
+
+### Rules for @config Tables:
+
+**DO:**
+- ✅ Create `.h` file with struct and `@config`/`@field` annotations
+- ✅ Declare `get_tablename()` accessor function prototype
+- ✅ Add helper functions in `.c` file (validation, utilities)
+
+**DO NOT:**
+- ❌ Create hardcoded data arrays in `.c` files for @config tables
+- ❌ Define `get_tablename()` function body (it's auto-generated)
+- ❌ Use `extern` for the data array (it comes from build/data.c)
+
+### @config Example:
+
+```c
+// units.h - SCHEMA ONLY, no hardcoded data
+#ifndef UNITS_H
+#define UNITS_H
+
+#include <gb/gb.h>
+
+#define UNIT_COUNT 10
+#define UNIT_NAME_MAX_LENGTH 16
+
+// @config table:unit_data description:"Unit type definitions"
+// @field id uint8 auto description:"Unique unit identifier"
+// @field name string length:16 description:"Display name"
+// @field hp uint8 min:1 max:255 default:20 description:"Hit points"
+// @field atk uint8 min:1 max:255 default:10 description:"Attack power"
+typedef struct {
+    uint8_t id;
+    char name[UNIT_NAME_MAX_LENGTH];
+    uint8_t hp;
+    uint8_t atk;
+} UnitData;
+
+// Accessor - implemented in build/data.c (auto-generated)
+const UnitData* get_unit_data(uint8_t id);
+
+// Helper functions - implement these in units.c
+uint8_t is_valid_unit_id(uint8_t unit_id);
+
+#endif
+```
+
+```c
+// units.c - HELPERS ONLY, no data arrays
+#include "units.h"
+
+// Note: unit_data[] and get_unit_data() are in build/data.c
+
+uint8_t is_valid_unit_id(uint8_t unit_id) {
+    return (unit_id >= 1 && unit_id <= UNIT_COUNT) ? 1 : 0;
+}
+```
+
+### @field Annotation Reference:
+
+| Attribute | Example | Description |
+|-----------|---------|-------------|
+| `type` | `uint8`, `string`, `enum` | Field data type |
+| `auto` | `@field id uint8 auto` | Auto-increment ID |
+| `length:N` | `length:16` | Max string length |
+| `min:N` / `max:N` | `min:1 max:255` | Value range |
+| `default:N` | `default:10` | Default value |
+| `values:[...]` | `values:["normal","boss"]` | Enum options |
+| `description:"..."` | `description:"Hit points"` | UI label |
+
+---
+
 ## Output Format
 
 Output ONLY a JSON code block. No explanatory text before or after.
@@ -19,7 +128,7 @@ Output ONLY a JSON code block. No explanatory text before or after.
 
 **Critical:**
 - Output COMPLETE file contents for any file you modify or create
-- PRESERVE existing code that isn't related to the change
+- PRESERVE ALL existing code that isn't directly related to the change
 - No partial implementations or TODOs
 
 ---
@@ -110,6 +219,92 @@ When adding a new module to game.c:
 - Avoid division/modulo (use bit shifts: `>> 2` for /4, `& 0x03` for %4)
 - Keep functions small
 - Minimize function calls in tight loops
+
+---
+
+## Sprite Data Definition (STRICT)
+
+Every sprite MUST be defined as its own separate `const uint8_t` array with row-by-row visual comments.
+
+### Required Format
+
+```c
+// [Sprite Name] ([dimensions])
+// [Brief description of the sprite]
+const uint8_t sprite_name[] = {
+    0xHH, 0xHH,  // Row 0: [visual] ([description])
+    0xHH, 0xHH,  // Row 1: [visual] ([description])
+    0xHH, 0xHH,  // Row 2: [visual] ([description])
+    0xHH, 0xHH,  // Row 3: [visual] ([description])
+    0xHH, 0xHH,  // Row 4: [visual] ([description])
+    0xHH, 0xHH,  // Row 5: [visual] ([description])
+    0xHH, 0xHH,  // Row 6: [visual] ([description])
+    0xHH, 0xHH   // Row 7: [visual] ([description])
+};
+```
+
+### Visual Comment Legend
+- `█` = pixel ON (bit set)
+- `.` or ` ` = pixel OFF (bit clear)
+- Comments MUST align for readability
+
+### Complete Example
+
+```c
+// Mage character sprite (8x8)
+// Simple design: pointed hat, robe, staff
+const uint8_t sprite_mage[] = {
+    0x18, 0x18,  // Row 0:   ██      (hat tip)
+    0x3C, 0x3C,  // Row 1:  ████     (hat)
+    0x7E, 0x7E,  // Row 2: ██████    (hat brim)
+    0x42, 0x7E,  // Row 3: █ ██ █    (face)
+    0x42, 0x7E,  // Row 4: █ ██ █    (eyes)
+    0x7E, 0x7E,  // Row 5: ██████    (robe top)
+    0x66, 0x66,  // Row 6: █ ██ █    (robe)
+    0x18, 0x18   // Row 7:   ██      (staff base)
+};
+
+// Ground tile pattern (8x8)
+// Simple textured ground with grass/dirt pattern
+const uint8_t tile_ground[] = {
+    0x00, 0x00,  // Row 0: ........  (sky/air above)
+    0x00, 0x00,  // Row 1: ........  (sky/air above)
+    0x55, 0x55,  // Row 2: █.█.█.█.  (grass blades)
+    0xAA, 0xAA,  // Row 3: .█.█.█.█  (grass blades)
+    0x3C, 0x3C,  // Row 4:  ████     (dirt layer)
+    0x66, 0x66,  // Row 5: █ ██ █    (dirt texture)
+    0xFF, 0xFF,  // Row 6: ████████  (solid ground)
+    0xFF, 0xFF   // Row 7: ████████  (solid ground)
+};
+```
+
+### Rules (Mandatory)
+
+| Rule | Requirement |
+|------|-------------|
+| Separate arrays | Each sprite MUST be its own `const uint8_t` array |
+| Naming | Use `sprite_` prefix for sprites, `tile_` prefix for background tiles |
+| Visual comments | Every row MUST have a comment showing the visual pattern |
+| Row labels | Comments MUST include `Row N:` for each line |
+| Descriptions | Optional but recommended: describe what each row represents |
+| Alignment | Visual patterns MUST be aligned across all rows |
+| No inline data | NEVER define sprite data inline in function calls |
+
+### Forbidden Patterns
+
+```c
+// ❌ No visual comments
+const uint8_t sprite_bad[] = {
+    0x18, 0x18, 0x3C, 0x3C, 0x7E, 0x7E, 0x42, 0x7E,
+    0x42, 0x7E, 0x7E, 0x7E, 0x66, 0x66, 0x18, 0x18
+};
+
+// ❌ Inline data in function call
+set_sprite_data(0, 1, (uint8_t[]){0x18, 0x18, 0x3C, 0x3C, ...});
+
+// ❌ Combined sprites in single array
+const uint8_t all_sprites[] = { /* multiple sprites */ };
+```
 
 ---
 
@@ -312,6 +507,81 @@ void enemies_update(void) { ... }
 // RENDERING
 // ============================================================
 ```
+
+---
+
+## Build Error Troubleshooting
+
+When your code fails to compile, carefully read the error messages and apply these fixes:
+
+### Common SDCC/GBDK Errors
+
+| Error Message | Cause | Fix |
+|---------------|-------|-----|
+| `undefined identifier 'X'` | Variable/function not declared | Add `#include` for the header that declares it, or add declaration |
+| `syntax error` | Missing semicolon, brace, or paren | Check the line number and previous line for missing `;` `}` `)` |
+| `conflicting types for 'X'` | Function signature in .c doesn't match .h | Make sure parameter types and return type match exactly |
+| `expected ';'` or `expected ')'` | Missing token | Add the missing character at the indicated location |
+| `lvalue required` | Trying to assign to a constant or expression | Use a variable instead of a literal or expression on left side of `=` |
+| `too many arguments` | Function called with wrong number of args | Check function declaration for correct parameter count |
+| `implicit declaration of function` | Function used before declared | Add `#include` for the header or add forward declaration |
+
+### Linker Errors (ASlink)
+
+Linker errors appear AFTER compilation succeeds. They indicate missing function implementations:
+
+| Error Message | Cause | Fix |
+|---------------|-------|-----|
+| `Undefined Global '_func_name'` | Function declared but never implemented | Add the function body in a .c file, or remove the call |
+| `referenced by module 'X'` | Module X is calling a missing function | Check which file is missing the implementation |
+
+**Example:**
+```
+?ASlink-Warning-Undefined Global '_get_ai_spell' referenced by module 'game'
+```
+
+This means `game.c` calls `get_ai_spell()` but no .c file contains the implementation. Either:
+1. Add the function implementation to the appropriate .c file
+2. Remove the call if the function isn't needed
+
+### Header/Source Matching
+
+The most common error pattern is mismatched declarations:
+
+```c
+// ❌ WRONG - signatures don't match
+// game.h
+void update_player(uint8_t speed);
+
+// game.c  
+void update_player(int16_t speed) { ... }  // Different type!
+
+// ✅ CORRECT - exact match
+// game.h
+void update_player(uint8_t speed);
+
+// game.c
+void update_player(uint8_t speed) { ... }  // Same signature
+```
+
+### Include Order Matters
+
+```c
+// ❌ WRONG - game.h may depend on gb/gb.h types
+#include "game.h"
+#include <gb/gb.h>
+
+// ✅ CORRECT - system headers first
+#include <gb/gb.h>
+#include "game.h"
+```
+
+### When Fixing Errors
+
+1. **Read the exact file and line number** in the error message
+2. **Fix only what's broken** - don't make unrelated changes
+3. **Check both .h and .c files** - they must stay in sync
+4. **Verify all includes** are present for types you use
 
 ---
 

@@ -1,0 +1,356 @@
+/**
+ * GB Game Studio - Sprites Styles
+ * 
+ * Sprite viewer grid and sprite editor modal styles.
+ */
+
+/* Sprite Viewer Panel */
+.sprites-panel {
+    padding: 24px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.sprites-header {
+    margin-bottom: 24px;
+}
+
+.sprites-header h3 {
+    font-size: 18px;
+    color: var(--text-bright);
+    margin-bottom: 8px;
+}
+
+.sprites-subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.sprites-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.sprites-empty .empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.sprites-empty p {
+    margin: 4px 0;
+}
+
+.sprites-empty .empty-hint {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.sprites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+}
+
+.sprite-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+.sprite-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.sprite-canvas {
+    background: #081820;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.sprite-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+}
+
+.sprite-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-bright);
+    text-align: center;
+    word-break: break-word;
+}
+
+.sprite-size {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}
+
+.sprite-edit-btn {
+    background: var(--bg-hover);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--text);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s, background 0.2s;
+}
+
+.sprite-card:hover .sprite-edit-btn {
+    opacity: 1;
+}
+
+.sprite-edit-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+/* Large sprites get more space */
+.sprite-card:has(.sprite-canvas[width="16"]) {
+    min-width: 140px;
+}
+
+/* Sprites header row */
+.sprites-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 800px) {
+    .sprites-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .sprites-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .sprite-card {
+        padding: 12px;
+    }
+}
+
+/* Sprite Editor Modal */
+.sprite-editor-modal .modal-content {
+    max-width: 700px;
+    width: 95%;
+}
+
+.sprite-editor-body {
+    display: flex;
+    gap: 24px;
+    padding: 16px 0;
+}
+
+.sprite-editor-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.sprite-canvas-container {
+    position: relative;
+    background: #081820;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+#sprite-editor-canvas {
+    display: block;
+    image-rendering: pixelated;
+    cursor: crosshair;
+}
+
+.sprite-grid-overlay {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    pointer-events: none;
+    background-image: 
+        linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+.sprite-preview-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.preview-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#sprite-preview-canvas {
+    background: #081820;
+    border-radius: 4px;
+    image-rendering: pixelated;
+}
+
+.sprite-editor-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 180px;
+}
+
+.editor-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.editor-section label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#sprite-name-input {
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+}
+
+#sprite-name-input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.size-buttons,
+.tool-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.size-btn,
+.tool-btn {
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: var(--text);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tool-btn {
+    font-size: 16px;
+    padding: 8px;
+    min-width: 36px;
+}
+
+.size-btn:hover,
+.tool-btn:hover {
+    border-color: var(--accent);
+}
+
+.size-btn.active,
+.tool-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+}
+
+.palette-picker {
+    display: flex;
+    gap: 8px;
+}
+
+.palette-color {
+    width: 32px;
+    height: 32px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.palette-color:hover {
+    transform: scale(1.1);
+}
+
+.palette-color.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent);
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.action-btn {
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: var(--text);
+    font-size: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    border-color: var(--accent);
+    background: var(--bg-hover);
+}
+
+/* Mobile adjustments for sprite editor */
+@media (max-width: 600px) {
+    .sprite-editor-body {
+        flex-direction: column;
+    }
+    
+    .sprite-editor-sidebar {
+        flex-direction: row;
+        flex-wrap: wrap;
+        min-width: auto;
+    }
+    
+    .editor-section {
+        flex: 1;
+        min-width: 120px;
+    }
+}

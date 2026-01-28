@@ -11,7 +11,8 @@ from fastapi import APIRouter, HTTPException
 from project_api import get_api
 from endpoints.models import (
     PipelineRequest, DialogueResponse, BuildFeatureRequest, BuildFeatureResponse,
-    CreateProjectRequest, GenerateResponse, RetryFeatureRequest
+    CreateProjectRequest, GenerateResponse, RetryFeatureRequest,
+    DevModeRequest, DevModeResponse
 )
 from endpoints.websocket import manager
 from endpoints.utils import active_tasks, pipeline_logs
@@ -536,4 +537,169 @@ async def generate_game(request: CreateProjectRequest):
     return GenerateResponse(
         project_id=project_id,
         message="Generation started. Connect to WebSocket for progress."
+    )
+
+
+@router.post("/dev", response_model=DevModeResponse)
+async def dev_mode(project_id: str, request: DevModeRequest):
+    """
+    Dev mode - direct implementation without Designer.
+    
+    User plays the designer role. Their request goes directly to the Coder
+    for single-step implementation. Uses two-phase approach:
+    - Phase 1 (Haiku): Select relevant files from symbol index
+    - Phase 2 (Sonnet): Implement the change
+    
+    Optionally accepts attached_files to always include specific files.
+    Progress can be monitored via WebSocket.
+    """
+    from agents.coder.coder_agent import CoderAgent
+    from pathlib import Path
+    
+    api = get_api()
+    
+    # Verify project exists
+    try:
+        project = api.get_project(project_id)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    
+    # Check if already processing
+    if project_id in active_tasks:
+        raise HTTPException(status_code=409, detail="Project is already being processed")
+    
+    # Initialize log storage
+    pipeline_logs[project_id] = []
+    
+    # Create log queue for streaming
+    log_queue = queue.Queue()
+    
+    def log_callback(level: str, message: str):
+        """Callback to capture coder logs."""
+        log_entry = {"level": level, "message": message, "timestamp": datetime.now().isoformat()}
+        pipeline_logs[project_id].append(log_entry)
+        log_queue.put(log_entry)
+    
+    # Add user message to conversation (for history)
+    api.add_conversation_turn(
+        project_id=project_id,
+        role="user",
+        content=request.message,
+        metadata={"type": "dev_request", "attached_files": request.attached_files}
+    )
+    
+    # Broadcast start
+    await manager.broadcast(project_id, {
+        "type": "dev_mode_start",
+        "message": "Dev mode: implementing directly..."
+    })
+    
+    # Get project path
+    project_path = Path(project.path)
+    
+    # Get agent config for model selection
+    agent_config = api.get_agent_config(project_id)
+    coder_model = agent_config["agents"]["coder"]["model"]
+    
+    # Run in thread for streaming
+    result_holder = {"result": None, "error": None}
+    
+    def run_dev_thread():
+        try:
+            coder = CoderAgent(
+                model=coder_model,
+                verbose=True,
+                log_callback=log_callback
+            )
+            result_holder["result"] = coder.implement_direct(
+                project_path=project_path,
+                user_request=request.message,
+                attached_files=request.attached_files
+            )
+        except Exception as e:
+            result_holder["error"] = str(e)
+    
+    # Start thread
+    active_tasks[project_id] = True
+    dev_thread = threading.Thread(target=run_dev_thread)
+    dev_thread.start()
+    
+    # Stream logs while running
+    while dev_thread.is_alive():
+        try:
+            while not log_queue.empty():
+                log_entry = log_queue.get_nowait()
+                await manager.broadcast(project_id, {
+                    "type": "pipeline_log",
+                    "level": log_entry["level"],
+                    "message": log_entry["message"]
+                })
+            await asyncio.sleep(0.1)
+        except Exception:
+            pass
+    
+    # Wait for thread
+    dev_thread.join()
+    
+    # Clean up
+    if project_id in active_tasks:
+        del active_tasks[project_id]
+    
+    # Send remaining logs
+    while not log_queue.empty():
+        log_entry = log_queue.get_nowait()
+        await manager.broadcast(project_id, {
+            "type": "pipeline_log",
+            "level": log_entry["level"],
+            "message": log_entry["message"]
+        })
+    
+    # Check for errors
+    if result_holder["error"]:
+        await manager.broadcast(project_id, {
+            "type": "dev_mode_error",
+            "error": result_holder["error"]
+        })
+        raise HTTPException(status_code=500, detail=result_holder["error"])
+    
+    result = result_holder["result"]
+    
+    # Build response message
+    if result.success:
+        files_list = [fc.path for fc in result.files_changed]
+        summary = result.error or "Changes applied successfully"  # error field holds summary on success
+        response = f"✅ Done!\n\n{summary}\n\nFiles changed: {', '.join(files_list)}"
+        if result.build_success:
+            response += "\n\n🎮 Build successful!"
+        
+        # Add assistant response to conversation
+        api.add_conversation_turn(
+            project_id=project_id,
+            role="assistant",
+            content=response,
+            metadata={"type": "dev_response", "files_changed": files_list}
+        )
+    else:
+        response = f"❌ Failed: {result.error}"
+        api.add_conversation_turn(
+            project_id=project_id,
+            role="assistant",
+            content=response,
+            metadata={"type": "dev_error"}
+        )
+    
+    # Broadcast completion
+    await manager.broadcast(project_id, {
+        "type": "dev_mode_complete",
+        "success": result.success,
+        "files": [fc.path for fc in result.files_changed] if result.files_changed else []
+    })
+    
+    return DevModeResponse(
+        success=result.success,
+        response=response,
+        files_changed=[fc.path for fc in result.files_changed] if result.files_changed else [],
+        build_success=result.build_success,
+        error=result.error if not result.success else None,
+        logs=pipeline_logs.get(project_id, [])
     )

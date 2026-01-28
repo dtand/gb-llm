@@ -10,10 +10,22 @@
       "created_at": "2026-01-25T19:44:36.066545"
     },
     {
-      "id": "97a2a320-bd06-4330-88f4-1e7e69834a64",
+      "id": "b7d7e943-06e3-440a-8034-ed60d81328ec",
       "name": "Mage Battle",
+      "template_source": "rpg",
+      "created_at": "2026-01-27T12:45:40.153394"
+    },
+    {
+      "id": "f388cee0-b601-41ce-b742-0f82287414af",
+      "name": "Dungeon Coy",
+      "template_source": "maze",
+      "created_at": "2026-01-27T15:12:59.342909"
+    },
+    {
+      "id": "e93de08e-7353-4cc1-9ded-2b8a10f383db",
+      "name": "Unit Wars",
       "template_source": null,
-      "created_at": "2026-01-25T19:51:34.713379"
+      "created_at": "2026-01-27T17:03:47.399725"
     }
   ]
 }

@@ -1,0 +1,203 @@
+/**
+ * GB Game Studio - Agents Module Styles
+ * 
+ * Agent configuration cards and model selection.
+ */
+
+/* Agents Panel */
+.agents-panel {
+    padding: 24px;
+}
+
+.agents-header {
+    margin-bottom: 20px;
+}
+
+.agents-header h3 {
+    font-size: 18px;
+    color: var(--text-bright);
+    margin-bottom: 4px;
+}
+
+.agents-header p {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin: 0;
+}
+
+.agents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.agent-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.agent-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.agent-card.disabled {
+    opacity: 0.6;
+}
+
+.agent-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.agent-icon {
+    font-size: 24px;
+}
+
+.agent-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-bright);
+    flex: 1;
+}
+
+.agent-required {
+    font-size: 11px;
+    padding: 3px 8px;
+    background: var(--bg-dark);
+    border-radius: 4px;
+    color: var(--text-muted);
+}
+
+.agent-description {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0 0 16px 0;
+    line-height: 1.5;
+}
+
+.agent-model {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.agent-model label {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.agent-model select {
+    flex: 1;
+    padding: 8px 12px;
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.agent-model select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.agent-model select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.agent-model-tier {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.model-tier {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tier-premium {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+}
+
+.tier-standard {
+    background: var(--bg-dark);
+    color: var(--text-muted);
+}
+
+.tier-fast {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+}
+
+/* Toggle Switch */
+.agent-toggle {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.agent-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-dark);
+    border-radius: 24px;
+    transition: 0.3s;
+}
+
+.toggle-slider::before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--text-muted);
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.agent-toggle input:checked + .toggle-slider {
+    background-color: var(--accent);
+}
+
+.agent-toggle input:checked + .toggle-slider::before {
+    background-color: white;
+    transform: translateX(20px);
+}
+
+.agent-error {
+    grid-column: 1 / -1;
+    padding: 40px;
+    text-align: center;
+    color: var(--error);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .agents-grid {
+        grid-template-columns: 1fr;
+    }
+}

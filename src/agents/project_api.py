@@ -264,35 +264,71 @@ class ProjectAPI:
         (project_path / "src").mkdir(exist_ok=True)
         (project_path / "build").mkdir(exist_ok=True)
         
-        # Create minimal Makefile (sanitize name for shell compatibility)
+        # Create minimal Makefile with data generation and symbol index support
         safe_name = sanitize_project_name(name)
-        makefile = f'''# GBDK-2020 Makefile
-PROJECT_NAME = {safe_name}
+        makefile = f'''# {safe_name} - GameBoy ROM Makefile
 
-GBDK = /usr/local/gbdk
+PROJECT = {safe_name}
+GBDK = $(GBDK_HOME)
 LCC = $(GBDK)/bin/lcc
-LCCFLAGS = -Wa-l -Wl-m -Wl-j
 
-SRCS = $(wildcard src/*.c)
-ROM = build/$(PROJECT_NAME).gb
+# Tools (set GBLLM_ROOT or use relative path)
+GBLLM_ROOT ?= ../../..
+SCHEMA_GEN = python3 $(GBLLM_ROOT)/tools/gen_schema.py
+DATA_GEN = python3 $(GBLLM_ROOT)/src/generator/data_generator.py
+SYMBOL_GEN = python3 $(GBLLM_ROOT)/tools/gen_symbols.py
 
-all: $(ROM)
+CFLAGS = -Wa-l -Wl-m -Wl-j -Wm-yn"$(PROJECT)"
+SOURCES = $(wildcard src/*.c)
+BUILD_DIR = build
+ROM = $(BUILD_DIR)/$(PROJECT).gb
+SYMBOLS = context/symbols.json
 
-$(ROM): $(SRCS)
-\t@mkdir -p build
-\t$(LCC) $(LCCFLAGS) -o $@ $^
+# Include data.c if schema exists
+ifneq ($(wildcard _schema.json),)
+DATA_SRC = build/data.c
+endif
+
+all: schema datagen $(ROM) symbols
+
+# Generate _schema.json from @config annotations in headers
+schema:
+\t@$(SCHEMA_GEN) src/ _schema.json
+
+# Generate data.c/data.h from _schema.json (if exists)
+datagen: schema
+\t@if [ -f _schema.json ]; then $(DATA_GEN) .; fi
+
+# Generate symbol index for AI agents
+symbols: $(SOURCES)
+\t@mkdir -p context
+\t@$(SYMBOL_GEN) src context/symbols.json
+
+$(ROM): $(SOURCES) datagen
+\t@mkdir -p $(BUILD_DIR)
+\t$(LCC) $(CFLAGS) -o $(ROM) $(SOURCES) $(DATA_SRC)
+\t@echo ""
+\t@echo "Build complete: $(ROM)"
+\t@ls -la $(ROM)
 
 clean:
-\trm -rf build
-
-rebuild: clean all
+\trm -rf $(BUILD_DIR)
+\trm -f src/*.o src/*.lst src/*.sym src/*.asm
 
 run: $(ROM)
 \topen -a SameBoy $(ROM)
 
-.PHONY: all clean rebuild run
+run-mgba: $(ROM)
+\tmgba $(ROM)
+
+rebuild: clean all
+
+.PHONY: all clean run run-mgba rebuild schema datagen symbols
 '''
         (project_path / "Makefile").write_text(makefile)
+        
+        # Create context directory for symbols
+        (project_path / "context").mkdir(exist_ok=True)
         
         # Create starter main.c with proper game loop structure
         main_c = '''/**
@@ -1047,7 +1083,7 @@ void game_render(void) {
     DEFAULT_AGENT_CONFIG = {
         "designer": {
             "enabled": True,
-            "model": "claude-opus-4-20250514",
+            "model": "claude-sonnet-4-20250514",
             "description": "Analyzes requests and assembles context for implementation"
         },
         "coder": {

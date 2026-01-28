@@ -22,13 +22,6 @@ from ..context.schemas import ProjectSummary, FeatureSet
 from ..context.summary_generator import generate_summary
 from ..project_api import get_api, ProjectAPI
 
-# Try to import vector search
-try:
-    from src.corpus.vectordb import CorpusSearch
-    VECTOR_SEARCH_AVAILABLE = True
-except ImportError:
-    VECTOR_SEARCH_AVAILABLE = False
-
 
 # Paths
 PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
@@ -41,7 +34,6 @@ class FeatureGap:
     name: str
     description: str
     complexity: int  # 1-5
-    corpus_queries: list[str]  # Queries to find relevant patterns
     depends_on: list[str] = field(default_factory=list)
 
 
@@ -69,10 +61,8 @@ class ImplementationStep:
     title: str
     description: str
     feature: str  # Which feature_gap this implements (or "modification" for mods)
-    files_to_modify: list[str] = field(default_factory=list)
     hard_requirements: list[str] = field(default_factory=list)  # MUST/MUST NOT rules
     acceptance_criteria: list[str] = field(default_factory=list)
-    corpus_hints: list[str] = field(default_factory=list)  # Queries for relevant examples
 
 
 @dataclass
@@ -100,9 +90,6 @@ class ContextPackage:
     
     # Implementation steps (ordered, one at a time for coder)
     implementation_steps: list[ImplementationStep] = field(default_factory=list)
-    
-    # Relevant examples from corpus
-    corpus_examples: list[dict] = field(default_factory=list)  # [{source, code, relevance}]
     
     # Known issues to avoid
     known_issues: list[str] = field(default_factory=list)
@@ -168,14 +155,6 @@ class ContextPackage:
                     sections.append(f"- {field_add['table']}.{field_add['name']}: {field_add['field']['type']}")
             sections.append("")
         
-        # Corpus examples
-        if self.corpus_examples:
-            sections.append("## Reference Code Examples")
-            for ex in self.corpus_examples:
-                sections.append(f"### From {ex['source']} (relevance: {ex.get('relevance', 'high')})")
-                sections.append(f"```c\n{ex['code']}\n```")
-                sections.append("")
-        
         # Known issues
         if self.known_issues:
             sections.append("## Known Issues to Avoid")
@@ -191,7 +170,7 @@ class ContextPackage:
         
         return "\n".join(sections)
     
-    def to_step_context(self, step: 'ImplementationStep', step_corpus_examples: list[dict] = None) -> str:
+    def to_step_context(self, step: 'ImplementationStep') -> str:
         """
         Convert to context for a SINGLE implementation step.
         
@@ -199,7 +178,6 @@ class ContextPackage:
         
         Args:
             step: The specific ImplementationStep to generate context for
-            step_corpus_examples: Corpus examples specific to this step (from step.corpus_hints)
         """
         sections = []
         
@@ -219,13 +197,6 @@ class ContextPackage:
         sections.append(f"**Description:** {step.description}")
         sections.append(f"**Feature:** {step.feature}")
         sections.append("")
-        
-        # Files to modify for this step
-        if step.files_to_modify:
-            sections.append("### Files to Modify")
-            for f in step.files_to_modify:
-                sections.append(f"- {f}")
-            sections.append("")
         
         # Hard requirements for this step
         if step.hard_requirements:
@@ -251,15 +222,6 @@ class ContextPackage:
                     for field_name, field_def in table.get('fields', {}).items():
                         sections.append(f"  - {field_name}: {field_def['type']}")
             sections.append("")
-        
-        # Corpus examples for THIS step
-        examples = step_corpus_examples or []
-        if examples:
-            sections.append("## Reference Code for This Step")
-            for ex in examples[:3]:  # Limit to 3 examples per step
-                sections.append(f"### From {ex['source']}")
-                sections.append(f"```c\n{ex['code']}\n```")
-                sections.append("")
         
         # Known issues
         if self.known_issues:
@@ -332,7 +294,6 @@ Output a JSON object:
       "name": "feature_name",
       "description": "What this NEW feature does",
       "complexity": 1-5,
-      "corpus_queries": ["query1", "query2"],
       "depends_on": ["other_feature_name"]
     }
   ],
@@ -363,16 +324,12 @@ Output a JSON object:
     {
       "order": 1,
       "title": "Short descriptive title",
-      "description": "What this step accomplishes",
+      "description": "Detailed description of what this step accomplishes and WHY",
       "feature": "which feature_gap or 'modification' this implements",
-      "files_to_modify": ["src/enemies.h"],
-      "files_to_create": ["src/enemies.h"],
       "hard_requirements": ["MUST define X before Y", "MUST NOT use malloc"],
-      "acceptance_criteria": ["Enemy struct exists", "Constants defined"],
-      "corpus_hints": ["enemy struct", "sprite constants"]
+      "acceptance_criteria": ["Enemy struct exists", "Constants defined"]
     }
   ],
-  "files_to_modify": ["src/game.c"],
   "files_to_create": ["src/enemies.h", "src/enemies.c"],
   "warnings": ["potential issue 1", "gotcha 2"]
 }
@@ -415,17 +372,6 @@ class DesignerAgent:
         self.verbose = verbose
         self.log_callback = log_callback
         self.api = get_api()
-        
-        # Initialize vector search if available
-        self.corpus_search = None
-        if VECTOR_SEARCH_AVAILABLE:
-            try:
-                self.corpus_search = CorpusSearch()
-                if self.verbose:
-                    print(f"[Designer] Vector search enabled")
-            except Exception as e:
-                if self.verbose:
-                    print(f"[Designer] Vector search unavailable: {e}")
     
     def _log(self, level: str, message: str):
         """Log a message to console and callback."""
@@ -437,7 +383,7 @@ class DesignerAgent:
             except Exception:
                 pass
     
-    def _stream_message(self, system: str, prompt: str, max_tokens: int = 8192) -> dict:
+    def _stream_message(self, system: str, prompt: str, max_tokens: int = 4096) -> dict:
         """
         Call Claude API with streaming to avoid timeout errors.
         
@@ -582,65 +528,6 @@ Analyze what needs to change to fulfill this request. Focus on MINIMAL changes -
         
         return "\n".join(sections)
     
-    def get_corpus_examples(
-        self,
-        queries: list[str],
-        max_examples: int = 5
-    ) -> list[dict]:
-        """
-        Query the corpus for relevant code examples.
-        
-        Args:
-            queries: Search queries for different features
-            max_examples: Maximum total examples to return
-            
-        Returns:
-            List of {source, code, relevance} dicts
-        """
-        if not self.corpus_search:
-            if self.verbose:
-                print("[Designer] Vector search not available, skipping corpus query")
-            return []
-        
-        examples = []
-        seen_sources = set()
-        
-        for query in queries:
-            if len(examples) >= max_examples:
-                break
-            
-            try:
-                # Use search_functions which is the main search method
-                results = self.corpus_search.search_functions(query, n_results=3)
-                
-                for result in results:
-                    source = f"{result.sample_id}/{result.file}"
-                    
-                    # Deduplicate
-                    if source in seen_sources:
-                        continue
-                    seen_sources.add(source)
-                    
-                    examples.append({
-                        "source": source,
-                        "code": result.code[:1500] if result.code else "",  # Truncate
-                        "relevance": "high" if result.relevance > 0.8 else "medium",
-                        "query": query,
-                        "name": result.name
-                    })
-                    
-                    if len(examples) >= max_examples:
-                        break
-                        
-            except Exception as e:
-                if self.verbose:
-                    print(f"[Designer] Corpus query failed: {e}")
-        
-        if self.verbose:
-            print(f"[Designer] Found {len(examples)} corpus examples")
-        
-        return examples
-    
     def assemble_context(
         self,
         project_id: str,
@@ -651,9 +538,8 @@ Analyze what needs to change to fulfill this request. Focus on MINIMAL changes -
         
         This is the main entry point - it:
         1. Loads project summary
-        2. Analyzes the request for gaps
-        3. Queries corpus for relevant examples
-        4. Packages everything together
+        2. Analyzes the request for gaps and implementation steps
+        3. Packages everything together
         
         Args:
             project_id: The project to work on
@@ -674,18 +560,15 @@ Analyze what needs to change to fulfill this request. Focus on MINIMAL changes -
         
         # Build feature gaps
         feature_gaps = []
-        corpus_queries = []
         
         for gap_data in analysis.get("feature_gaps", []):
             gap = FeatureGap(
                 name=gap_data.get("name", "unknown"),
                 description=gap_data.get("description", ""),
                 complexity=gap_data.get("complexity", 3),
-                corpus_queries=gap_data.get("corpus_queries", []),
                 depends_on=gap_data.get("depends_on", [])
             )
             feature_gaps.append(gap)
-            corpus_queries.extend(gap.corpus_queries)
         
         # Build modifications to existing features
         modifications = []
@@ -716,18 +599,13 @@ Analyze what needs to change to fulfill this request. Focus on MINIMAL changes -
                 title=step_data.get("title", "Unknown step"),
                 description=step_data.get("description", ""),
                 feature=step_data.get("feature", "unknown"),
-                files_to_modify=step_data.get("files_to_modify", []),
                 hard_requirements=step_data.get("hard_requirements", []),
-                acceptance_criteria=step_data.get("acceptance_criteria", []),
-                corpus_hints=step_data.get("corpus_hints", [])
+                acceptance_criteria=step_data.get("acceptance_criteria", [])
             )
             implementation_steps.append(step)
         
         # Sort steps by order
         implementation_steps.sort(key=lambda s: s.order)
-        
-        # Get corpus examples for the gaps
-        corpus_examples = self.get_corpus_examples(corpus_queries)
         
         # Build existing files info
         existing_files = []
@@ -777,8 +655,7 @@ Analyze what needs to change to fulfill this request. Focus on MINIMAL changes -
                 "modifications": [m.feature for m in modifications],
                 "schema_changes": schema_change_count,
                 "implementation_steps": len(implementation_steps),
-                "step_titles": [s.title for s in implementation_steps],
-                "corpus_examples": len(corpus_examples)
+                "step_titles": [s.title for s in implementation_steps]
             }
         )
         
@@ -794,7 +671,6 @@ Analyze what needs to change to fulfill this request. Focus on MINIMAL changes -
             modifications=modifications,
             schema_changes=schema_changes,
             implementation_steps=implementation_steps,
-            corpus_examples=corpus_examples,
             known_issues=known_issues,
             constraints=constraints
         )

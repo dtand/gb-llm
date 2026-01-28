@@ -256,6 +256,11 @@
                         <div class="panel-header">
                             <span class="panel-title">💬 Chat</span>
                             <div class="panel-actions">
+                                <!-- Mode Toggle -->
+                                <select id="chat-mode" class="mode-select" title="Switch between Designer and Dev mode">
+                                    <option value="designer">🎨 Designer</option>
+                                    <option value="dev">🔧 Dev</option>
+                                </select>
                                 <button class="btn-small" id="new-chat-btn" title="Start a new conversation">🔄 New Chat</button>
                                 <span class="panel-subtitle" id="chat-status">Ready</span>
                             </div>
@@ -263,6 +268,15 @@
                         
                         <div class="chat-messages" id="chat-messages">
                             <!-- Filled dynamically -->
+                        </div>
+                        
+                        <!-- Attached Files (Dev mode) -->
+                        <div class="attached-files" id="attached-files" style="display: none;">
+                            <span class="attached-label">📎 Attached:</span>
+                            <div class="attached-list" id="attached-list">
+                                <!-- Filled dynamically -->
+                            </div>
+                            <button class="btn-tiny" id="attach-file-btn" title="Attach a file">+ Add</button>
                         </div>
                         
                         <div class="chat-input-container">

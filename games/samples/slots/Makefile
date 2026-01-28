@@ -1,36 +1,53 @@
-# Slots Sample Makefile
+# Slots - GameBoy ROM Makefile
 
-GBDK = /usr/local/gbdk
-CC = $(GBDK)/bin/lcc
-CFLAGS = -Wa-l -Wl-m -Wl-j -Wm-yn"slots"
+PROJECT = slots
+GBDK = $(GBDK_HOME)
+LCC = $(GBDK)/bin/lcc
 
-ROM_NAME = slots.gb
+# Tools (set GBLLM_ROOT or use relative path)
+GBLLM_ROOT ?= ../../..
+DATA_GEN = python3 $(GBLLM_ROOT)/src/generator/data_generator.py
+SYMBOL_GEN = python3 $(GBLLM_ROOT)/tools/gen_symbols.py
+
+CFLAGS = -Wa-l -Wl-m -Wl-j -Wm-yn"$(PROJECT)"
+SOURCES = $(wildcard src/*.c)
 BUILD_DIR = build
+ROM = $(BUILD_DIR)/$(PROJECT).gb
+SYMBOLS = context/symbols.json
 
-SRCS = src/main.c src/game.c src/sprites.c
-OBJS = $(SRCS:.c=.o)
+# Include data.c if schema exists
+ifneq ($(wildcard _schema.json),)
+DATA_SRC = build/data.c
+endif
 
-all: $(BUILD_DIR) $(BUILD_DIR)/$(ROM_NAME)
+all: datagen $(ROM) symbols
+
+# Generate data.c/data.h from _schema.json (if exists)
+datagen:
+	@if [ -f _schema.json ]; then $(DATA_GEN) .; fi
+
+# Generate symbol index for AI agents
+symbols: $(SOURCES)
+	@mkdir -p context
+	@$(SYMBOL_GEN) src context/symbols.json
+
+$(ROM): $(SOURCES) datagen
+	@mkdir -p $(BUILD_DIR)
+	$(LCC) $(CFLAGS) -o $(ROM) $(SOURCES) $(DATA_SRC)
 	@echo ""
-	@echo "Build complete: $(BUILD_DIR)/$(ROM_NAME)"
-	@ls -la $(BUILD_DIR)/$(ROM_NAME)
-
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
-
-$(BUILD_DIR)/$(ROM_NAME): $(SRCS)
-	$(CC) $(CFLAGS) -o $@ $^
+	@echo "Build complete: $(ROM)"
+	@ls -la $(ROM)
 
 clean:
 	rm -rf $(BUILD_DIR)
 	rm -f src/*.o src/*.lst src/*.sym src/*.asm
 
-run: $(BUILD_DIR)/$(ROM_NAME)
-	open -a SameBoy $(BUILD_DIR)/$(ROM_NAME)
+run: $(ROM)
+	open -a SameBoy $(ROM)
 
-run-mgba: $(BUILD_DIR)/$(ROM_NAME)
-	mgba $(BUILD_DIR)/$(ROM_NAME)
+run-mgba: $(ROM)
+	mgba $(ROM)
 
 rebuild: clean all
 
-.PHONY: all clean run run-mgba rebuild
+.PHONY: all clean run run-mgba rebuild datagen symbols

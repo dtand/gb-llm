@@ -1,0 +1,39 @@
+/**
+ * GB Game Studio - WebSocket Styles
+ * 
+ * WebSocket-related styles (minimal - mostly handled by other modules).
+ */
+
+/* WebSocket status could be shown in UI */
+.ws-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.ws-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-muted);
+}
+
+.ws-status-dot.connected {
+    background: var(--success);
+}
+
+.ws-status-dot.disconnected {
+    background: var(--error);
+}
+
+.ws-status-dot.connecting {
+    background: var(--warning);
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}

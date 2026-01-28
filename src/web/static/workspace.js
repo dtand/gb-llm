@@ -12,6 +12,8 @@ let currentProject = null;
 let websocket = null;
 let templates = [];
 let projects = [];
+let chatMode = 'designer';  // 'designer' or 'dev'
+let attachedFiles = [];     // Files attached in dev mode
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
@@ -54,6 +56,8 @@ function setupEventListeners() {
     document.getElementById('build-feature-btn').addEventListener('click', handleBuildFeature);
     document.getElementById('retry-btn').addEventListener('click', handleRetry);
     document.getElementById('new-chat-btn').addEventListener('click', handleNewChat);
+    document.getElementById('chat-mode').addEventListener('change', handleModeChange);
+    document.getElementById('attach-file-btn').addEventListener('click', showAttachFileModal);
     document.getElementById('chat-input').addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
@@ -233,6 +237,21 @@ function handleWebSocketMessage(data) {
             addLogEntry('error', `Build error: ${data.error}`);
             setChatStatus('Ready');
             hideProgressBar();
+            break;
+        // Dev mode messages
+        case 'dev_mode_start':
+            addLogEntry('agent', '🔧 ' + data.message);
+            setChatStatus('Implementing...');
+            break;
+        case 'dev_mode_complete':
+            setChatStatus('Ready');
+            if (data.success && data.files && data.files.length > 0) {
+                refreshProjectState();
+            }
+            break;
+        case 'dev_mode_error':
+            addLogEntry('error', `Dev mode error: ${data.error}`);
+            setChatStatus('Ready');
             break;
         // Retry messages
         case 'retry_start':
@@ -564,12 +583,89 @@ async function handleNewChat() {
     }
 }
 
+// Handle mode toggle between Designer and Dev
+function handleModeChange() {
+    chatMode = document.getElementById('chat-mode').value;
+    const attachedFilesEl = document.getElementById('attached-files');
+    const sendBtn = document.getElementById('send-btn');
+    const buildBtn = document.getElementById('build-feature-btn');
+    const input = document.getElementById('chat-input');
+    
+    if (chatMode === 'dev') {
+        // Dev mode: show attached files, change buttons
+        attachedFilesEl.style.display = 'flex';
+        sendBtn.textContent = '🔧 Implement';
+        sendBtn.title = 'Implement directly (bypasses Designer)';
+        buildBtn.style.display = 'none';
+        input.placeholder = 'Describe what you want to change... (direct to Coder)';
+    } else {
+        // Designer mode: hide attached files, restore buttons
+        attachedFilesEl.style.display = 'none';
+        sendBtn.textContent = '💬 Send';
+        sendBtn.title = 'Continue the conversation';
+        buildBtn.style.display = 'inline-flex';
+        input.placeholder = 'Discuss your game ideas... When ready, click Build Feature';
+    }
+    
+    addLogEntry('info', `Switched to ${chatMode === 'dev' ? 'Dev' : 'Designer'} mode`);
+}
+
+// Attach file modal/picker for dev mode
+function showAttachFileModal() {
+    // Get available files from current project
+    const files = currentProject?.summary?.files || [];
+    const cFiles = files.filter(f => f.path.endsWith('.c'));
+    
+    if (cFiles.length === 0) {
+        addLogEntry('warning', 'No .c files available to attach');
+        return;
+    }
+    
+    // Simple prompt-based selection for now (could make a modal later)
+    const fileList = cFiles.map(f => f.path).join('\n');
+    const selected = prompt(`Select a file to attach:\n\n${fileList}\n\nEnter the file path:`);
+    
+    if (selected && cFiles.some(f => f.path === selected)) {
+        if (!attachedFiles.includes(selected)) {
+            attachedFiles.push(selected);
+            renderAttachedFiles();
+        }
+    }
+}
+
+function renderAttachedFiles() {
+    const container = document.getElementById('attached-list');
+    container.innerHTML = attachedFiles.map(f => `
+        <span class="attached-chip">
+            ${f.split('/').pop()}
+            <span class="remove-chip" onclick="removeAttachedFile('${f}')">×</span>
+        </span>
+    `).join('');
+}
+
+function removeAttachedFile(filepath) {
+    attachedFiles = attachedFiles.filter(f => f !== filepath);
+    renderAttachedFiles();
+}
+
 async function handleSendMessage() {
     const input = document.getElementById('chat-input');
     const sendBtn = document.getElementById('send-btn');
     const message = input.value.trim();
     
     if (!message || !currentProjectId) return;
+    
+    // Route to appropriate handler based on mode
+    if (chatMode === 'dev') {
+        await handleDevModeImplement(message);
+    } else {
+        await handleDesignerChat(message);
+    }
+}
+
+// Designer mode: chat with Designer (no implementation)
+async function handleDesignerChat(message) {
+    const input = document.getElementById('chat-input');
     
     // Clear input and set loading state
     input.value = '';
@@ -612,6 +708,57 @@ async function handleSendMessage() {
     }
     
     setLoadingState(false);
+    setChatStatus('Ready');
+}
+
+// Dev mode: implement directly without Designer
+async function handleDevModeImplement(message) {
+    const input = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+    
+    // Clear input and set loading state
+    input.value = '';
+    setLoadingState(true);
+    sendBtn.disabled = true;
+    sendBtn.textContent = '⏳ Implementing...';
+    
+    // Add user message to UI
+    addChatMessage('user', message);
+    if (attachedFiles.length > 0) {
+        addChatMessage('system', `📎 Attached files: ${attachedFiles.join(', ')}`);
+    }
+    
+    setChatStatus('Implementing...');
+    addLogEntry('agent', '🔧 Dev mode: implementing directly...');
+    
+    try {
+        const response = await apiRequest(`/api/v2/projects/${currentProjectId}/dev`, {
+            method: 'POST',
+            body: JSON.stringify({ 
+                message,
+                attached_files: attachedFiles.length > 0 ? attachedFiles : null
+            })
+        });
+        
+        // Add response to chat
+        addChatMessage('assistant', response.response);
+        
+        if (response.success && response.files_changed?.length > 0) {
+            addLogEntry('success', `Changed: ${response.files_changed.join(', ')}`);
+            await refreshProjectState();
+        } else if (!response.success) {
+            addLogEntry('error', response.error || 'Implementation failed');
+        }
+        
+    } catch (error) {
+        const errorMsg = error?.message || error?.toString() || 'Unknown error occurred';
+        addChatMessage('assistant', `❌ Error: ${errorMsg}`);
+        addLogEntry('error', errorMsg);
+    }
+    
+    setLoadingState(false);
+    sendBtn.disabled = false;
+    sendBtn.textContent = '🔧 Implement';
     setChatStatus('Ready');
 }
 
